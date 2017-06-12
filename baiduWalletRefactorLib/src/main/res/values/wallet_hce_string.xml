@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallet_hce_title">云闪付</string>
+    <string name="wallet_hce_pop_window">百度钱包云闪付</string>
+    <string name="wallet_hce_waiting">连接中...</string>
+    <string name="wallet_hce_pay_succ">交易金额：</string>
+    <string name="wallet_hce_conn_pos_succ">连接成功</string>
+    <string name="wallet_hce_amount_lack">余额不足，请更换其他支付方式支付</string>
+    <string name="wallet_hce_near_pos_tips">靠近POS机支付</string>
+    <string name="wallet_hce_login_tips">你还未登录，请先登录后再使用</string>
+    <string name="wallet_hce_open_service_tips">闪付功能尚未开启，请开启后再使用</string>
+    <string name="wallet_hce_turnon">立即体验</string>
+    <string name="wallet_hce_turnon_bindcard">绑卡并体验</string>
+    <string name="wallet_hce_close_service">暂停使用</string>
+    <string name="wallet_hce_user_help">使用帮助</string>
+    <string name="wallet_hce_open_hce_tips">你的手机没有开启NFC功能，将无法享受百度钱包云闪付，现在去开启？</string>
+    <string name="wallet_hce_open_alert_win_tips">你的手机没有打开悬浮窗权限，将无法享受百度钱包云闪付，现在去开启？</string>
+    <string name="wallet_hce_remind_me">稍候再说</string>
+    <string name="wallet_hce_open">立即开启</string>
+    <string name="wallet_hce_i_got_it">我知道了</string>
+    <string name="wallet_hce_users_help">使用说明</string>
+    <string name="wallet_hce_tips">请碰触POS机，即可完成线下支付</string>
+    <string name="bd_wallet_hce_to_login">登录</string>
+    <string name="bd_wallet_hce_to_input_pay_pwd">输入手机支付密码</string>
+    <string name="bd_wallet_hce_version">百度钱包版权所有@2016</string>
+    <string name="bd_wallet_hce_change_tips">更换</string>
+    <string name="bd_wallet_hce_check_orders">查单</string>
+    <string name="bd_wallet_hce_pwd_pay">密码支付</string>
+</resources>

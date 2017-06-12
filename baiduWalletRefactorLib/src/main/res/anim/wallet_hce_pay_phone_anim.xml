@@ -1,0 +1,9 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">  
+ <item android:drawable="@drawable/wallet_hce_pay_pos_pos_1" android:duration="260" />   
+ <item android:drawable="@drawable/wallet_hce_pay_pos_pos_2" android:duration="260" />   
+ <item android:drawable="@drawable/wallet_hce_pay_pos_pos_3" android:duration="260" />   
+ <item android:drawable="@drawable/wallet_hce_pay_pos_pos_4" android:duration="260" />   
+ 
+   
+ 
+ </animation-list>  

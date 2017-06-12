@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:background="@color/bd_wallet_white"
+        >
+
+    <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/wallet_base_no_net"
+            android:layout_gravity="center_horizontal"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wallet_base_no_network"
+            android:layout_marginTop="20dp"
+            android:textSize="16dp"
+            android:textColor="@color/ebpay_text_666666"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wallet_base_no_network_reason"
+            android:layout_marginTop="15dp"
+            android:textSize="14dp"
+            android:textColor="@color/ebpay_text_999999"
+            />
+
+    <Button
+            android:id="@+id/reload_btn"
+            android:layout_width="200dp"
+            android:layout_height="45dp "
+            android:text="@string/bd_wallet_reload"
+            android:background="@drawable/wallet_base_btn"
+            android:layout_marginTop="30dp"
+            android:textColor="@android:color/white"
+            />
+
+</LinearLayout>

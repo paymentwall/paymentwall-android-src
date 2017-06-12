@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".core.plugins.pluginproxy.BaseWalletProxyActivity" >
+
+    <com.baidu.wallet.base.widget.PullToRefreshListView
+        android:id="@+id/bd_wallet_pull_up_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+		android:background="@color/bd_wallet_text_gray4"/>
+
+    <LinearLayout
+        android:id="@+id/bd_wallet_empty_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bd_wallet_text_gray4"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/wallet_base_coupon_empty" />
+
+        <LinearLayout
+            android:id="@+id/bd_wallet_coupon_get"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="28dp"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal">
+	        <TextView
+	            android:id="@+id/bd_wallet_coupon_nocoupon"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ebpay_bd_wallet_base_no_coupon"
+	            android:textColor="#6e6e6e"
+	            android:textSize="@dimen/ebpay_text_size_12" />
+	        <TextView
+	            android:id="@+id/bd_wallet_coupon_gowalk"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ebpay_bd_wallet_base_coupon_tosee"
+	            android:textColor="#0a55bc"
+	            android:textSize="@dimen/ebpay_text_size_12" />
+       		<ImageView
+       		    android:id="@+id/bd_wallet_coupon_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+		        android:layout_marginLeft="6dp"
+		        android:src="@drawable/wallet_base_indicator_arrow"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/bd_wallet_empty_useless"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:padding="10dp"
+	        android:gravity="bottom"
+	        android:orientation="horizontal">
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ebpay_bd_wallet_base_coupon_tocheck"
+	            android:textColor="#0a55bc"
+	            android:textSize="@dimen/ebpay_text_size_12" />
+       		<ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+		        android:layout_marginLeft="6dp"
+		        android:src="@drawable/wallet_base_indicator_arrow"/>
+        </LinearLayout>
+    </LinearLayout>
+
+        <include
+            layout="@layout/bd_wallet_empty_layout"
+            />
+</RelativeLayout>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/wallet_home_4.0_e85352"
+        >
+
+    <RelativeLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+                android:id="@+id/login_header"
+                android:layout_width="match_parent"
+                android:layout_height="118dp"
+                android:visibility="visible"
+                >
+                
+            <TextView 
+                    android:id="@+id/base"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bd_wallet_white"
+                    android:textSize="@dimen/bd_wallet_home_text_size_45"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="21dp" />
+
+            <com.baidu.wallet.home.ui.widget.MaskTextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bd_wallet_white"
+                    android:textSize="@dimen/bd_wallet_home_text_size_45"
+                    android:textStyle="bold"
+                    android:layout_alignTop="@id/base"
+                    android:layout_alignBottom="@id/base"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    />
+
+            <com.baidu.wallet.home.ui.widget.MaskTextView
+                    android:id="@+id/sub_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bd_wallet_white"
+                    android:textSize="@dimen/bd_wallet_home_text_size_13"
+                    android:layout_marginTop="3dp"
+                    android:layout_below="@id/title"
+                    android:layout_centerHorizontal="true"
+                    android:singleLine="true"
+                    />
+
+
+            <ImageView
+                    android:id="@+id/eye_mask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/title"
+                    android:layout_alignBottom="@id/title"
+                    android:layout_marginRight="12dp"
+                    />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id="@+id/unlogin_header_sdk"
+                android:layout_width="match_parent"
+                android:layout_height="118dp"
+                android:visibility="gone"
+                >
+            <Button
+                    android:id="@+id/login_btn_sdk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:background="@drawable/wallet_home_unlogin_btn_selector"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/bd_wallet_white"
+                    />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id="@+id/unlogin_header_app"
+                android:layout_width="match_parent"
+                android:layout_height="118dp"
+                android:visibility="gone"
+                >
+
+            <ImageView
+                    android:id="@+id/user_head_icon_app"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/wallet_base_icon_logo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    />
+
+            <com.baidu.wallet.home.ui.widget.MaskTextView
+                    android:id="@+id/login_text_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bd_wallet_white"
+                    android:textSize="@dimen/bd_wallet_home_text_size_13"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@id/user_head_icon_app"
+                    android:layout_centerHorizontal="true"
+                    android:singleLine="true"
+                    />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+        <com.baidu.wallet.home.ui.widget.GridLayout
+                android:id="@+id/grid_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                />
+
+</LinearLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/wallet_rn_auth_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/wallet_rn_auth_result_title" />
+
+    <TextView
+        android:id="@+id/wallet_rn_auth_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="#111111"
+        android:textSize="16sp"
+	    />
+
+    <TextView
+        android:id="@+id/wallet_rn_auth_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="35dp"
+        android:layout_marginLeft="@dimen/ebpay_bind_card_button_left_margin"
+        android:layout_marginRight="@dimen/ebpay_bind_card_button_left_margin"
+        android:layout_marginTop="9dp"
+        android:lineSpacingExtra="4dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:textColor="#999999"
+        android:textSize="14sp"
+		/>
+
+</LinearLayout>

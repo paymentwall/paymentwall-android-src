@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/bind_card_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wallet_base_bind_card_pic" />
+
+    <ImageView
+        android:id="@+id/bind_card_txt_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/wallet_base_bind_card_pic_txt"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/bind_card_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:gravity="center"
+        android:textColor="#111111"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/bind_card_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="38dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="#999999"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/bind_card_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/bd_wallet_pwdpay_light_gray"
+        android:visibility="gone" />
+
+</LinearLayout>

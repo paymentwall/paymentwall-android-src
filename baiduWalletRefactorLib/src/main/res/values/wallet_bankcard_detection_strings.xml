@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallet_bankcard_scan_bankcard">扫描银行卡</string>
+    <string name="wallet_bankcard_scan_hint">将银行卡正面置于此区域，扫描卡片</string>
+    <string name="wallet_bankcard_promo">百度钱包提供</string>
+    <string name="wallet_bankcard_manue_input">手动输入卡片信息</string>
+    <string name="wallet_bankcard_result_check">请核对卡号信息，确认无误</string>
+    <string name="wallet_bankcard_ok">确定</string>
+    <string name="wallet_bankcard_detect_to_detect">扫描证件</string>
+    <string name="wallet_bankcard_detect_tips">将身份证人像面至于此区域，扫描身份证</string>
+</resources>

@@ -1,0 +1,105 @@
+<com.baidu.wallet.bankdetection.BankCardMistView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context="com.baidu.wallet.bankdetection.BankCardDetectionActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="top"
+        android:background="@color/camera_bottom_black" >
+
+        <ImageView
+            android:id="@+id/title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:background="@drawable/wallet_base_camera_back_btn"
+            android:contentDescription="@string/wallet_camera_blank" />
+
+        <TextView
+            android:id="@+id/TextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/wallet_bankcard_scan_bankcard"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/flash_light_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="7dp"
+            android:background="@drawable/wallet_base_camera_flashlight_off_btn"
+            android:contentDescription="@string/wallet_camera_blank"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/focus_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="156dp" >
+
+        <FrameLayout
+            android:id="@+id/focus_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/wallet_bindcard_box" >
+        </FrameLayout>
+        <TextView
+        android:id="@+id/operation_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/wallet_bankcard_scan_hint"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/focus_view"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/bcd_gray1"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/bd_wallet_promo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/operation_prompt"
+        android:layout_marginTop="6dp"
+        android:text="@string/wallet_bankcard_promo"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/bcd_gray1"
+        android:textSize="12sp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/camera_bottom_black"
+        >
+
+        <TextView
+            android:id="@+id/manal_input_prompt"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/wallet_bankcard_button"
+            android:gravity="center"
+            android:text="@string/wallet_bankcard_manue_input"
+            android:textColor="#545557"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</com.baidu.wallet.bankdetection.BankCardMistView>

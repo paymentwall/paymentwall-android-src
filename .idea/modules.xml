@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PandaPPTestv1.1.iml" filepath="$PROJECT_DIR$/PandaPPTestv1.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PayPalAndroidSDK-2.15.3/PayPalAndroidSDK-2.15.3.iml" filepath="$PROJECT_DIR$/PayPalAndroidSDK-2.15.3/PayPalAndroidSDK-2.15.3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alipayadapter/alipayadapter.iml" filepath="$PROJECT_DIR$/alipayadapter/alipayadapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baiduWalletRefactorLib/baiduWalletRefactorLib.iml" filepath="$PROJECT_DIR$/baiduWalletRefactorLib/baiduWalletRefactorLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baiduadapter/baiduadapter.iml" filepath="$PROJECT_DIR$/baiduadapter/baiduadapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/card.io-release/card.io-release.iml" filepath="$PROJECT_DIR$/card.io-release/card.io-release.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dokuadapter/dokuadapter.iml" filepath="$PROJECT_DIR$/dokuadapter/dokuadapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gameui/gameui.iml" filepath="$PROJECT_DIR$/gameui/gameui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/moladapter/moladapter.iml" filepath="$PROJECT_DIR$/moladapter/moladapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mycardadapter/mycardadapter.iml" filepath="$PROJECT_DIR$/mycardadapter/mycardadapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/paymentwallsdk/paymentwallsdk.iml" filepath="$PROJECT_DIR$/paymentwallsdk/paymentwallsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/paypaladapter/paypaladapter.iml" filepath="$PROJECT_DIR$/paypaladapter/paypaladapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdkocov2-release/sdkocov2-release.iml" filepath="$PROJECT_DIR$/sdkocov2-release/sdkocov2-release.iml" />
+      <module fileurl="file://$PROJECT_DIR$/unionpayadapter/unionpayadapter.iml" filepath="$PROJECT_DIR$/unionpayadapter/unionpayadapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wechatadapter/wechatadapter.iml" filepath="$PROJECT_DIR$/wechatadapter/wechatadapter.iml" />
+    </modules>
+  </component>
+</project>

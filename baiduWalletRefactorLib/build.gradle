@@ -1,0 +1,27 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 25
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    lintOptions{
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    compile files('libs/sapi-core-6.15.7.jar')
+    compile files('libs/walletsdk_v5.8.1.19_20160607_1941_obfuscated.jar')
+}

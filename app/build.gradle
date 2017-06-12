@@ -1,0 +1,94 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId "com.paymentwall.pwsdktest"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug{
+            debuggable true
+        }
+    }
+
+    sourceSets {
+        main {
+//            manifest.srcFile 'AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            resources.srcDirs = ['src']
+//            aidl.srcDirs = ['src']
+//            renderscript.srcDirs = ['src']
+//            res.srcDirs = ['res']
+//            assets.srcDirs = ['assets']
+
+            // Fixed Issue : "android studio java.lang.unsatisfiedlinkerror: couldn't load find library returned null"
+            // Cause : For android studio : The JNI files should be placed in the /src/main/jniLibs folder.
+            // Fix : Mapping the jniLibs 's source Directories with Lib's folder
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    //    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.loopj.android:android-async-http:1.4.7'
+    compile 'com.android.support:support-v4:25.1.1'
+    //    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:multidex:1.0.0'
+    compile project(':paymentwallsdk')
+    compile project(':alipayadapter')
+    compile files('libs/alipaySdk-20170309.jar')
+    compile project(':unionpayadapter')
+    compile project(':moladapter')
+    compile files('libs/MOLPoints_SDK_V1.2.0.jar')
+    compile project(':wechatadapter')
+    compile files('libs/libammsdk.jar')
+    compile files('libs/UPPayAssistEx.jar')
+    compile files('libs/UPPayPluginExPro.jar')
+    compile project(':baiduWalletRefactorLib')
+    compile project(':baiduadapter')
+    compile project(':paypaladapter')
+    compile project(':dokuadapter')
+    compile project(':sdkocov2-release')
+    compile 'com.squareup.okio:okio:1.11.0'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    //    compile('io.card:android-sdk:5.5.0') {
+    //        transitive = true;
+    //    }
+    //    compile (project(':card.io-release')){
+    //        transitive = true;
+    //    }
+    compile project(':mycardadapter')
+}
+
+task copyNativeLibs(type: Copy) {
+    from(new File('libs')) { include '**' }
+    into new File(buildDir, 'native-libs')
+}
+tasks.withType(JavaCompile) { compileTask -> compileTask.dependsOn copyNativeLibs }
+
+clean.dependsOn 'cleanCopyNativeLibs'

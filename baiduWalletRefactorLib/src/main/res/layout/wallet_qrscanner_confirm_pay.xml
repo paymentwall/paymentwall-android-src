@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_base_window_bg"
+    android:orientation="vertical" >
+
+    <com.baidu.wallet.base.widget.BdActionBar
+        android:id="@+id/bdactionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+      android:layout_height="0dp"
+        android:layout_weight="1"
+          android:layout_below="@id/bdactionbar"
+        android:fillViewport="true"
+        android:scrollbarSize="5dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="@drawable/wallet_base_shape_scrollbar"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#d9d9d9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ebpay_white"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/wallet_order_price_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="49dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp" >
+
+                    <TextView
+                        android:id="@+id/wallet_order_price_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/wallet_confirm_pay_order_price_tips"
+                        android:textColor="#111111"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/wallet_order_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:maxWidth="200dp"
+                        android:singleLine="true"
+                        android:textColor="#e94643"
+                        android:textSize="18dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="#d9d9d9" />
+
+                <RelativeLayout
+                    android:id="@+id/wallet_order_sp_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp" >
+
+                    <TextView
+                        android:id="@+id/wallet_order_sp_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/wallet_confirm_pay_order_sp_tips"
+                        android:textColor="#999999"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/wallet_order_sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:maxWidth="200dp"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="#d9d9d9" />
+
+                <RelativeLayout
+                    android:id="@+id/wallet_order_pay_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp" >
+
+                    <TextView
+                        android:id="@+id/wallet_order_pay_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/wallet_confirm_pay_order_pay_tips"
+                        android:textColor="#999999"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/wallet_order_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:maxWidth="200dp"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/wallet_btn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/ebpay_to_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/ebpay_white_line_height"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/wallet_base_btn"
+                    android:gravity="center"
+                    android:text="@string/wallet_confirm_pay_order_button"
+                    android:textColor="@color/ebpay_white"
+                    android:textSize="@dimen/ebpay_text_size_18" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/bd_wallet_logo_layout" />
+
+</LinearLayout>

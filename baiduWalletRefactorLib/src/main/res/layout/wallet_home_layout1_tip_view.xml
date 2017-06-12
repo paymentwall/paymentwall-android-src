@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="vertical"
+    android:background="@drawable/wallet_home_item_background"
+        >
+
+    <com.baidu.wallet.home.ui.widget.MaskTextView
+        android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="@dimen/bd_wallet_home_text_size_16"
+        android:textColor="@color/bd_wallet_black3"
+            />
+
+    <!-- 暂未用到 -->
+    <com.baidu.wallet.base.widget.NetImageView
+        android:id="@+id/new_img"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_alignParentRight="true" />
+    
+    <com.baidu.wallet.home.ui.widget.MaskTextView
+        android:id="@+id/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/title"
+        android:layout_toLeftOf="@id/new_img"
+        android:gravity="right"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="@dimen/bd_wallet_home_text_size_14"
+        android:textColor="@color/bd_wallet_text_999999"
+            />
+
+    <View 
+        android:id="@+id/botton_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bd_wallet_bg_color_gray"/>
+
+</RelativeLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_view"
+    android:layout_width="match_parent"
+    android:layout_height="134dp"
+    android:background="@drawable/wallet_home_life_item_background_for_shoubai"
+    android:paddingBottom="14dp" >
+
+    <com.baidu.wallet.base.widget.NetImageView
+        android:id="@+id/life_icon"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:src="@drawable/wallet_home_icon_default" />
+
+    <com.baidu.wallet.home.ui.widget.MaskTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/life_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="@dimen/bd_wallet_home_item_life_margin"
+        android:layout_marginRight="@dimen/bd_wallet_home_item_life_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/bd_wallet_white"
+        android:textSize="@dimen/bd_wallet_home_text_size_14"
+            />
+
+    <com.baidu.wallet.base.widget.NetImageView
+        android:id="@+id/red_dot_im"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:src="@drawable/wallet_home_white_star" />
+
+    <com.baidu.wallet.base.widget.NetImageView
+        android:id="@+id/corner_flag_im"
+        android:layout_width="@dimen/bd_wallet_home_icon_flag_size"
+        android:layout_height="@dimen/bd_wallet_home_icon_flag_size"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/wallet_base_window_bg" >
+
+    <com.baidu.wallet.base.widget.BdActionBar
+        android:id="@+id/bdactionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.baidu.wallet.paysdk.ui.widget.CashdeskProgessView
+        android:id="@+id/stepbar"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/bdactionbar" />
+
+    <LinearLayout
+        android:id="@+id/input_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stepbar"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="18dp"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/id_card_line1"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#cccccc" />
+
+        <LinearLayout
+            android:id="@+id/true_name_area"
+            android:layout_width="fill_parent"
+            android:layout_height="92dp"
+            android:background="#ffffff"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:layout_width="@dimen/ebpay_bind_card_left_title_width"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/ebpay_bind_card_txt_left_padding"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="@string/wallet_rn_idcard_photo_tips"
+                android:textColor="@color/ebpay_text_333"
+                android:textSize="@dimen/ebpay_bind_card_input_txt_size" />
+
+            <ImageView
+                android:id="@+id/rn_cert_front"
+                android:layout_width="72dp"
+                android:layout_height="54dp"
+                android:layout_marginLeft="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/wallet_rn_auth_cert_front" />
+
+            <ImageView
+                android:id="@+id/rn_cert_back"
+                android:layout_width="72dp"
+                android:layout_height="54dp"
+                android:layout_marginLeft="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/wallet_rn_auth_cert_back" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/id_card_line2"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="15dp"
+            android:background="#cccccc" />
+
+        <LinearLayout
+            android:id="@+id/id_card_area"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/ebpay_bind_card_input_height"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/ebpay_bind_card_txt_left_padding"
+                android:gravity="left|center_vertical"
+                android:minWidth="@dimen/ebpay_bind_card_left_title_width"
+                android:singleLine="true"
+                android:text="@string/wallet_rn_valid_date"
+                android:textColor="@color/ebpay_text_333"
+                android:textSize="@dimen/ebpay_bind_card_input_txt_size" />
+
+            <TextView
+                android:id="@+id/id_card_validate"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/wallet_rn_idcard_set_date_tips"
+                android:inputType="text"
+                android:maxLength="18"
+                android:singleLine="true"
+                android:textColor="@drawable/wallet_base_bindcard_input_selector"
+                android:textColorHint="#bcbcbc"
+                android:textSize="@dimen/ebpay_bind_card_input_txt_size" />
+
+            <ImageView
+                android:id="@+id/id_tip_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/wallet_base_indicator_arrow" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/id_card_line4"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#cccccc" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/start_commit_pic_and_date"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/ebpay_bind_card_input_height"
+        android:layout_below="@id/input_layout"
+        android:layout_marginLeft="@dimen/ebpay_bind_card_button_left_margin"
+        android:layout_marginRight="@dimen/ebpay_bind_card_button_left_margin"
+        android:background="@drawable/wallet_base_btn"
+        android:text="@string/wallet_rn_idcard_commit_tips"
+        android:textColor="@color/wallet_base_btntext_color_selector"
+        android:textSize="@dimen/ebpay_text_size_18"
+        android:enabled="false" />
+
+</RelativeLayout>

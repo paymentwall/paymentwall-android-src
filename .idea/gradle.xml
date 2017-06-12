@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/PayPalAndroidSDK-2.15.3" />
+            <option value="$PROJECT_DIR$/alipayadapter" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/baiduWalletRefactorLib" />
+            <option value="$PROJECT_DIR$/baiduadapter" />
+            <option value="$PROJECT_DIR$/card.io-release" />
+            <option value="$PROJECT_DIR$/dokuadapter" />
+            <option value="$PROJECT_DIR$/gameui" />
+            <option value="$PROJECT_DIR$/moladapter" />
+            <option value="$PROJECT_DIR$/mycardadapter" />
+            <option value="$PROJECT_DIR$/paymentwallsdk" />
+            <option value="$PROJECT_DIR$/paypaladapter" />
+            <option value="$PROJECT_DIR$/sdkocov2-release" />
+            <option value="$PROJECT_DIR$/unionpayadapter" />
+            <option value="$PROJECT_DIR$/wechatadapter" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

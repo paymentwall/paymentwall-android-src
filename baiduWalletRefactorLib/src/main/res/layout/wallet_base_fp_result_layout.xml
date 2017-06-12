@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bd_wallet_fp_text_white"
+    android:orientation="vertical" >
+
+    <com.baidu.wallet.base.widget.BdActionBar
+        android:id="@+id/bdactionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/wallet_business_result_image"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:layout_below="@id/bdactionbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/wallet_base_fp_pay_success" />
+
+    <TextView
+        android:id="@+id/wallet_business_result_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wallet_business_result_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:includeFontPadding="false"
+        android:textColor="#222222"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/wallet_business_result_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wallet_business_result_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:includeFontPadding="false"
+        android:textColor="#999999"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/wallet_business_result_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/wallet_business_result_desc"
+        android:layout_marginLeft="7.5dp"
+        android:layout_marginRight="7.5dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/wallet_base_btn"
+        android:gravity="center"
+        android:text="@string/ebpay_result_btn_success"
+        android:textColor="@color/wallet_base_btntext_color_selector"
+        android:textSize="@dimen/bd_wallet_text_size_normal" />
+
+    <com.baidu.wallet.base.widget.NetImageView
+        android:id="@+id/wallet_business_result_ad_banner"
+        android:layout_width="fill_parent"
+        android:layout_height="85dp"
+        android:layout_below="@id/wallet_business_result_confirm"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="7.5dp"
+        android:layout_marginRight="7.5dp"
+        android:layout_marginTop="35dp"
+        android:contentDescription="@null"
+        android:visibility="gone" />
+
+</RelativeLayout>

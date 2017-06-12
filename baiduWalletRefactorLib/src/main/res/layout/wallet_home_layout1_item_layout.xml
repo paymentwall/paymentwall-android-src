@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bd_wallet_home_item_finace_three_line_height"
+                android:background="@drawable/wallet_home_item_background">
+
+    <com.baidu.wallet.base.widget.NetImageView
+            android:id="@+id/home_finance_item_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="17dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/wallet_home_icon_default"/>
+
+
+    <com.baidu.wallet.home.ui.widget.MaskTextView
+            android:id="@+id/home_finance_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_toRightOf="@id/home_finance_item_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="17dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/bd_wallet_home_text_black"
+            android:layout_marginRight="@dimen/bd_wallet_home_item_life_margin"
+            android:textSize="@dimen/bd_wallet_home_text_size_14"
+            />
+
+    <com.baidu.wallet.home.ui.widget.MaskTextView
+            android:id="@+id/home_finance_item_des_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:singleLine="true"
+            android:textColor="@color/bd_wallet_home_text_gray"
+            android:textSize="@dimen/bd_wallet_home_text_size_12"
+            android:layout_alignLeft="@id/home_finance_item_title"
+            android:layout_below="@id/home_finance_item_title"
+            android:layout_marginBottom="5dp"
+            />
+
+    <com.baidu.wallet.home.ui.widget.MaskTextView
+            android:id="@+id/home_finance_item_des_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:singleLine="true"
+            android:textColor="@color/bd_wallet_home_text_black_2"
+            android:textSize="@dimen/bd_wallet_home_text_size_12"
+            android:layout_alignLeft="@id/home_finance_item_title"
+            android:layout_below="@id/home_finance_item_des_1"
+            />
+
+    <com.baidu.wallet.base.widget.NetImageView
+            android:id="@+id/red_dot_im"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"/>
+
+    <com.baidu.wallet.base.widget.NetImageView
+            android:id="@+id/corner_flag_im"
+            android:layout_width="@dimen/bd_wallet_home_icon_flag_size"
+            android:layout_height="@dimen/bd_wallet_home_icon_flag_size"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            />
+
+</RelativeLayout>

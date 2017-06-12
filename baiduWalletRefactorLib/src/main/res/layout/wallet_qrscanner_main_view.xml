@@ -1,0 +1,137 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- SurfaceView 上面的蒙层 -->
+
+    <com.baidu.wallet.qrcodescanner.widget.MistLayorView
+        android:id="@+id/camera_mist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 蒙层上面的UI控件 -->
+
+    <RelativeLayout
+        android:id="@+id/camera_ui"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <!-- 扫一扫的动画区域 -->
+
+        <com.baidu.wallet.qrcodescanner.widget.ScanLineView
+            android:id="@+id/camera_scanline"
+            android:layout_width="match_parent"
+            android:layout_height="258dp"
+         	android:layout_centerHorizontal="true"
+         	android:layout_marginTop="142dp"
+            android:layout_marginLeft="51dp"
+            android:layout_marginRight="51dp"
+            android:background="@drawable/wallet_qrscanner_box" />
+
+        <!-- 上面的Titlebar -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:background="@color/camera_bottom_black" >
+
+            <ImageView
+                android:id="@+id/camera_title_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7dp"
+                android:src="@drawable/wallet_base_camera_back_btn" />
+
+            <TextView
+                android:id="@+id/camera_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/wallet_scancode_title"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="7dp"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/flash_light_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wallet_base_camera_flashlight_off_btn"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/camera_scandesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/camera_scanline"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/wallet_scancode_desc"
+            android:textColor="#cccccc"
+            android:textSize="12dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/camera_bottom_black" >
+
+            <RelativeLayout
+                android:id="@+id/camera_ad_layout"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:visibility="gone" >
+
+                <com.baidu.wallet.base.widget.NetImageView
+                    android:id="@+id/camera_ad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/camera_ad_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/wallet_scan_close" />
+            </RelativeLayout>
+
+ 			<ImageView
+                    android:id="@+id/open_album"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wallet_qrscanner_photo_btn" />
+        </RelativeLayout>
+
+        <com.baidu.wallet.qrcodescanner.widget.ProgressView
+            android:id="@+id/camera_progress_zoom"
+            android:layout_width="25dp"
+            android:layout_height="227dp"
+            android:layout_alignParentRight="true"
+     		android:layout_marginTop="142dp"
+            android:layout_marginRight="13dp"
+            android:background="@drawable/wallet_qrscanner_progress_line"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</FrameLayout>

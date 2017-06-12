@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/welcome_page"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:layout_gravity="center"
+    android:background="@drawable/wallet_base_loading_dialog_for_light_app_bg"
+    android:gravity="center"
+    android:orientation="horizontal" >
+    
+    <ProgressBar 
+        android:id="@+id/progress_bar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="18dp"
+        android:layout_gravity="center"
+        android:contentDescription="@null"
+        android:src="@drawable/wallet_base_refresh_loading"/>
+
+        <TextView
+            android:id="@+id/dialog_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="9dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/wallet_base_loading_new_for_la"
+            android:textColor="@color/ebpay_white"
+            android:textSize="@dimen/ebpay_text_size_16" />
+
+</LinearLayout>

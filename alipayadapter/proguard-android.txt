@@ -1,0 +1,52 @@
+-injars       /home/paymentwall/temp/pwlocal-jar-build/pwlocalsdk-unsigned-original.jar
+-outjars      /home/paymentwall/temp/pwlocal-jar-build/pwlocalsdk-unsigned-obfuscated.jar
+-libraryjars  /home/paymentwall/Android/Sdk/platforms/android-22/android.jar
+-printmapping /home/paymentwall/temp/pwlocal-jar-build/out.map
+-dontshrink
+-keepparameternames
+-optimizationpasses 5
+-verbose
+-dontusemixedcaseclassnames
+-renamesourcefileattribute SourceFile
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-allowaccessmodification
+-dontpreverify
+
+-keepattributes *Annotation*,Signature,InnerClasses
+-dontwarn android.support.**
+-whyareyoukeeping class **
+
+-keep class android.support.**
+-keepclasseswithmembernames class android.support.** { *; }
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class android.**
+-keep class android.support.annotation.**
+-keep class com.android.**
+
+-keepclassmembers class * implements android.os.Parcelable {
+    static ** CREATOR;
+}
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-keep class com.paymentwall.alipayadapter.AlipayAdapter {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.paymentwall.alipayadapter.PsAlipay {
+    <fields>;
+    <methods>;
+}
+

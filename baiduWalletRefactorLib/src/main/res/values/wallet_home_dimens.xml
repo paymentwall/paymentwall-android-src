@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
+  -->
+<resources>
+    <dimen name="bd_wallet_home_text_size_45">45sp</dimen>
+    <dimen name="bd_wallet_home_text_size_25">25sp</dimen>
+    <dimen name="bd_wallet_home_text_size_20">20sp</dimen>
+    <dimen name="bd_wallet_home_text_size_19">19sp</dimen>
+    <dimen name="bd_wallet_home_text_size_18">18sp</dimen>
+    <dimen name="bd_wallet_home_text_size_16">16sp</dimen>
+    <dimen name="bd_wallet_home_text_size_15">15sp</dimen>
+    <dimen name="bd_wallet_home_text_size_14">14sp</dimen>
+    <dimen name="bd_wallet_home_text_size_13">13sp</dimen>
+    <dimen name="bd_wallet_home_text_size_12">12sp</dimen>
+    <dimen name="bd_wallet_home_icon_flag_size">29dp</dimen>
+    <dimen name="bd_wallet_home_icon_flag_text_right_margin">5dp</dimen>
+    <dimen name="bd_wallet_home_item_finace_two_line_height">76dp</dimen>
+    <dimen name="bd_wallet_home_item_finace_three_line_height">96dp</dimen>
+    <dimen name="bd_wallet_home_item_life_margin">12dp</dimen>
+    
+</resources>

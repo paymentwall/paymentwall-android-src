@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+     <com.baidu.wallet.base.widget.BdActionBar
+        android:id="@+id/bdactionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         />
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+        android:background="#f8f8f8"
+	    >
+	    
+    <ImageView
+        android:id="@+id/guid_hand_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="right"
+      android:scaleType="centerInside"
+      android:src="@drawable/wallet_hce_hand_move"
+      />
+    <ImageView 
+        android:id="@+id/guid_pos_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center"/>
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="14sp"
+        android:textColor="#999999"
+        android:layout_marginBottom="10dp"
+        android:text="@string/wallet_hce_tips"/>
+    </LinearLayout><!-- 
+   	<View
+   		 android:id="@+id/line"
+   		 android:layout_width="match_parent"
+   		 android:layout_height="1px"
+   		 android:layout_marginLeft="20dp"
+   		 android:layout_marginRight="20dp"
+   		 android:background="@drawable/wallet_scancode_img_line" /> -->
+           <LinearLayout
+               android:layout_width="fill_parent"
+	           android:layout_height="60dp"
+	           android:gravity="center_vertical|left"
+	           android:orientation="horizontal"
+	           android:background="@drawable/wallet_white_item_selector"
+	           android:layout_marginLeft="20dp"
+   		 	   android:layout_marginRight="20dp">
+				<com.baidu.wallet.base.widget.NetImageView
+                            android:id="@+id/bd_wallet_auth_my_bank_card_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/wallet_base_mybankcar_icon"
+                            android:gravity="center_vertical|left"
+                            android:layout_marginRight="8dp"
+                            />
+                <TextView
+                    android:id="@+id/bd_bank_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#111111"
+                    android:textColorHint="@color/bd_wallet_text_gray"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/bd_bank_info_change_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@null"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical|right"
+                    android:singleLine="true"
+                    android:text="@string/bd_wallet_hce_change_tips"
+                    android:textColor="#0a55bc"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+   <View android:id="@+id/linebelow"
+   		 android:layout_width="match_parent"
+   		 android:layout_height="1px"
+   		 android:layout_marginLeft="20dp"
+   		 android:layout_marginRight="20dp"
+   		 android:background="#d9d9d9" />
+   	<Button 
+	    android:id="@+id/queryTrans"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/bd_wallet_hce_check_orders"
+	    android:visibility="gone"/>
+    
+   <Button 
+	    android:id="@+id/paybypwd"
+	    android:layout_width="180dp"
+	    android:layout_height="40dp"
+	    android:layout_marginTop="80dp"
+	    android:text="@string/bd_wallet_hce_pwd_pay"
+	    android:layout_gravity="center_horizontal|bottom"
+	    android:gravity="center"
+	    android:textColor="#666666"
+	    android:background="@drawable/wallet_hce_pic_password"
+	    android:textSize="16sp"
+	    android:visibility="gone"/>
+<!-- 
+    <LinearLayout
+         android:id="@+id/logoBottomLayout"
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:orientation="horizontal"
+         android:layout_marginBottom="10dp"
+         android:gravity="center_vertical"
+         android:layout_gravity="center_horizontal|bottom"
+         >
+        <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wallet_base_icon_logo_scancode"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bd_wallet_logo_text"
+                android:gravity="center"
+                android:textSize="@dimen/ebpay_text_size_13"
+                android:textColor="@color/ebpay_textcolor_scancode_logo_text"
+                android:layout_marginLeft="3dp"
+                />
+		   
+	</LinearLayout> -->
+<!-- 	<include
+            layout="@layout/bd_wallet_logo_layout"
+            /> -->
+</LinearLayout>
+<RelativeLayout
+	    android:id="@+id/listview_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="fill_parent"
+	    android:background="#7F000000"
+	    android:visibility="gone" >
+
+	    <ListView
+	        android:id="@+id/bd_wallet_bank_info_listview"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:layout_marginLeft="30dp"
+	        android:layout_marginRight="30dp"
+	        android:background="@drawable/wallet_scancode_sel_bank_corners_bg"
+	        android:contentDescription="@null"
+	        android:divider="@drawable/wallet_base_listview_divider_line" >
+	    </ListView>
+	</RelativeLayout>
+</FrameLayout>

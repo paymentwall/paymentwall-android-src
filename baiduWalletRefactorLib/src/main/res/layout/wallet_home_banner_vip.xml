@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.baidu.wallet.home.ui.widget.FocusImageViewGroup
+            android:id="@+id/wallet_home_banner_gallery"
+            android:layout_width="fill_parent"
+            android:layout_height="86dp" />
+
+        <LinearLayout
+            android:id="@+id/wallet_home_banner_indicators"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp" />
+
+    </FrameLayout>
+
+    <include layout="@layout/wallet_home_outer_horizontal_seperator" />
+
+</LinearLayout>

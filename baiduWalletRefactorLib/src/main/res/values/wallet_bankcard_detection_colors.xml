@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bcd_gray1">#cccccc</color>
+    <color name="bcd_gray2">#999999</color>
+    <color name="bcd_gray3">#111111</color>
+    <color name="bcd_gray4">#9f9f9f</color>
+    <color name="bcd_disable_text">#26ffffff</color>
+</resources>

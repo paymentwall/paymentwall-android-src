@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/id_card_line1"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+
+    <LinearLayout
+        android:id="@+id/true_name_area"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/ebpay_bind_card_input_height"
+        android:background="#ffffff"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/ebpay_true_name_tip"
+            android:layout_width="@dimen/ebpay_bind_card_left_title_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ebpay_bind_card_txt_left_padding"
+            android:gravity="left|center_vertical"
+            android:singleLine="true"
+            android:text="@string/ebpay_name"
+            android:textColor="@color/ebpay_text_333"
+            android:textSize="@dimen/ebpay_bind_card_input_txt_size" />
+
+        <com.baidu.wallet.base.widget.SafeKeyBoardEditText
+            android:id="@+id/ebpay_true_name_id"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/wallet_rn_myname"
+            android:maxLength="40"
+            android:singleLine="true"
+            android:textColor="@drawable/wallet_base_bindcard_input_selector"
+            android:textColorHint="#bcbcbc"
+            android:textSize="@dimen/ebpay_bind_card_input_txt_size" />
+
+        <ImageView
+            android:id="@+id/name_tip_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:contentDescription="@string/ebpay_img"
+            android:scaleType="fitXY"
+            android:src="@drawable/wallet_base_delete" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/id_card_line2"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:background="#cccccc" />
+
+    <LinearLayout
+        android:id="@+id/id_card_area"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/ebpay_bind_card_input_height"
+        android:background="#ffffff"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/ebpay_id_card_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ebpay_bind_card_txt_left_padding"
+            android:gravity="left|center_vertical"
+            android:minWidth="@dimen/ebpay_bind_card_left_title_width"
+            android:singleLine="true"
+            android:text="@string/ebpay_certificate"
+            android:textColor="@color/ebpay_text_333"
+            android:textSize="@dimen/ebpay_bind_card_input_txt_size" />
+
+        <com.baidu.wallet.base.widget.SafeKeyBoardEditText
+            android:id="@+id/id_card"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/wallet_rn_mycert"
+            android:inputType="text"
+            android:maxLength="18"
+            android:singleLine="true"
+            android:textColor="@drawable/wallet_base_bindcard_input_selector"
+            android:textColorHint="#bcbcbc"
+            android:textSize="@dimen/ebpay_bind_card_input_txt_size"
+            textPasteInteceptor="IDCardEditTextPasteFilter" 
+            />
+
+        <ImageView
+            android:id="@+id/id_tip_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:contentDescription="@string/ebpay_img"
+            android:scaleType="fitXY"
+            android:src="@drawable/wallet_base_delete" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/id_card_line4"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+
+</LinearLayout>

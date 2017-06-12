@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bd_wallet_pull_refresh_pull_tips">下拉</string>
+    <string name="bd_wallet_pull_refresh_tips">更新</string>
+</resources>

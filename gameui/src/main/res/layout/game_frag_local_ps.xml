@@ -28,7 +28,7 @@
         </ScrollView>
 
         <include
-            layout="@layout/layout_copyright"
+            layout="@layout/game_layout_copyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -83,6 +83,7 @@ dependencies {
     //        transitive = true;
     //    }
     compile project(':mycardadapter')
+    compile project(':gameui')
 }
 
 task copyNativeLibs(type: Copy) {

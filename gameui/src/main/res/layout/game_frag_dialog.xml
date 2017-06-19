@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llDialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +21,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/bgr_successful_dialog"
+            android:background="@drawable/game_bgr_successful_dialog"
             android:clickable="true"
             android:gravity="center_horizontal"
             android:minHeight="239dp"
@@ -49,7 +48,6 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_failed"
                     android:visibility="visible" />
-
             </FrameLayout>
 
 
@@ -96,8 +94,15 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:src="@drawable/ic_stars_right" />
-
             </LinearLayout>
+
+            <com.paymentwall.gameui.widget.LoadingImageView
+                android:id="@+id/ivLoading"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:visibility="gone"
+                android:src="@drawable/image_loading"
+                android:layout_marginTop="24dp" />
 
         </LinearLayout>
 

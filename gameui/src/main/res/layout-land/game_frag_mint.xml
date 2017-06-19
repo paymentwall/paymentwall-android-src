@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <include
-            layout="@layout/layout_product_info_land"
+            layout="@layout/game_layout_product_info_land"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginTop = "4dp"
@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/enter_your_pin"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/game_textLight"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -53,22 +53,26 @@
 
                         <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                             android:id="@+id/etCode1"
-                            style="@style/text_mint_form"
+                            style="@style/game_text_mint_form"
+                            android:layout_height="60dp"
                             tools:text="1234" />
 
                         <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                             android:id="@+id/etCode2"
-                            style="@style/text_mint_form"
+                            style="@style/game_text_mint_form"
+                            android:layout_height="60dp"
                             tools:text="1234" />
 
                         <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                             android:id="@+id/etCode3"
-                            style="@style/text_mint_form"
+                            style="@style/game_text_mint_form"
+                            android:layout_height="60dp"
                             tools:text="1234" />
 
                         <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                             android:id="@+id/etCode4"
-                            style="@style/text_mint_form"
+                            style="@style/game_text_mint_form"
+                            android:layout_height="60dp"
                             android:imeOptions="actionDone|flagNoExtractUi"
                             tools:text="1234" />
                     </LinearLayout>
@@ -96,11 +100,11 @@
                             android:layout_marginLeft="8dp"
                             android:maxLines="1"
                             android:text="@string/agreement"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/game_textLight"
                             android:textSize="12sp" />
                     </LinearLayout>
 
-                    <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularButton
+                    <Button
                         android:id="@+id/btnConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -109,12 +113,12 @@
                         android:gravity="center"
                         android:text="@string/confirm"
                         android:textAllCaps="true"
-                        android:textColor="@color/text_confirm"
+                        android:textColor="@color/game_textLight"
                         android:textSize="22sp" />
                 </LinearLayout>
 
                 <include
-                    layout="@layout/layout_copyright"
+                    layout="@layout/game_layout_copyright"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"

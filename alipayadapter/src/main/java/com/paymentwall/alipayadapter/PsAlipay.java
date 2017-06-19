@@ -29,6 +29,7 @@ public class PsAlipay implements Serializable {
     private String service;
     private String outTradeNo;
     private String inputCharset;
+    private String currencyCode;
     private String signType;
     private String notifyUrl;
     private String subject;
@@ -87,6 +88,14 @@ public class PsAlipay implements Serializable {
 
     public void setInputCharset(String inputCharset) {
         this.inputCharset = inputCharset;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public String getSignType() {
@@ -245,6 +254,7 @@ public class PsAlipay implements Serializable {
         parametersMap.put("ag_name", (String)bundle.get("ITEM_NAME"));
         parametersMap.put("ag_external_id", (String)bundle.get("ITEM_ID"));
         parametersMap.put("amount", bundle.get("AMOUNT") + "");
+        Log.i("CURRENCY", (String)bundle.get("CURRENCY"));
         parametersMap.put("currencyCode", (String)bundle.get("CURRENCY"));
         parametersMap.put("sign_version", bundle.get("SIGN_VERSION") + "");
 
@@ -268,6 +278,7 @@ public class PsAlipay implements Serializable {
             parametersMap.put("ps_name", "alipay");
             String orderInfo = printWallApiMap(sortMap(parametersMap));
             orderInfo += bundle.get("PW_PROJECT_SECRET");
+            Log.i("WallApi request", orderInfo);
             String sign = sha256(orderInfo);
             parametersMap.put("sign", sign);
             parametersMap.remove("ps_name");

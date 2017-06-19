@@ -121,11 +121,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="right"
-                android:background="@drawable/btn_buy"
+                android:background="@drawable/saas_btn_buy"
                 android:minWidth="64dp"
                 android:text="@string/buy"
                 android:textAllCaps="true"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/saas_textPrimary"
                 android:textSize="16dp" />
 
         </RelativeLayout>

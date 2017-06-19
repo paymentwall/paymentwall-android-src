@@ -59,7 +59,7 @@ public class PsMyCard implements Serializable {
         parametersMap.put("ps", "mycardcard");
         parametersMap.put("product_id", (String) bundle.get("ITEM_ID"));
         parametersMap.put("product_name", (String) bundle.get("ITEM_NAME"));
-        parametersMap.put("sign_version", "2");
+        parametersMap.put("sign_version", "3");
 
         String orderInfo = printWallApiMap(sortMap(parametersMap));
         orderInfo += bundle.get("PW_PROJECT_SECRET");
@@ -67,7 +67,7 @@ public class PsMyCard implements Serializable {
 //        if (((String)bundle.get("SIGN_VERSION")).equalsIgnoreCase("3"))
 //            sign = sha256(orderInfo);
 //        else if(((String)bundle.get("SIGN_VERSION")).equalsIgnoreCase("2"))
-        sign = md5(orderInfo);
+        sign = sha256(orderInfo);
         parametersMap.put("sign", sign);
         Log.i("ORDER_INFO", orderInfo);
         Log.i("SIGN", sign);

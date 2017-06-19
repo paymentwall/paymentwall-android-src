@@ -181,6 +181,12 @@ public class LocalPsFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvPrice.setText(PwUtils.getCurrencySymbol(request.getCurrency()) + request.getAmount());
+    }
+
     private void bindContainer() {
         ArrayList<ExternalPs> list = request.getExternalPsList();
         for (ExternalPs ps : list) {
@@ -332,8 +338,9 @@ public class LocalPsFragment extends BaseFragment {
 
     @Override
     public void onPaymentSuccessful() {
-        self.setResult(ResponseCode.SUCCESSFUL);
-        self.finish();
+//        self.setResult(ResponseCode.SUCCESSFUL);
+//        self.finish();
+        displayPaymentSucceeded();
     }
 
     @Override
@@ -343,7 +350,12 @@ public class LocalPsFragment extends BaseFragment {
 
     @Override
     public void onPaymentCancel() {
-        Toast.makeText(self, "Payment cancelled", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(self, "Payment cancelled", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPaymentError(String error) {
+        Toast.makeText(self, "Payment Error" + System.getProperty("line.separator") + error, Toast.LENGTH_SHORT).show();
     }
 
     private String capitalize(final String line) {

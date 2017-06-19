@@ -89,5 +89,9 @@ public class BaseFragment extends Fragment {
 
     }
 
+    public void onPaymentError(String error){
+
+    }
+
 
 }

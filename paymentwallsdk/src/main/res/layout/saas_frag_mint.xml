@@ -32,7 +32,7 @@
                     android:layout_marginTop="24dp"
                     android:gravity="center_horizontal"
                     android:text="@string/enter_your_pin"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/saas_textPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                         android:layout_marginLeft="8dp"
                         android:maxLines="1"
                         android:text="@string/agreement"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/saas_textSecondary"
                         android:textSize="12sp"
                         android:id="@+id/tvAgreement" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/btn_confirm"
+                    android:background="@drawable/saas_btn_confirm"
                     android:gravity="center"
                     android:text="@string/confirm"
                     android:textAllCaps="true"
@@ -105,7 +105,7 @@
             </LinearLayout>
 
             <include
-                layout="@layout/layout_copyright"
+                layout="@layout/saas_layout_copyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

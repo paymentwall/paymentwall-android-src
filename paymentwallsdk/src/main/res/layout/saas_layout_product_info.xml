@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_color"
+        android:background="@color/saas_colorPrimary"
         android:orientation="vertical">
 
         <LinearLayout
@@ -40,7 +40,7 @@
                         android:padding="3dp" />
                 </FrameLayout>
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvProduct"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -57,23 +57,23 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical">
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/total"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/saas_textPrimary"
                     android:textSize="20sp" />
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="right"
                     android:text=""
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/saas_textPrimary"
                     android:textSize="26sp" />
 
             </LinearLayout>
@@ -93,5 +93,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp"
-        android:background="@color/main_color" />
+        android:background="@color/saas_colorPrimary" />
 </LinearLayout>

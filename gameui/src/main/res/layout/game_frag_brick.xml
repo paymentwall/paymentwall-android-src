@@ -7,9 +7,9 @@
     <ScrollView xmlns:mask="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:fillViewport="true">
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp">
 
-                    <TextView
+                    <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -62,18 +62,17 @@
 
                         <LinearLayout
                             android:id="@+id/llScanCard"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
                             android:visibility="visible"
-                            android:gravity="center_vertical"
+                            android:gravity="center_vertical|right"
                             android:orientation="horizontal">
 
                             <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/scan_card"
-                                android:textColor="@color/text_secondary"
+                                android:textColor="@color/game_textSecondary"
                                 android:textSize="10sp" />
 
                             <ImageView
@@ -87,7 +86,7 @@
 
                         <com.paymentwall.pwunifiedsdk.brick.ui.views.MaskedEditText
                             android:id="@+id/etCardNumber"
-                            style="@style/cc_form_edittext"
+                            style="@style/game_cc_form_edittext"
                             android:layout_width="match_parent"
                             android:layout_height="64dp"
                             android:drawableLeft="@drawable/ic_cc_number"
@@ -155,13 +154,13 @@
                             android:textStyle="bold"
                             android:visibility="gone" />
 
-                        <EditText
+                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
                             android:id="@+id/etName"
-                            style="@style/cc_form_edittext"
+                            style="@style/game_cc_form_edittext"
                             android:layout_width="match_parent"
                             android:layout_height="64dp"
-                            android:drawableLeft="@drawable/ic_cc_email"
-                            android:hint="@string/email_hint"
+                            android:drawableLeft="@drawable/ic_cc_cvv"
+                            android:hint="@string/name_on_card"
                             android:imeOptions="actionDone"
                             android:inputType="textEmailAddress"
                             android:text=""
@@ -176,12 +175,12 @@
                         android:layout_height="64dp"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
                             android:id="@+id/etCvv"
-                            style="@style/cc_form_edittext"
+                            style="@style/game_cc_form_edittext"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.4"
+                            android:layout_weight="0.5"
                             android:drawableLeft="@drawable/ic_cc_cvv"
                             android:hint="@string/cvv_hint"
                             android:imeOptions="flagNoExtractUi|actionNext"
@@ -190,15 +189,15 @@
                             android:textColorHint="@color/black_text"
                             android:textSize="15sp" />
 
-                        <EditText
+                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
                             android:id="@+id/etExpireDate"
-                            style="@style/cc_form_edittext"
+                            style="@style/game_cc_form_edittext"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.5"
                             android:clickable="true"
                             android:drawableLeft="@drawable/ic_cc_exp"
-                            android:drawableRight="@drawable/ic_cc_down"
+                            android:drawableRight="@drawable/game_ic_cc_down"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:hint="@string/exp_date_hint"
@@ -224,9 +223,9 @@
                             android:textStyle="bold"
                             android:visibility="gone" />
 
-                        <EditText
+                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
                             android:id="@+id/etEmail"
-                            style="@style/cc_form_edittext"
+                            style="@style/game_cc_form_edittext"
                             android:layout_width="match_parent"
                             android:layout_height="64dp"
                             android:drawableLeft="@drawable/ic_cc_email"
@@ -258,7 +257,7 @@
             </LinearLayout>
 
             <include
-                layout="@layout/layout_copyright"
+                layout="@layout/game_layout_copyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -268,6 +267,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <include layout="@layout/dialog_expiration_date" />
+    <include layout="@layout/game_dialog_expiration_date"
+        />
 
 </RelativeLayout>

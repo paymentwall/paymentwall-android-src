@@ -44,7 +44,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/card_number_hint"
-                                android:textColor="@color/text_secondary"
+                                android:textColor="@color/saas_textSecondary"
                                 android:textSize="14sp" />
 
                             <LinearLayout
@@ -60,7 +60,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/scan_card"
-                                    android:textColor="@color/text_secondary"
+                                    android:textColor="@color/saas_textSecondary"
                                     android:textSize="10sp" />
 
                                 <ImageView
@@ -98,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/name_on_card"
                             android:layout_marginBottom="4dp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/saas_textSecondary"
                             android:textSize="14sp" />
 
                         <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
@@ -132,7 +132,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:text="@string/cvv_hint"
-                                android:textColor="@color/text_secondary"
+                                android:textColor="@color/saas_textSecondary"
                                 android:textSize="14sp" />
 
 
@@ -159,7 +159,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:text="@string/exp_date_hint"
-                                android:textColor="@color/text_secondary"
+                                android:textColor="@color/saas_textSecondary"
                                 android:textSize="14sp" />
 
                             <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
@@ -187,7 +187,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/email_hint"
                             android:layout_marginBottom="4dp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/saas_textSecondary"
                             android:textSize="14sp" />
 
                         <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
@@ -207,7 +207,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="32dp"
-                        android:background="@drawable/btn_confirm"
+                        android:background="@drawable/saas_btn_confirm"
                         android:gravity="center"
                         android:hint="@string/email_hint"
                         android:text="@string/confirm"
@@ -219,7 +219,7 @@
             </LinearLayout>
 
             <include
-                layout="@layout/layout_copyright"
+                layout="@layout/saas_layout_copyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

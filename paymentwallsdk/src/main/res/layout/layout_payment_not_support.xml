@@ -42,7 +42,7 @@
             android:layout_height="32dp"
             android:layout_centerVertical="true"
             android:layout_gravity="right"
-            android:background="@drawable/btn_buy"
+            android:background="@drawable/saas_btn_buy"
             android:gravity="center"
             android:minWidth="64dp"
             android:text="@string/back"

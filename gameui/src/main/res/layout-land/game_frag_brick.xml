@@ -9,20 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <include
-            layout="@layout/layout_product_info_land"
+            layout="@layout/game_layout_product_info_land"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginLeft="24dp" />
 
         <ScrollView xmlns:mask="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="48dp"
-            android:layout_marginTop="8dp"
             android:fillViewport="true">
 
             <LinearLayout
@@ -40,82 +41,103 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
+
+                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/enter_card_info"
+                            android:textColor="@color/text_on_background"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:orientation="vertical">
 
-                            <RelativeLayout
+                            <TextView
+                                android:id="@+id/tvErrorCardNumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp">
+                                android:layout_marginBottom="4dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="right"
+                                android:text="@string/err_invalid_card_number"
+                                android:textColor="@color/text_error"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:id="@+id/llScanCard"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"
+                                android:gravity="center_vertical|right"
+                                android:orientation="horizontal">
 
                                 <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/card_number_hint"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="14sp" />
+                                    android:text="@string/scan_card"
+                                    android:textColor="@color/game_textSecondary"
+                                    android:textSize="10sp" />
 
-                                <LinearLayout
-                                    android:id="@+id/llScanCard"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal">
+                                <ImageView
+                                    android:id="@+id/ivScanCard"
+                                    android:layout_width="20dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginLeft="3dp"
+                                    android:src="@drawable/ic_scan_card" />
 
-                                    <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/scan_card"
-                                        android:textColor="@color/text_secondary"
-                                        android:textSize="10sp" />
-
-                                    <ImageView
-                                        android:id="@+id/ivScanCard"
-                                        android:layout_width="20dp"
-                                        android:layout_height="18dp"
-                                        android:layout_marginLeft="3dp"
-                                        android:src="@drawable/ic_scan_card" />
-
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
+                            </LinearLayout>
 
                             <com.paymentwall.pwunifiedsdk.brick.ui.views.MaskedEditText
                                 android:id="@+id/etCardNumber"
-                                style="@style/cc_form_edittext"
+                                style="@style/game_cc_form_edittext"
                                 android:layout_width="match_parent"
+                                android:layout_height="64dp"
+                                android:drawableLeft="@drawable/ic_cc_number"
+                                android:hint="@string/card_number_hint"
                                 android:imeOptions="flagNoExtractUi|actionNext"
                                 android:inputType="phone"
                                 android:minWidth="288dp"
+                                android:textColorHint="@color/black_text"
                                 android:textSize="15sp"
                                 mask:char_representation="c"
                                 mask:mask="cccc cccc cccc cccc" />
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
                             android:orientation="vertical">
 
-                            <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/tvErrNameOnCard"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
-                                android:text="@string/name_on_card"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="14sp" />
+                                android:layout_marginRight="8dp"
+                                android:gravity="right"
+                                android:text="@string/error_invalid_email"
+                                android:textColor="@color/text_error"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
 
                             <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
                                 android:id="@+id/etName"
-                                style="@style/cc_form_edittext"
+                                style="@style/game_cc_form_edittext"
                                 android:layout_width="match_parent"
+                                android:layout_height="64dp"
+                                android:drawableLeft="@drawable/ic_cc_cvv"
+                                android:hint="@string/email_hint"
                                 android:imeOptions="actionDone"
                                 android:inputType="textEmailAddress"
                                 android:text=""
@@ -125,115 +147,132 @@
 
                         </LinearLayout>
 
-
                         <LinearLayout
+                            android:id="@+id/llDateCvvError"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:orientation="horizontal">
+                            android:layout_marginBottom="4dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.4"
-                                android:orientation="vertical">
-
-
-                                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="4dp"
-                                    android:text="@string/cvv_hint"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="14sp" />
-
-
-                                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
-                                    android:id="@+id/etCvv"
-                                    style="@style/cc_form_edittext"
-                                    android:layout_width="120dp"
-                                    android:layout_height="40dp"
-                                    android:imeOptions="flagNoExtractUi|actionNext"
-                                    android:inputType="number"
-                                    android:maxLength="3"
-                                    android:textSize="15sp" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/tvErrorCvv"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.4"
-                                android:orientation="vertical">
+                                android:gravity="right"
+                                android:paddingRight="8dp"
+                                android:text="@string/error_invalid_cvv"
+                                android:textColor="@color/text_error"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="invisible" />
 
-                                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="4dp"
-                                    android:text="@string/exp_date_hint"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/tvErrorExpDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.6"
+                                android:gravity="right"
+                                android:paddingRight="8dp"
+                                android:text="@string/err_invalid_expiration_date"
+                                android:textColor="@color/text_error"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="invisible" />
 
-                                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
-                                    android:id="@+id/etExpireDate"
-                                    style="@style/cc_form_edittext"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:clickable="true"
-                                    android:drawableRight="@drawable/ic_cc_down"
-                                    android:focusable="false"
-                                    android:focusableInTouchMode="false"
-                                    android:textSize="15sp" />
+                        </LinearLayout>
 
-                            </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:orientation="horizontal">
+
+
+                            <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
+                                android:id="@+id/etCvv"
+                                style="@style/game_cc_form_edittext"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.5"
+                                android:drawableLeft="@drawable/ic_cc_cvv"
+                                android:hint="@string/cvv_hint"
+                                android:imeOptions="flagNoExtractUi|actionNext"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColorHint="@color/black_text"
+                                android:textSize="15sp" />
+
+                            <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
+                                android:id="@+id/etExpireDate"
+                                style="@style/game_cc_form_edittext"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.5"
+                                android:clickable="true"
+                                android:drawableLeft="@drawable/ic_cc_exp"
+                                android:drawableRight="@drawable/game_ic_cc_down"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:hint="@string/exp_date_hint"
+                                android:textColorHint="@color/black_text"
+                                android:textSize="15sp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
                             android:orientation="vertical">
 
-                            <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/tvErrEmail"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
-                                android:text="@string/email_hint"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="14sp" />
+                                android:layout_marginRight="8dp"
+                                android:gravity="right"
+                                android:text="@string/error_invalid_email"
+                                android:textColor="@color/text_error"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
 
                             <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
                                 android:id="@+id/etEmail"
-                                style="@style/cc_form_edittext"
+                                style="@style/game_cc_form_edittext"
                                 android:layout_width="match_parent"
+                                android:layout_height="64dp"
+                                android:drawableLeft="@drawable/ic_cc_email"
+                                android:hint="@string/email_hint"
                                 android:imeOptions="actionDone"
                                 android:inputType="textEmailAddress"
                                 android:text=""
+                                android:textColorHint="@color/black_text"
                                 android:textSize="15sp"
                                 android:visibility="visible" />
 
                         </LinearLayout>
 
-                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularButton
+                        <Button
                             android:id="@+id/btnConfirm"
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:layout_marginTop="32dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:background="@drawable/btn_confirm"
                             android:gravity="center"
                             android:hint="@string/email_hint"
                             android:text="@string/confirm"
-                            android:textAllCaps="true"
-                            android:textColor="@color/text_confirm"
+                            android:textAllCaps="false"
+                            android:textColor="@color/color_accent_1"
+                            android:textColorHint="@color/black_text"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <include
-                    layout="@layout/layout_copyright"
+                    layout="@layout/game_layout_copyright"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -243,7 +282,6 @@
         </ScrollView>
     </LinearLayout>
 
-    <include layout="@layout/dialog_expiration_date" />
-
+    <include layout="@layout/game_dialog_expiration_date" />
 
 </RelativeLayout>

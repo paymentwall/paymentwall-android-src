@@ -18,11 +18,11 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
+            <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/saas_textPrimary"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 tools:text="$40.00" />
@@ -40,7 +40,7 @@
 
             </FrameLayout>
 
-            <TextView
+            <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                 android:id="@+id/tvProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

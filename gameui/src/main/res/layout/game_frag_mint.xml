@@ -6,10 +6,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:fillViewport="true">
 
         <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
@@ -32,7 +29,7 @@
                     android:layout_marginTop="24dp"
                     android:gravity="center_horizontal"
                     android:text="@string/enter_your_pin"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/game_textLight"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -43,22 +40,26 @@
 
                     <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                         android:id="@+id/etCode1"
-                        style="@style/text_mint_form"
+                        style="@style/game_text_mint_form"
+                        android:layout_height="60dp"
                         tools:text="1234" />
 
                     <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                         android:id="@+id/etCode2"
-                        style="@style/text_mint_form"
+                        style="@style/game_text_mint_form"
+                        android:layout_height="60dp"
                         tools:text="1234" />
 
                     <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                         android:id="@+id/etCode3"
-                        style="@style/text_mint_form"
+                        style="@style/game_text_mint_form"
+                        android:layout_height="60dp"
                         tools:text="1234" />
 
                     <com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText
                         android:id="@+id/etCode4"
-                        style="@style/text_mint_form"
+                        style="@style/game_text_mint_form"
+                        android:layout_height="60dp"
                         android:imeOptions="actionDone|flagNoExtractUi"
                         tools:text="1234" />
                 </LinearLayout>
@@ -85,12 +86,12 @@
                         android:layout_marginLeft="8dp"
                         android:maxLines="1"
                         android:text="@string/agreement"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/text_on_background"
                         android:textSize="12sp"
                         android:id="@+id/tvAgreement" />
                 </LinearLayout>
 
-                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularButton
+                <Button
                     android:id="@+id/btnConfirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,20 +99,21 @@
                     android:background="@drawable/btn_confirm"
                     android:gravity="center"
                     android:text="@string/confirm"
-                    android:textAllCaps="true"
-                    android:textColor="@color/text_confirm"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_on_background"
                     android:textSize="22sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <include
-                layout="@layout/layout_copyright"
+                layout="@layout/game_layout_copyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="24dp" />
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/game_frag_dialog" />
 
 </RelativeLayout>

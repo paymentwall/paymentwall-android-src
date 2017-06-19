@@ -1,18 +1,18 @@
 <resources>
 
 
-    <style name="style_ps_name">
+    <style name="game_style_ps_name">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical|right</item>
-        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColor">@color/game_textPrimary</item>
         <item name="android:textSize">16sp</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="ps_icon">
+    <style name="game_ps_icon">
         <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginTop">4dp</item>
@@ -21,7 +21,7 @@
         <item name="android:gravity">left</item>
     </style>
 
-    <style name="cc_form_edittext">
+    <style name="game_cc_form_edittext">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:background">@drawable/bg_input_form</item>
@@ -30,15 +30,15 @@
         <item name="android:maxLines">1</item>
         <item name="android:lines">1</item>
         <item name="android:paddingLeft">16dp</item>
-        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColor">@color/game_textPrimary</item>
         <item name="android:textColorHint">@color/input_form_error</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="text_mint_form">
+    <style name="game_text_mint_form">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">60dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:inputType">number</item>
         <item name="android:imeOptions">actionNext|flagNoExtractUi</item>
@@ -49,11 +49,18 @@
         <item name="android:background">@drawable/bg_input_form</item>
     </style>
 
-    <style name="ps_button">
+    <style name="game_ps_button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">64dp</item>
         <item name="android:background">@drawable/btn_ps</item>
         <item name="android:clickable">true</item>
+    </style>
+
+    <style name="game_ps_button_arrow">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:src">@drawable/ps_next_normal</item>
     </style>
 
 </resources>

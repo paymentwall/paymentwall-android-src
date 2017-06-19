@@ -3,17 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
-        android:id="@+id/tvMonth"
+    <TextView
+        android:id="@+id/tvPricepoint"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="142dp"
         android:textSize="16dp"
-        android:paddingTop="7dp"
+        android:paddingTop="12dp"
         android:gravity="center"
-        android:paddingBottom="7dp"
+        android:paddingBottom="12dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:textColor="@color/text_violet_normal"/>
+        android:textColor="@color/game_textSecondary"/>
 
 </LinearLayout>

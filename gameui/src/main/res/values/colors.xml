@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--PwUnified-->
-    <color name="text_primary">#202b43</color>
-    <color name="text_secondary">#4d202b43</color>
     <color name="text_confirm">#4d202b43</color>
     <color name="text_redirecting">#b3202b43</color>
     <color name="text_loading">#33cdc6</color>
@@ -18,20 +16,20 @@
     <color name="bg_edittext_feedback">#f4f6fb</color>
     <color name="text_submit">#4285f4</color>
 
-    <color name="main_color">#ff412b4f</color>
-    <color name="main_color_pressed">#2D273C</color>
+    <color name="game_colorPrimary">#ff412b4f</color>
+    <color name="game_colorPrimaryPressed">#2D273C</color>
     <color name="color_accent_1">#fbedcc</color>
-    <color name="text_light_primary">#ffffffff</color>
+    <color name="game_textLight">#ffffffff</color>
     <color name="btn_orange_normal">#f76b1c</color>
     <color name="btn_orange_pressed">#F35E10</color>
     <color name="btn_orange_shader">#b12f01</color>
     <color name="color_accent_2">#f5b348</color>
     <color name="text_orange">#f76b1c</color>
     <color name="text_product_name">#3a3a3a</color>
-    <color name="text_violet_heavy">#5c2c71</color>
-    <color name="text_violet_light">#654376</color>
+    <color name="game_textPrimary">#5c2c71</color>
+    <color name="game_textThird">#654376</color>
     <color name="text_on_background">#ffffff</color>
-    <color name="text_violet_normal">#5f3c63</color>
+    <color name="game_textSecondary">#5f3c63</color>
     <color name="text_accepted_subtitle">#715966</color>
     <color name="text_mint_form">#363636</color>
     <color name="text_error">#ff3f39</color>

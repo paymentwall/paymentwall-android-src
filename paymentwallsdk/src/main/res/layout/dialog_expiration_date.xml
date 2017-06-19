@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_expiration_date_dialog"
+        android:background="@drawable/saas_bg_expiration_date_dialog"
         android:clickable="true"
         android:minWidth="330dp"
         android:orientation="vertical"
@@ -28,7 +28,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@string/choose_expiration_date"
-            android:textColor="@color/text_violet_normal"
+            android:textColor="@color/saas_textPrimary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
                 android:layout_centerInParent="true"
                 android:padding="4dp"
                 android:text="2019"
-                android:textColor="@color/text_violet_heavy"
+                android:textColor="@color/saas_textPrimary"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 

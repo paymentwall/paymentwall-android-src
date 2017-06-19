@@ -156,7 +156,7 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.saas_frag_mint, container, false);
+        View v = inflater.inflate(PwUtils.getLayoutId(self, "frag_mint"), container, false);
         bindView(v);
         return v;
     }
@@ -212,6 +212,8 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
         Linkify.addLinks(tvAgreement, patternPolicy, Const.MINT.PW_URL.PRIVACY_POLICY,
                 null, tosFilter);
         tvAgreement.setLinkTextColor(getResources().getColor(R.color.agreement_text));
+
+        PwUtils.setFontBold(self, new TextView[]{btnConfirm});
 
         init();
     }
@@ -1061,10 +1063,10 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
     private void populateViewForOrientation(LayoutInflater inflater, ViewGroup viewGroup) {
         viewGroup.removeAllViewsInLayout();
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            View v = inflater.inflate(R.layout.saas_frag_mint, viewGroup);
+            View v = inflater.inflate(PwUtils.getLayoutId(self, "frag_mint"), viewGroup);
             bindView(v);
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            View v = inflater.inflate(R.layout.saas_frag_mint, viewGroup);
+            View v = inflater.inflate(PwUtils.getLayoutId(self, "frag_mint"), viewGroup);
             bindView(v);
         }
         // Find your buttons in subview, set up onclicks, set up callbacks to your parent fragment or activity here.

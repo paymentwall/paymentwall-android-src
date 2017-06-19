@@ -23,7 +23,7 @@
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_height"
-        android:background="@color/main_color"
+        android:background="@color/saas_colorPrimary"
         android:orientation="horizontal">
 
         <ImageView
@@ -45,7 +45,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/confirm_payment"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/saas_textPrimary"
             android:textSize="22sp"
             android:textStyle="bold" />
 

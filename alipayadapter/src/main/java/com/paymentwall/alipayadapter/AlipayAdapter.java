@@ -118,7 +118,8 @@ public class AlipayAdapter {
                                 psAlipay.setBody(dataObject.getString("body"));
                             }
                             if (dataObject.has("currency")) {
-                                psAlipay.getBundle().put("CURRENCY", dataObject.getString("currency"));
+//                                psAlipay.getBundle().put("CURRENCY", dataObject.getString("currency"));
+                                psAlipay.setCurrencyCode(dataObject.getString("currency"));
                             }
                             if (dataObject.has("it_b_pay")) {
                                 psAlipay.setItbPay(dataObject.getString("it_b_pay"));
@@ -287,8 +288,8 @@ public class AlipayAdapter {
             if (psAlipay.getAppenv() != null) {
                 map.put("appenv", psAlipay.getAppenv());
             }
-            if (psAlipay.getBundle() != null) {
-                map.put("currency", (String) psAlipay.getBundle().get("CURRENCY"));
+            if (psAlipay.getCurrencyCode() != null) {
+                map.put("currency", psAlipay.getCurrencyCode());
             }
             orderInfo = PsAlipay.printInternationalMap(PsAlipay.sortMap(map));
             Log.i("SIGN_STRING", orderInfo);

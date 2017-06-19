@@ -10,7 +10,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.paymentwall.pwunifiedsdk.R;
@@ -30,8 +29,8 @@ public class WaveHelper {
     public WaveHelper(Context context, WaveView waveView) {
         mWaveView = waveView;
         mWaveView.setShapeType(WaveView.ShapeType.CIRCLE);
-        mWaveView.setBorder((int) PwUtils.dpToPx(context, 3f), context.getResources().getColor(R.color.main_color));
-        mWaveView.setWaveColor(context.getResources().getColor(R.color.transparent), context.getResources().getColor(R.color.main_color));
+        mWaveView.setBorder((int) PwUtils.dpToPx(context, 3f), context.getResources().getColor(R.color.saas_colorPrimary));
+        mWaveView.setWaveColor(context.getResources().getColor(R.color.transparent), context.getResources().getColor(R.color.saas_colorPrimary));
         initAnimation();
     }
 

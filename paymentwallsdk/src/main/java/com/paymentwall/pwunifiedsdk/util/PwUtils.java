@@ -2,6 +2,7 @@ package com.paymentwall.pwunifiedsdk.util;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -95,7 +96,7 @@ public class PwUtils {
 
     public static int getLayoutId(Context context, String layoutName) {
         try {
-            return context.getResources().getIdentifier(SharedPreferenceManager.getInstance(context).getUIStyle() + "_" + layoutName, "layout", context.getPackageName());
+            return  context.getResources().getIdentifier(SharedPreferenceManager.getInstance(context).getUIStyle() + "_" + layoutName, "layout", context.getPackageName());
         } catch (Exception e) {
             e.printStackTrace();
             return context.getResources().getIdentifier("saas_" + layoutName, "layout", context.getPackageName());

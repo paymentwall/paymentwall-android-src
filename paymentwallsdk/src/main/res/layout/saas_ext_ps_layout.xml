@@ -2,7 +2,7 @@
 <com.paymentwall.pwunifiedsdk.ui.ExtPsLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llPs"
-    style="@style/ps_button">
+    style="@style/saas_ps_button">
 
     <ImageView
         android:id="@+id/ivPs"

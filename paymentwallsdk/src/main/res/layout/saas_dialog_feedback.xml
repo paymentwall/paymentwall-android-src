@@ -16,7 +16,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="@string/issue_description"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/saas_textPrimary"
             android:textSize="18sp" />
 
         <ImageView

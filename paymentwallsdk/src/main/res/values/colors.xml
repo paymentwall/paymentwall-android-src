@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--PwUnified-->
-    <color name="main_color">#fbbd30</color>
-    <color name="main_color_pressed">#c88d04</color>
-    <color name="text_primary">#202b43</color>
-    <color name="text_secondary">#4d202b43</color>
+    <color name="saas_colorPrimary">#fbbd30</color>
+    <color name="saas_colorPrimaryPressed">#c88d04</color>
+    <color name="saas_textPrimary">#202b43</color>
+    <color name="saas_textSecondary">#4d202b43</color>
     <color name="text_confirm">#4d202b43</color>
     <color name="text_redirecting">#b3202b43</color>
     <color name="text_loading">#33cdc6</color>
     <color name="text_payment_failed">#f06050</color>
     <color name="text_product_name">#3a3a3a</color>
-    <color name="text_violet_heavy">#5c2c71</color>
-    <color name="text_violet_normal">#5f3c63</color>
     <color name="text_accepted_subtitle">#715966</color>
     <color name="text_mint_form">#363636</color>
     <color name="bg_main">#fafbfd</color>

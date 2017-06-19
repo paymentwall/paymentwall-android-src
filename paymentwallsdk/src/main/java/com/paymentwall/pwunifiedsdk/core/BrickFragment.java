@@ -171,7 +171,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     @Override
     public void onResume() {
         super.onResume();
-        checkScannerPlugin();
     }
 
     @Override
@@ -192,6 +191,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     private void setFonts(View v) {
         PwUtils.setFontLight(self, new TextView[]{(TextView) v.findViewById(R.id.tvCopyRight)});
         PwUtils.setFontRegular(self, new TextView[]{(TextView) v.findViewById(R.id.tvProduct), (TextView) v.findViewById(R.id.tvTotal), (TextView) v.findViewById(R.id.tvPrice)});
+        PwUtils.setFontBold(self, new TextView[]{(Button) v.findViewById(R.id.btnConfirm)});
     }
 
     private void checkScannerPlugin() {
@@ -204,6 +204,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     }
 
     private void bindView(View v) {
+
 
         Bundle extras = getArguments();
         if (extras == null) {
@@ -398,6 +399,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         }
 
         init(v);
+        checkScannerPlugin();
     }
 
     private void init(View v) {
@@ -441,6 +443,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             }
         });
 
+        etCardNumber.setTag(etCardNumber.getCompoundDrawables()[0]);
         etCardNumber.addTextChangedListener(new TextWatcher() {
             private boolean mFormatting; // this is a flag which prevents the  stack overflow.
             private int mAfter;
@@ -469,14 +472,15 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 }
 
                 if (s.length() > 0) {
-                    etCardNumber.setBackgroundResource(R.drawable.bg_input_form);
-                    etCardNumber.setHint("");
-                    etCardNumber.setCompoundDrawables(null, null, null, null);
+                    etCardNumber.setBackgroundResource(R.drawable.saas_bg_input_form);
+                    etCardNumber.setHint(getString(R.string.card_number_hint));
+                    etCardNumber.setCompoundDrawables((Drawable)etCardNumber.getTag(), null, null, null);
                 }
                 cardNumber = etCardNumber.getText().toString();
             }
         });
 
+        etExpirationDate.setTag(etExpirationDate.getCompoundDrawables()[0]);
         etExpirationDate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -492,8 +496,8 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
                     Drawable drawableRight = getResources().getDrawable(R.drawable.ic_cc_down);
-                    etExpirationDate.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null);
-                    etExpirationDate.setBackgroundResource(R.drawable.bg_input_form);
+                    etExpirationDate.setCompoundDrawablesWithIntrinsicBounds((Drawable)etExpirationDate.getTag(), null, drawableRight, null);
+                    etExpirationDate.setBackgroundResource(R.drawable.saas_bg_input_form);
                     etExpirationDate.setHint("");
                 }
                 expDate = etCvv.getText().toString();
@@ -501,6 +505,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
         });
 
+        etCvv.setTag(etCvv.getCompoundDrawables()[0]);
         etCvv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -515,14 +520,15 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    etCvv.setBackgroundResource(R.drawable.bg_input_form);
+                    etCvv.setBackgroundResource(R.drawable.saas_bg_input_form);
                     etCvv.setHint("");
-                    etCardNumber.setCompoundDrawables(null, null, null, null);
+                    etCvv.setCompoundDrawables((Drawable)etCvv.getTag(), null, null, null);
                 }
                 cvv = etCvv.getText().toString();
             }
         });
 
+        etEmail.setTag(etEmail.getCompoundDrawables()[0]);
         etEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -537,14 +543,15 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    etEmail.setBackgroundResource(R.drawable.bg_input_form);
+                    etEmail.setBackgroundResource(R.drawable.saas_bg_input_form);
                     etEmail.setHint("");
-                    etCardNumber.setCompoundDrawables(null, null, null, null);
+                    etEmail.setCompoundDrawables((Drawable)etEmail.getTag(), null, null, null);
                 }
                 email = etEmail.getText().toString();
             }
         });
 
+        etNameOnCard.setTag(etNameOnCard.getCompoundDrawables()[0]);
         etNameOnCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -559,9 +566,9 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    etNameOnCard.setBackgroundResource(R.drawable.bg_input_form);
-                    etNameOnCard.setHint("");
-                    etNameOnCard.setCompoundDrawables(null, null, null, null);
+                    etNameOnCard.setBackgroundResource(R.drawable.saas_bg_input_form);
+                    etNameOnCard.setHint(getString(R.string.name_on_card));
+                    etNameOnCard.setCompoundDrawables((Drawable)etNameOnCard.getTag(), null, null, null);
                 }
             }
         });
@@ -654,28 +661,28 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 //                tvErrCard.setVisibility(View.VISIBLE);
                 etCardNumber.setHint(R.string.err_invalid_card_number);
                 etCardNumber.setText("");
-                etCardNumber.setBackgroundResource(R.drawable.bgr_input_error);
+                etCardNumber.setBackgroundResource(R.drawable.saas_bg_input_form_error);
                 etCardNumber.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null);
             }
             if (!brickCard.isExpValid()) {
                 etExpirationDate.setHint(R.string.err_invalid_expiration_date);
-                etExpirationDate.setBackgroundResource(R.drawable.bgr_input_error);
+                etExpirationDate.setBackgroundResource(R.drawable.saas_bg_input_form_error);
                 etExpirationDate.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null);
             }
             if (!brickCard.isCvcValid()) {
                 etCvv.setHint(R.string.error_invalid_cvv);
-                etCvv.setBackgroundResource(R.drawable.bgr_input_error);
+                etCvv.setBackgroundResource(R.drawable.saas_bg_input_form_error);
                 etCvv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null);
             }
 
             if (!brickCard.isEmailValid()) {
                 etEmail.setHint(R.string.error_invalid_email);
-                etEmail.setBackgroundResource(R.drawable.bgr_input_error);
+                etEmail.setBackgroundResource(R.drawable.saas_bg_input_form_error);
                 etEmail.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null);
             }
             if (etNameOnCard.getText().toString().trim().length() == 0) {
                 etNameOnCard.setHint(R.string.error_empty_name_on_card);
-                etNameOnCard.setBackgroundResource(R.drawable.bgr_input_error);
+                etNameOnCard.setBackgroundResource(R.drawable.saas_bg_input_form_error);
                 etNameOnCard.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null);
             }
         } else {

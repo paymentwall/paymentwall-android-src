@@ -11,7 +11,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <include layout="@layout/layout_product_info_land"
+        <include layout="@layout/game_layout_product_info_land"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp" />
@@ -45,7 +45,7 @@
             </ScrollView>
 
             <include
-                layout="@layout/layout_copyright"
+                layout="@layout/game_layout_copyright"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

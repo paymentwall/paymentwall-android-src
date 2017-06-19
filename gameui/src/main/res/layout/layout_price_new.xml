@@ -86,7 +86,7 @@
                     android:minWidth="64dp"
                     android:text="@string/next"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/game_textPrimary"
                     android:textSize="16dp" />
 
             </RelativeLayout>
@@ -178,7 +178,7 @@
                     android:minWidth="64dp"
                     android:text="@string/buy"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/game_textPrimary"
                     android:textSize="16dp" />
 
             </RelativeLayout>

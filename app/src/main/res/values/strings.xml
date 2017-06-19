@@ -60,7 +60,7 @@
 
     <!-- First line of invalid_charger, used in the notification form.  [CHAR LIMIT=NONE]-->
     <string name="invalid_charger_title">USB charging not supported.</string>
-
+otepad
     <!-- Second line of invalid_charger, used in the notification form.  [CHAR LIMIT=NONE]-->
     <string name="invalid_charger_text">Use only the supplied charger.</string>
 

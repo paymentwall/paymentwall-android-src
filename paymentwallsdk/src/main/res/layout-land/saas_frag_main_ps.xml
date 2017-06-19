@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <include
-        layout="@layout/layout_product_info_land"
+        layout="@layout/saas_layout_product_info_land"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp" />
@@ -28,14 +28,14 @@
             <LinearLayout
                 android:id="@+id/llBrick"
 
-                style="@style/ps_button">
+                style="@style/saas_ps_button">
 
                 <ImageView
                     android:id="@+id/imageView3"
                     style="@style/ps_icon"
                     android:src="@drawable/creditdebit" />
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvBrick"
                     style="@style/style_ps_name"
                     android:text="@string/title_brick" />
@@ -43,14 +43,14 @@
 
             <LinearLayout
                 android:id="@+id/llLocalMethods"
-                style="@style/ps_button"
+                style="@style/saas_ps_button"
                 android:layout_marginTop="8dp">
 
                 <ImageView
                     style="@style/ps_icon"
                     android:src="@drawable/local" />
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvLocalPs"
                     style="@style/style_ps_name"
                     android:text="@string/title_local_payment" />
@@ -60,14 +60,14 @@
 
             <LinearLayout
                 android:id="@+id/llMint"
-                style="@style/ps_button"
+                style="@style/saas_ps_button"
                 android:layout_marginTop="8dp">
 
                 <ImageView
                     style="@style/ps_icon"
                     android:src="@drawable/mint" />
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvMint"
                     style="@style/style_ps_name"
                     android:text="@string/title_mint" />
@@ -76,14 +76,14 @@
 
             <LinearLayout
                 android:id="@+id/llMobiamo"
-                style="@style/ps_button"
+                style="@style/saas_ps_button"
                 android:layout_marginTop="8dp">
 
                 <ImageView
                     style="@style/ps_icon"
                     android:src="@drawable/mobiamo" />
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvMobiamo"
                     style="@style/style_ps_name"
                     android:text="@string/title_mobiamo" />
@@ -92,7 +92,7 @@
 
             <LinearLayout
                 android:id="@+id/llPwLocal"
-                style="@style/ps_button"
+                style="@style/saas_ps_button"
                 android:visibility="gone"
                 android:layout_marginTop="8dp">
 
@@ -100,7 +100,7 @@
                     style="@style/ps_icon"
                     android:src="@drawable/others" />
 
-                <TextView
+                <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
                     android:id="@+id/tvPwLocal"
                     style="@style/style_ps_name"
                     android:text="@string/title_pwlocal" />
@@ -108,7 +108,7 @@
             </LinearLayout>
 
             <include
-                layout="@layout/layout_copyright"
+                layout="@layout/saas_layout_copyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

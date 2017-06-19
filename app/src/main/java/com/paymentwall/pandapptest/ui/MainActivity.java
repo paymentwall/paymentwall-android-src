@@ -247,9 +247,9 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
-//        request.setPwSecretKey(Constants.PW_SECRET_KEY);
+        request.setPwSecretKey(Constants.PW_SECRET_KEY);
         request.setAmount(good.getPrice());
-        request.setCurrency(good.getCurrency());
+        request.setCurrency("CNY");
         request.setItemName(good.getName());
         request.setItemId(good.getId());
         request.setUserId(Constants.USER_ID);
@@ -259,7 +259,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.setTimeout(30000);
 
         request.setTestMode(false);
-//        request.setUiStyle("game");
+//        request.setUiStyle("saas");
 //
         request.addBrick();
         request.addMint();
@@ -294,7 +294,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         alipayInternaltional.setItbPay("30m");
         alipayInternaltional.setForexBiz("FP");
         alipayInternaltional.setAppenv("system=android^version=3.0.1.2");
-        alipayInternaltional.setPwSign(genPwSignature());
+//        alipayInternaltional.setPwSign(genPwSignature());
 
         PsUnionpay unionpay = new PsUnionpay();
 

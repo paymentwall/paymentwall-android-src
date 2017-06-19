@@ -79,10 +79,10 @@ public class MycardFragment extends Fragment {
         checkProceedButtonEnable();
     }
 
-    private void checkProceedButtonEnable(){
-        if(etCardId.getText().toString().trim().length() > 0 && etCardPassword.getText().toString().trim().length() > 0){
+    private void checkProceedButtonEnable() {
+        if (etCardId.getText().toString().trim().length() > 0 && etCardPassword.getText().toString().trim().length() > 0) {
             btnProceed.setEnabled(true);
-        }else{
+        } else {
             btnProceed.setEnabled(false);
         }
     }
@@ -157,13 +157,12 @@ public class MycardFragment extends Fragment {
                 Toast.makeText(getActivity(), "Payment success" + responseBody, Toast.LENGTH_LONG).show();
                 try {
                     JSONObject obj = new JSONObject(responseBody);
-                    String id = obj.getString("id");
-                    Log.i("Transaction_id", id);
-                    processTransaction(id);
+                    String transactionId = obj.getString("id");
+                    Log.i("Transaction_id", transactionId);
+                    processTransaction(transactionId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
@@ -194,7 +193,7 @@ public class MycardFragment extends Fragment {
         params.put("data[card_id]", etCardId.getText().toString().trim());
         params.put("data[card_password]", etCardPassword.getText().toString().trim());
         params.put("ref_id", transactionId);
-        params.put("sign_version", "2");
+        params.put("sign_version", "3");
 
         params = psMyCard.makeTransactionProcessingMap(params);
 

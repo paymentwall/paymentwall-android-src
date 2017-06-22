@@ -8,7 +8,7 @@ import com.paypal.android.sdk.payments.PaymentActivity;
  */
 public class Constants {
 
-    //    public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // staging
+//        public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // staging
 //    public static final String PW_SECRET_KEY = "99438d36884f255f8853d6e04223128b";
     public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // live
     public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";

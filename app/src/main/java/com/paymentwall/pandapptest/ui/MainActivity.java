@@ -249,7 +249,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
         request.setPwSecretKey(Constants.PW_SECRET_KEY);
         request.setAmount(good.getPrice());
-        request.setCurrency("CNY");
+        request.setCurrency("USD");
         request.setItemName(good.getName());
         request.setItemId(good.getId());
         request.setUserId(Constants.USER_ID);
@@ -259,7 +259,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.setTimeout(30000);
 
         request.setTestMode(false);
-//        request.setUiStyle("saas");
+//        request.setUiStyle("game");
 //
         request.addBrick();
         request.addMint();
@@ -328,7 +328,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
         ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
         ExternalPs myCardPs = new ExternalPs("mycard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt, unionpayPs, wechatPs, myCardPs);
+        request.add(alipayPsInt);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
         Bundle bundle = new Bundle();

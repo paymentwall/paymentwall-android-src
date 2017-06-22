@@ -1,5 +1,4 @@
-<resources>
-
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="game_style_ps_name">
         <item name="android:layout_width">0dp</item>

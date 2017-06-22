@@ -34,7 +34,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class PwHttpClient {
 //    public static final String URL_STAGING = "https://api-trunk.s.stuffio.com/api/pw-plus-plus/alipay/signature";
-    public static final String URL_STAGING = "http://feature-pan-105.wallapi.bamboo.stuffio.com/api/pw-plus-plus/alipay/signature";
+    public static final String URL_STAGING = "http://feature-pwsdk-204.wallapi.bamboo.stuffio.com/api/pw-plus-plus/";
     public static final String URL_PRODUCTION = "https://api.paymentwall.com/api/pw-plus-plus/alipay/signature";
 
     public static final int TIMEOUT_READ = 10000;

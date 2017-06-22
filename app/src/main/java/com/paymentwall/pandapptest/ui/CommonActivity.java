@@ -4,12 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 /**
  * Created by Hieu.Hoa.Luong on 14/01/2015.
  */
-public abstract class CommonActivity extends Activity {
+public abstract class CommonActivity extends AppCompatActivity {
     public final Handler mHandler = new Handler();
     public View decorView;
     private static final int FULLSCREEN_DELAY = 5000;

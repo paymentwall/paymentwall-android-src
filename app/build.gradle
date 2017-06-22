@@ -36,17 +36,6 @@ android {
 
     sourceSets {
         main {
-//            manifest.srcFile 'AndroidManifest.xml'
-//            java.srcDirs = ['src']
-//            resources.srcDirs = ['src']
-//            aidl.srcDirs = ['src']
-//            renderscript.srcDirs = ['src']
-//            res.srcDirs = ['res']
-//            assets.srcDirs = ['assets']
-
-            // Fixed Issue : "android studio java.lang.unsatisfiedlinkerror: couldn't load find library returned null"
-            // Cause : For android studio : The JNI files should be placed in the /src/main/jniLibs folder.
-            // Fix : Mapping the jniLibs 's source Directories with Lib's folder
             jniLibs.srcDirs = ['libs']
         }
     }
@@ -56,10 +45,10 @@ dependencies {
     //    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.loopj.android:android-async-http:1.4.7'
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile 'com.android.support:multidex:1.0.0'
-    compile project(':paymentwallsdk')
+    compile project(':paymentwall-android-sdk')
     compile project(':alipayadapter')
     compile files('libs/alipaySdk-20170309.jar')
     compile project(':unionpayadapter')
@@ -83,6 +72,8 @@ dependencies {
     //        transitive = true;
     //    }
     compile project(':mycardadapter')
+//    compile project(':card.io-release')
+    compile project(':card.io')
     compile project(':gameui')
 }
 

@@ -13,12 +13,12 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/baiduWalletRefactorLib" />
             <option value="$PROJECT_DIR$/baiduadapter" />
-            <option value="$PROJECT_DIR$/card.io-release" />
+            <option value="$PROJECT_DIR$/card.io" />
             <option value="$PROJECT_DIR$/dokuadapter" />
             <option value="$PROJECT_DIR$/gameui" />
             <option value="$PROJECT_DIR$/moladapter" />
             <option value="$PROJECT_DIR$/mycardadapter" />
-            <option value="$PROJECT_DIR$/paymentwallsdk" />
+            <option value="$PROJECT_DIR$/paymentwall-android-sdk" />
             <option value="$PROJECT_DIR$/paypaladapter" />
             <option value="$PROJECT_DIR$/sdkocov2-release" />
             <option value="$PROJECT_DIR$/unionpayadapter" />

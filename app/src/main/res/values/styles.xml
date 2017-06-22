@@ -6,16 +6,43 @@
     </style>
 
     <style name="Theme.MyCompatTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="background">@null</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@null</item>
+        <item name="colorPrimary">@color/baseRedFont</item>
+    </style>
+
+    <style name="PwsdkCustomTheme" parent="@style/PaymentwallSDKTheme">
+        <item name="colorMain">@color/baseRedFont</item>
+        <item name="textMain">@color/white</item>
+        <item name="mainBackground">@color/pw_secondary_color</item>
+        <item name="bgProductInfo">@color/pw_primary_color</item>
+        <item name="bgProductInfoLand">@color/pw_primary_color</item>
+        <item name="textProductInfo">#FF0000</item>
+        <item name="bgPsButton">@drawable/green_button_drawable</item>
+        <item name="textPsButton">@color/saas_textPrimary</item>
+        <item name="textCopyright">@color/white</item>
+        <item name="bgInputForm">@drawable/saas_bg_input_form</item>
+        <item name="bgInputErrorForm">@drawable/saas_bg_input_form_error</item>
+        <item name="textInputForm">@color/saas_textPrimary</item>
+        <item name="textInputErrorForm">@color/input_form_error</item>
+        <item name="iconErrorForm">@drawable/ic_form_error</item>
+        <item name="textFormTitle">@color/white</item>
+        <item name="bgConfirmButton">@drawable/payment_button_drawable</item>
+        <item name="textConfirmButton">@color/white</item>
+        <item name="backButton">@drawable/cloud</item>
+        <item name="bgExpDialog">@color/baseRedFont</item>
+        <item name="textExpDialog">@color/white</item>
+        <item name="monthButtonNormal">@drawable/green_button_ninepatch</item>
+        <item name="monthButtonPressed">@drawable/green_button_ninepatch_pressed</item>
+        <item name="textMonth">@color/white</item>
+        <item name="yearLeftArrow">@drawable/item_gem</item>
+        <item name="yearRightArrow">@drawable/item_mana</item>
+        <item name="bgNotifyDialog">@color/black</item>
+        <item name="progressColor">@color/baseRedFont</item>
+        <item name="successIcon">@drawable/ic_form_error</item>
+        <item name="failIcon">@drawable/ic_scan_card</item>
+        <item name="textProgress">@color/white</item>
+        <item name="textSuccess">@color/baseBlueFont</item>
+        <item name="textFail">@color/baseRedFont</item>
+        <item name="textExtraMessage">@color/baseGreenFont</item>
     </style>
 
 
@@ -29,10 +56,8 @@
     <style name="Animation" />
 
 
-
     <!-- Standard animations for hiding and showing the status bar. -->
-    <style name="Animation.StatusBar">
-    </style>
+    <style name="Animation.StatusBar"></style>
 
     <style name="QSBorderlessButton">
         <item name="android:padding">12dp</item>

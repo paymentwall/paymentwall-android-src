@@ -44,9 +44,10 @@ public class WechatAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
+    private void pay(final Context context, Serializable params, Map<String, Object> bundle, Map<String, String> customParams) {
         this.psWechat = (PsWechat) params;
         this.psWechat.setBundle(bundle);
+        this.psWechat.setCustomParams(customParams);
         this.context = context;
 
         try {

@@ -8,7 +8,7 @@ import java.util.Random;
  * Created by nguyen.anh on 2/27/2017.
  */
 
-public class PwUtils {
+public class Utils {
 
 
     public static String SHA1(String text) {

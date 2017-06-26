@@ -7,6 +7,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.paymentwall.pwunifiedsdk.mobiamo.payment.PWSDKRequest;
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -194,8 +195,8 @@ public class MobiamoPayment extends PWSDKRequest {
         new PostAsyncTask().execute(context, response, listener, option);
     }
 
-    public void getPaymentStatus(MobiamoResponse response, IPayment listener) {
-        new GetPaymentStatusTask().execute(response, listener);
+    public void getPaymentStatus(Context context, MobiamoResponse response, IPayment listener) {
+        new GetPaymentStatusTask().execute(context, response, listener);
     }
 
 
@@ -279,7 +280,7 @@ public class MobiamoPayment extends PWSDKRequest {
                 Log.d(TAG, "requestUrl = " + requestUrl);
 
                 try {
-                    responseText = createPostByHttpURLConnection(requestUrl);
+                    responseText = createPostByHttpURLConnection(context, requestUrl);
 
                     Log.d(TAG, "POST:response = " + responseText);
 
@@ -392,7 +393,7 @@ public class MobiamoPayment extends PWSDKRequest {
                     GET_PRICE_POINT_API);
 
             try {
-                result = createGetByHttpURLConnection(requestUrl);
+                result = createGetByHttpURLConnection(context, requestUrl);
                 if (result == null) {
                     mResult.put(RESULT_FAILED, MobiamoHelper
                             .getString(Message.ERROR_OPERATOR_NOT_SUPPORT));
@@ -470,7 +471,7 @@ public class MobiamoPayment extends PWSDKRequest {
         }
     }
 
-    private static String createPostByHttpURLConnection(String requestUrl) {
+    private static String createPostByHttpURLConnection(final Context context, String requestUrl) {
         URL url;
         HttpsURLConnection urlConnection = null;
         String response = null;
@@ -493,6 +494,7 @@ public class MobiamoPayment extends PWSDKRequest {
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection = PwUtils.addExtraHeaders(context, urlConnection);
 
                 OutputStream os = urlConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
@@ -522,7 +524,7 @@ public class MobiamoPayment extends PWSDKRequest {
         return response;
     }
 
-    private static String createGetByHttpURLConnection(String requestUrl) {
+    private static String createGetByHttpURLConnection(final Context context, String requestUrl) {
         URL url;
         HttpsURLConnection urlConnection = null;
         String response = null;
@@ -548,6 +550,7 @@ public class MobiamoPayment extends PWSDKRequest {
                 urlConnection.setReadTimeout(15 * 1000);
                 urlConnection.setConnectTimeout(10 * 1000);
                 urlConnection.connect();
+                urlConnection = PwUtils.addExtraHeaders(context, urlConnection);
 
                 Log.d(TAG, "Response Code: " + urlConnection.getResponseCode());
                 if (urlConnection.getResponseCode() > 0) {
@@ -599,11 +602,13 @@ public class MobiamoPayment extends PWSDKRequest {
             AsyncTask<Object, Integer, Integer> {
         private IPayment listener;
         private MobiamoResponse response;
+        private Context context;
 
         @Override
         protected Integer doInBackground(Object... params) {
-            response = (MobiamoResponse) params[0];
-            listener = (IPayment) params[1];
+            context = (Context)params[0];
+            response = (MobiamoResponse) params[1];
+            listener = (IPayment) params[2];
 
             // Build GET request
             long time = System.currentTimeMillis() / 1000;
@@ -628,7 +633,7 @@ public class MobiamoPayment extends PWSDKRequest {
 //            while (endTime - startTime <= TIME_OUT) {
             try {
 
-                responseText = createGetByHttpURLConnection(requestUrl);
+                responseText = createGetByHttpURLConnection(context, requestUrl);
                 Log.d(TAG, "Get response: " + responseText);
 
                 JSONObject jo = new JSONObject(responseText);

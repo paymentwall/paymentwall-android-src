@@ -31,7 +31,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     testCompile 'junit:junit:4.12'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+    compile project(':paymentwall-android-sdk')
 }

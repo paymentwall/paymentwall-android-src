@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,7 +40,7 @@ public class PwHttpClient {
     public static final int TIMEOUT_READ = 10000;
     public static final int TIMEOUT_CONNECT = 20000;
 
-    public static void getSignature(Context context, final PsUnionpay request, final Callback callback){
+    public static void getSignature(final Context context, final PsUnionpay request, final Callback callback){
         Looper looper;
         if(context!=null) {
             looper = context.getMainLooper();
@@ -76,6 +78,7 @@ public class PwHttpClient {
                     connection.setUseCaches(false);
                     connection.setRequestProperty(
                             "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    connection = PwUtils.addExtraHeaders(context, connection);
                     checkSSLCert(connection);
                     outputStream = connection.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));

@@ -3,6 +3,9 @@ package com.paymentwall.pwunifiedsdk.brick.core;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,12 +58,12 @@ public class Brick {
     }
 
     // Static async mode
-    public static void createToken(final Handler handler, final String publicKey, final BrickCard brickCard, final Callback callback) {
+    public static void createToken(final Context context, final Handler handler, final String publicKey, final BrickCard brickCard, final Callback callback) {
         Thread createTokenThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    postBrickToken(callback, handler, createToken(publicKey, brickCard));
+                    postBrickToken(callback, handler, createToken(context, publicKey, brickCard));
                 } catch (BrickError brickError) {
                     postBrickError(callback, handler, brickError);
                 }
@@ -71,11 +74,11 @@ public class Brick {
 
     public static void createToken(Context context, final String publicKey, final BrickCard brickCard, final Callback callback) {
         final Handler handler = new Handler(context.getMainLooper());
-        createToken(handler, publicKey, brickCard, callback);
+        createToken(context, handler, publicKey, brickCard, callback);
     }
 
     // Static sync mode
-    public static BrickToken createToken(String publicKey, BrickCard brickCard) throws BrickError {
+    public static BrickToken createToken(Context context, String publicKey, BrickCard brickCard) throws BrickError {
         if (!brickCard.isValid()) {
             throw new BrickError("Invalid card", BrickError.Kind.INVALID);
         }
@@ -100,8 +103,10 @@ public class Brick {
             URL url = createUrl(publicKey);
             // Connect
             HttpURLConnection conn = createPostRequest(url, queryUrl);
+            conn = PwUtils.addExtraHeaders(context, conn);
             // Get message
             String response = getResponseBody(conn.getInputStream());
+            Log.i("RESPONSE", response + "");
             try {
                 BrickToken token = BrickHelper.createTokenFromJson(response);
                 return token;
@@ -309,14 +314,14 @@ public class Brick {
         return this;
     }
 
-    public BrickToken createToken(BrickCard brickCard) throws BrickError {
-        return createToken(mPublicKey, brickCard);
-    }
-
-    public void createToken(BrickCard brickCard, Callback callback) throws BrickError {
-        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
-        createToken(mHandler, mPublicKey, brickCard, callback);
-    }
+//    public BrickToken createToken(BrickCard brickCard) throws BrickError {
+//        return createToken(mPublicKey, brickCard);
+//    }
+//
+//    public void createToken(BrickCard brickCard, Callback callback) throws BrickError {
+//        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
+//        createToken(mHandler, mPublicKey, brickCard, callback);
+//    }
 
     public interface Callback {
         void onBrickSuccess(BrickToken brickToken);

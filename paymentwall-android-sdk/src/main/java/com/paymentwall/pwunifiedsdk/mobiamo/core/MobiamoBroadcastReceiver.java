@@ -91,7 +91,7 @@ public class MobiamoBroadcastReceiver extends BroadcastReceiver {
 				handler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						request.getPaymentStatus(response, new MobiamoPayment.IPayment() {
+						request.getPaymentStatus(context, response, new MobiamoPayment.IPayment() {
 							@Override
 							public void onSuccess(MobiamoResponse response1) {
 								Intent i1 = new Intent(SMS_SENT_ACTION);

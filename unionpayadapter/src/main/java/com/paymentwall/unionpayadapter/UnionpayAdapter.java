@@ -37,9 +37,10 @@ public class UnionpayAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
+    private void pay(final Context context, Serializable params, Map<String, Object> bundle, Map<String, String> customParams) {
         this.psUnionpay = (PsUnionpay) params;
         this.psUnionpay.setBundle(bundle);
+        this.psUnionpay.setCustomParams(customParams);
 
         try {
             PwHttpClient.getSignature(context, psUnionpay, new PwHttpClient.Callback() {

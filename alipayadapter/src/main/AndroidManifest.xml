@@ -2,7 +2,6 @@
     package="com.paymentwall.alipayadapter">
 
     <application
-        android:allowBackup="false"
         android:supportsRtl="true">
 
     </application>

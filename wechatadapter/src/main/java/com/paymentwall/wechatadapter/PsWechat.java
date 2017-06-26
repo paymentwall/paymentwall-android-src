@@ -8,6 +8,7 @@ import com.paymentwall.wechatadapter.utils.MD5Utils;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -20,6 +21,7 @@ public class PsWechat implements Serializable {
 
     private String appId, secret, merchantId, prepayId, nonceStr, body, outTradeNo, totalFee, createIp, notifyUrl, tradeType, timeStamp, packageValue, signature;
     private Map<String, Object> bundle;
+    private Map<String, String> customParams;
 
     public String getAppId() {
         return appId;
@@ -141,6 +143,14 @@ public class PsWechat implements Serializable {
         this.bundle = bundle;
     }
 
+    public Map<String, String> getCustomParams() {
+        return customParams;
+    }
+
+    public void setCustomParams(Map<String, String> customParams) {
+        this.customParams = customParams;
+    }
+
     public boolean isTestMode(){
         return (bundle.get("TEST_MODE") + "").equalsIgnoreCase("true");
     }
@@ -155,6 +165,13 @@ public class PsWechat implements Serializable {
         parametersMap.put("currencyCode", (String)bundle.get("CURRENCY"));
         parametersMap.put("sign_version", bundle.get("SIGN_VERSION") + "");
 
+        if (customParams != null) {
+            Iterator entries = customParams.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                parametersMap.put(entry.getKey() + "", entry.getValue() + "");
+            }
+        }
 
         parametersMap.put("ps_name", "wechatpayments");
 

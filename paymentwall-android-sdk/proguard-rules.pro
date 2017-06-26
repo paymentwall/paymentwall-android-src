@@ -98,6 +98,11 @@
     <methods>;
 }
 
+-keep class com.paymentwall.pwunifiedsdk.util.PwUtils{
+    <fields>;
+    <methods>;
+}
+
 -keep class com.paymentwall.pwunifiedsdk.mobiamo.core.MobiamoDialogActivity{
     <fields>;
     <methods>;

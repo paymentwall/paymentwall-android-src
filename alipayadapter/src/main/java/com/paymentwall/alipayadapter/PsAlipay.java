@@ -1,6 +1,8 @@
 package com.paymentwall.alipayadapter;
 
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Base64;
 import android.util.Log;
 
@@ -12,6 +14,7 @@ import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +50,8 @@ public class PsAlipay implements Serializable {
     private String method;
     private String productCode;
     private String pwSign;
-    private Map<String, Object> bundle;
+    private Map<String, Object> params;
+    private Map<String, String> customParams;
 
 
     public String getPartnerId() {
@@ -227,16 +231,20 @@ public class PsAlipay implements Serializable {
         this.productCode = productCode;
     }
 
-    public Map<String, Object> getBundle() {
-        return bundle;
+    public Map<String, Object> getParams() {
+        return params;
     }
 
-    public void setBundle(Map<String, Object> bundle) {
-        this.bundle = bundle;
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
     }
 
-    public boolean isTestMode(){
-        return (bundle.get("TEST_MODE") + "").equalsIgnoreCase("true");
+    public Map<String, String> getCustomParams() {
+        return customParams;
+    }
+
+    public void setCustomParams(Map<String, String> customParams) {
+        this.customParams = customParams;
     }
 
     public String getPwSign() {
@@ -247,16 +255,20 @@ public class PsAlipay implements Serializable {
         this.pwSign = pwSign;
     }
 
+    public boolean isTestMode() {
+        return (params.get("TEST_MODE") + "").equalsIgnoreCase("true");
+    }
+
     public Map<String, String> getWallApiParameterMap() {
         TreeMap<String, String> parametersMap = new TreeMap<String, String>();
-        parametersMap.put("uid", (String)bundle.get("USER_ID"));
-        parametersMap.put("key", (String)bundle.get("PW_PROJECT_KEY"));
-        parametersMap.put("ag_name", (String)bundle.get("ITEM_NAME"));
-        parametersMap.put("ag_external_id", (String)bundle.get("ITEM_ID"));
-        parametersMap.put("amount", bundle.get("AMOUNT") + "");
-        Log.i("CURRENCY", (String)bundle.get("CURRENCY"));
-        parametersMap.put("currencyCode", (String)bundle.get("CURRENCY"));
-        parametersMap.put("sign_version", bundle.get("SIGN_VERSION") + "");
+        parametersMap.put("uid", (String) params.get("USER_ID"));
+        parametersMap.put("key", (String) params.get("PW_PROJECT_KEY"));
+        parametersMap.put("ag_name", (String) params.get("ITEM_NAME"));
+        parametersMap.put("ag_external_id", (String) params.get("ITEM_ID"));
+        parametersMap.put("amount", params.get("AMOUNT") + "");
+        Log.i("CURRENCY", (String) params.get("CURRENCY"));
+        parametersMap.put("currencyCode", (String) params.get("CURRENCY"));
+        parametersMap.put("sign_version", params.get("SIGN_VERSION") + "");
 
         if (getItbPay() != null) {
             parametersMap.put("it_b_pay", getItbPay());
@@ -274,15 +286,23 @@ public class PsAlipay implements Serializable {
             parametersMap.put("appenv", getAppenv());
         }
 
-        if(getPwSign() == null) {
-            parametersMap.put("ps_name", "alipay");
+        if (customParams != null) {
+            Iterator entries = customParams.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                parametersMap.put(entry.getKey() + "", entry.getValue() + "");
+            }
+        }
+
+        if (getPwSign() == null) {
+//            parametersMap.put("ps_name", "alipay");
             String orderInfo = printWallApiMap(sortMap(parametersMap));
-            orderInfo += bundle.get("PW_PROJECT_SECRET");
+            orderInfo += params.get("PW_PROJECT_SECRET");
             Log.i("WallApi request", orderInfo);
             String sign = sha256(orderInfo);
             parametersMap.put("sign", sign);
-            parametersMap.remove("ps_name");
-        }else{
+//            parametersMap.remove("ps_name");
+        } else {
             parametersMap.put("sign", getPwSign());
         }
 //        Log.i("ORDER_INFO", orderInfo);
@@ -436,6 +456,10 @@ public class PsAlipay implements Serializable {
         } catch (java.security.NoSuchAlgorithmException e) {
         }
         return null;
+    }
+
+
+    public PsAlipay() {
     }
 
 }

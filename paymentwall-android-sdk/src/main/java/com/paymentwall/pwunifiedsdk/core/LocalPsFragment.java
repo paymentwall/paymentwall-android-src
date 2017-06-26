@@ -286,9 +286,9 @@ public class LocalPsFragment extends BaseFragment {
             Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + capitalize(psName) + "Adapter");
             Constructor constructor = Adapter.getConstructor(Fragment.class);
             objAdapter = constructor.newInstance(this);
-            Method payMethod = Adapter.getDeclaredMethod("pay", Context.class, Serializable.class, Map.class);
+            Method payMethod = Adapter.getDeclaredMethod("pay", Context.class, Serializable.class, Map.class, Map.class);
             payMethod.setAccessible(true);
-            payMethod.invoke(objAdapter, self, params, request.getBundle());
+            payMethod.invoke(objAdapter, self, params, request.getBundle(), request.getCustomParams());
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,10 +49,11 @@ public class AlipayAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
-        this.psAlipay = (PsAlipay) params;
+    private void pay(final Context context, Serializable ps, Map<String, Object> bundle, Map<String, String> customParams) {
+        this.psAlipay = (PsAlipay) ps;
         this.context = context;
-        this.psAlipay.setBundle(bundle);
+        this.psAlipay.setParams(bundle);
+        this.psAlipay.setCustomParams(customParams);
 
         try {
             Class<?> BaseFragment = Class.forName("com.paymentwall.pwunifiedsdk.core.BaseFragment");

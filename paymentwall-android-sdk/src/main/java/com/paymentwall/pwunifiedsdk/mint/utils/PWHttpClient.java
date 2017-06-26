@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.paymentwall.pwunifiedsdk.mint.message.MintRequest;
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -44,7 +45,7 @@ public class PWHttpClient {
 		client.post(context, MINT_REDEEM_URL, entity, null, responseHandler);
 	}*/
 
-	public static void mintRedeem(Context context, final MintRequest mintRequest, final MintCallback callback) {
+	public static void mintRedeem(final Context context, final MintRequest mintRequest, final MintCallback callback) {
 		Looper looper;
 		if(context!=null) {
 			looper = context.getMainLooper();
@@ -82,6 +83,7 @@ public class PWHttpClient {
 					connection.setUseCaches(false);
 					connection.setRequestProperty(
 							"Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+					connection = PwUtils.addExtraHeaders(context, connection);
 					checkSSLCert(connection);
 					outputStream = connection.getOutputStream();
 					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));

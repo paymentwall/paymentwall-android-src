@@ -1,6 +1,10 @@
 package com.paymentwall.pwunifiedsdk.util;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -9,9 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.paymentwall.pwunifiedsdk.brick.utils.Const;
+import com.paymentwall.sdk.pwlocal.utils.*;
 
+import java.net.HttpURLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
@@ -24,6 +33,14 @@ public class PwUtils {
     private static Typeface fontBold;
     private static Typeface fontRegular;
     private static Typeface fontLight;
+
+    public static final String HTTP_X_PACKAGE_NAME = "HTTP_X_PACKAGE_NAME";
+    public static final String HTTP_X_APP_SIGNATURE = "HTTP_X_APP_SIGNATURE";
+    public static final String HTTP_X_VERSION_NAME = "HTTP_X_VERSION_NAME";
+    public static final String HTTP_X_PACKAGE_CODE = "HTTP_X_PACKAGE_CODE";
+    public static final String HTTP_X_UPDATE_TIME = "HTTP_X_UPDATE_TIME";
+    public static final String HTTP_X_INSTALL_TIME = "HTTP_X_INSTALL_TIME";
+    public static final String HTTP_X_PERMISSON = "HTTP_X_PERMISSON";
 
     public static Typeface getFontBold(Context context) {
         if (fontBold == null)
@@ -131,6 +148,92 @@ public class PwUtils {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static HttpsURLConnection addExtraHeaders(Context context, HttpsURLConnection connection) {
+        try {
+            Context appContext = context.getApplicationContext();
+            PackageManager pm = appContext.getPackageManager();
+            String packageName = appContext.getPackageName();
+            connection.setRequestProperty(HTTP_X_PACKAGE_NAME, packageName);
+
+            PackageInfo packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Signature sig : packageInfo.signatures) {
+                stringBuilder.append(sig.toChars());
+            }
+
+            connection.setRequestProperty(HTTP_X_APP_SIGNATURE, com.paymentwall.sdk.pwlocal.utils.MiscUtils.sha256(stringBuilder.toString()));
+            connection.setRequestProperty(HTTP_X_VERSION_NAME, packageInfo.versionName);
+            connection.setRequestProperty(HTTP_X_PACKAGE_CODE, packageInfo.versionCode + "");
+            connection.setRequestProperty(HTTP_X_INSTALL_TIME, packageInfo.firstInstallTime + "");
+            connection.setRequestProperty(HTTP_X_UPDATE_TIME, packageInfo.lastUpdateTime + "");
+            connection.setRequestProperty(HTTP_X_PERMISSON, getPermissions(context));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
+    public static HttpURLConnection addExtraHeaders(Context context, HttpURLConnection connection) {
+        try {
+            Context appContext = context.getApplicationContext();
+            PackageManager pm = appContext.getPackageManager();
+            String packageName = appContext.getPackageName();
+            connection.setRequestProperty(HTTP_X_PACKAGE_NAME, packageName);
+
+            PackageInfo packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Signature sig : packageInfo.signatures) {
+                stringBuilder.append(sig.toChars());
+            }
+
+            connection.setRequestProperty(HTTP_X_APP_SIGNATURE, com.paymentwall.sdk.pwlocal.utils.MiscUtils.sha256(stringBuilder.toString()));
+            connection.setRequestProperty(HTTP_X_VERSION_NAME, packageInfo.versionName);
+            connection.setRequestProperty(HTTP_X_PACKAGE_CODE, packageInfo.versionCode + "");
+            connection.setRequestProperty(HTTP_X_INSTALL_TIME, packageInfo.firstInstallTime + "");
+            connection.setRequestProperty(HTTP_X_UPDATE_TIME, packageInfo.lastUpdateTime + "");
+            connection.setRequestProperty(HTTP_X_PERMISSON, getPermissions(context));
+
+            return connection;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
+    private static String getPermissions(Context context) {
+        PackageManager pm = context.getPackageManager();
+        StringBuilder builder = new StringBuilder();
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (ApplicationInfo applicationInfo : packages) {
+//            Log.d("test", "App: " + applicationInfo.name + " Package: " + applicationInfo.packageName);
+            try {
+                PackageInfo packageInfo = pm.getPackageInfo(applicationInfo.packageName, PackageManager.GET_PERMISSIONS);
+
+                //Get Permissions
+                String[] requestedPermissions = packageInfo.requestedPermissions;
+
+                if (requestedPermissions != null) {
+                    for (int i = 0; i < requestedPermissions.length; i++) {
+                        if (requestedPermissions[i] != null)
+                            builder.append(requestedPermissions[i]);
+                        if (i < requestedPermissions.length - 1)
+                            builder.append(", ");
+                    }
+//                    Log.i("PERMISSION_LIST", builder.toString());
+                    return builder.toString();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
     }
 
 

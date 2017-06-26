@@ -10,6 +10,7 @@ import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -25,6 +26,7 @@ public class PsUnionpay implements Serializable {
     private int txnAmt;
     private String transactionNumber;
     private Map<String, Object> bundle;
+    private Map<String, String> customParams;
 
     public String getSignature() {
         return signature;
@@ -154,7 +156,7 @@ public class PsUnionpay implements Serializable {
         this.transactionNumber = transactionNumber;
     }
 
-    public boolean isTestMode(){
+    public boolean isTestMode() {
         return (bundle.get("TEST_MODE") + "").equalsIgnoreCase("true");
     }
 
@@ -166,20 +168,33 @@ public class PsUnionpay implements Serializable {
         this.bundle = bundle;
     }
 
+    public Map<String, String> getCustomParams() {
+        return customParams;
+    }
+
+    public void setCustomParams(Map<String, String> customParams) {
+        this.customParams = customParams;
+    }
+
     public Map<String, String> getWallApiParameterMap() {
         TreeMap<String, String> parametersMap = new TreeMap<String, String>();
-        parametersMap.put("uid", (String)bundle.get("USER_ID"));
-//        parametersMap.put("key", (String)bundle.get("PW_PROJECT_KEY"));
-        parametersMap.put("key", "9afb464faa93811fed34f9815677ae58");
-        parametersMap.put("ag_name", (String)bundle.get("ITEM_NAME"));
-        parametersMap.put("ag_external_id", (String)bundle.get("ITEM_ID"));
+        parametersMap.put("uid", (String) bundle.get("USER_ID"));
+        parametersMap.put("key", (String) bundle.get("PW_PROJECT_KEY"));
+        parametersMap.put("ag_name", (String) bundle.get("ITEM_NAME"));
+        parametersMap.put("ag_external_id", (String) bundle.get("ITEM_ID"));
         parametersMap.put("amount", bundle.get("AMOUNT") + "");
-        parametersMap.put("currencyCode", (String)bundle.get("CURRENCY"));
+        parametersMap.put("currencyCode", (String) bundle.get("CURRENCY"));
         parametersMap.put("sign_version", bundle.get("SIGN_VERSION") + "");
 
+        if (customParams != null) {
+            Iterator entries = customParams.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                parametersMap.put(entry.getKey() + "", entry.getValue() + "");
+            }
+        }
 
         parametersMap.put("ps_name", "unionpay");
-
 
         String orderInfo = printMap(sortMap(parametersMap));
 //        orderInfo += bundle.get("PW_PROJECT_SECRET");

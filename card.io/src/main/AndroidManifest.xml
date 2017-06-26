@@ -18,5 +18,4 @@
             android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />
     </application>
-
 </manifest>

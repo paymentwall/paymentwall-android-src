@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -23,7 +25,9 @@ import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -40,7 +44,7 @@ public class PwHttpClient {
     public static final int TIMEOUT_READ = 10000;
     public static final int TIMEOUT_CONNECT = 20000;
 
-    public static void getSignature(Context context, final PsAlipay request, final AlipayCallback callback) {
+    public static void getSignature(final Context context, final PsAlipay request, final AlipayCallback callback) {
         Looper looper;
         if (context != null) {
             looper = context.getMainLooper();
@@ -80,13 +84,17 @@ public class PwHttpClient {
                     connection.setUseCaches(false);
                     connection.setRequestProperty(
                             "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    connection = PwUtils.addExtraHeaders(context, connection);
+
                     checkSSLCert(connection);
                     outputStream = connection.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                     writer.write(query);
                     writer.flush();
                     writer.close();
+
                     int statusCode = connection.getResponseCode();
+
                     Log.i("STATUS_CODE", statusCode + "");
                     if (statusCode < HttpURLConnection.HTTP_OK || statusCode >= HttpURLConnection.HTTP_MULT_CHOICE) {
                         try {

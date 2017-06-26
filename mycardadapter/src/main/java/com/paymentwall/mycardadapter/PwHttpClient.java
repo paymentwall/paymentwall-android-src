@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class PwHttpClient {
         post(context, URL_INIT_TRANSACTION, request.getInitTransactionParameterMap(), callback);
     }
 
-    public static void post(Context context, final String postUrl,  final Map<String, String> map, final Callback callback) {
+    public static void post(final Context context, final String postUrl,  final Map<String, String> map, final Callback callback) {
         Looper looper;
         if (context != null) {
             looper = context.getMainLooper();
@@ -87,6 +89,7 @@ public class PwHttpClient {
                     connection.setUseCaches(false);
                     connection.setRequestProperty(
                             "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    connection = PwUtils.addExtraHeaders(context, connection);
                     checkSSLCert(connection);
                     outputStream = connection.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));

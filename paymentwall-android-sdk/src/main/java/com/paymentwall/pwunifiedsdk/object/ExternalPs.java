@@ -1,5 +1,8 @@
 package com.paymentwall.pwunifiedsdk.object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
@@ -51,4 +54,5 @@ public class ExternalPs implements Serializable {
     public void setParams(Serializable params) {
         this.params = params;
     }
+
 }

@@ -17,6 +17,7 @@ import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 //import com.paymentwall.sdk.pwlocal.utils.MiscUtils;
@@ -47,6 +48,7 @@ public class UnifiedRequest implements Parcelable {
     private MintRequest mintRequest;
     private ArrayList<ExternalPs> externalPsList;
     private Map<String, String> bundle;
+    private Map<String, String> customParams;
     private String uiStyle;
 
     private Parcelable pwlocalRequest;
@@ -320,6 +322,21 @@ public class UnifiedRequest implements Parcelable {
         this.bundle = bundle;
     }
 
+    public Map<String, String> getCustomParams() {
+        return customParams;
+    }
+
+    public void setCustomParams(Map<String, String> customParams) {
+        this.customParams = customParams;
+    }
+
+    public void addCustomParam(String key, String value){
+        if(customParams == null){
+            customParams = new LinkedHashMap<>();
+        }
+        customParams.put(key, value);
+    }
+
     public void add(ExternalPs... externalPss) {
         for (ExternalPs ps : externalPss) {
             getExternalPsList().add(ps);
@@ -383,7 +400,6 @@ public class UnifiedRequest implements Parcelable {
         dest.writeInt(this.timeout);
         dest.writeByte(this.nativeDialog ? (byte) 1 : (byte) 0);
         dest.writeByte(this.testMode ? (byte) 1 : (byte) 0);
-        dest.writeString(this.uiStyle);
         dest.writeParcelable(this.brickRequest, flags);
         dest.writeSerializable(this.mobiamoRequest);
         dest.writeParcelable(this.mintRequest, flags);
@@ -393,8 +409,22 @@ public class UnifiedRequest implements Parcelable {
             dest.writeString(entry.getKey());
             dest.writeString(entry.getValue());
         }
+        dest.writeInt(this.customParams.size());
+        for (Map.Entry<String, String> entry : this.customParams.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+        dest.writeString(this.uiStyle);
         dest.writeParcelable(this.pwlocalRequest, flags);
-
+        dest.writeString(this.KEY_PW_PROJECT_KEY);
+        dest.writeString(this.KEY_PW_PROJECT_SECRET);
+        dest.writeString(this.KEY_ITEM_NAME);
+        dest.writeString(this.KEY_AMOUNT);
+        dest.writeString(this.KEY_CURRENCY);
+        dest.writeString(this.KEY_USER_ID);
+        dest.writeString(this.KEY_ITEM_ID);
+        dest.writeString(this.KEY_SIGN_VERSION);
+        dest.writeString(this.KEY_TEST_MODE);
     }
 
     protected UnifiedRequest(Parcel in) {
@@ -417,7 +447,6 @@ public class UnifiedRequest implements Parcelable {
         this.timeout = in.readInt();
         this.nativeDialog = in.readByte() != 0;
         this.testMode = in.readByte() != 0;
-        this.uiStyle = in.readString();
         this.brickRequest = in.readParcelable(BrickRequest.class.getClassLoader());
         this.mobiamoRequest = (MobiamoPayment) in.readSerializable();
         this.mintRequest = in.readParcelable(MintRequest.class.getClassLoader());
@@ -430,6 +459,14 @@ public class UnifiedRequest implements Parcelable {
             String value = in.readString();
             this.bundle.put(key, value);
         }
+        int customParamsSize = in.readInt();
+        this.customParams = new HashMap<String, String>(customParamsSize);
+        for (int i = 0; i < customParamsSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.customParams.put(key, value);
+        }
+        this.uiStyle = in.readString();
         if (pwlocalType != null && pwlocalType.equalsIgnoreCase("localDefault")) {
             this.pwlocalRequest = in.readParcelable(LocalDefaultRequest.class.getClassLoader());
         } else if (pwlocalType != null && pwlocalType.equalsIgnoreCase("localFlexible")) {

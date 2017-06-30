@@ -1,9 +1,12 @@
 package com.paymentwall.unionpayadapter;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
+import com.paymentwall.pwunifiedsdk.core.LocalPsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +25,7 @@ public class UnionpayAdapter {
     private Method mthSuccess, mthError, mthCancel, mthShowWait, mthHideWait;
     private Fragment fragment;
     private final String mMode = "01";
+    private final int PERMISSION_RC = 0x1134;
 
     public UnionpayAdapter(Fragment localPsFragment) {
         try {
@@ -42,61 +46,69 @@ public class UnionpayAdapter {
         this.psUnionpay.setBundle(bundle);
         this.psUnionpay.setCustomParams(customParams);
 
-        try {
-            PwHttpClient.getSignature(context, psUnionpay, new PwHttpClient.Callback() {
-                @Override
-                public void onError(int statusCode, String responseBody, Throwable error) {
+        LocalPsFragment.getInstance().requestPermission(Manifest.permission.READ_PHONE_STATE, PERMISSION_RC, new LocalPsFragment.IOnRequestPermissionCallback() {
+            @Override
+            public void callback(int requestCode, int status) {
+                if(requestCode == PERMISSION_RC && status == LocalPsFragment.PERMISSION_GRANTED){
                     try {
-                        mthError.invoke(fragment);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                        PwHttpClient.getSignature(context, psUnionpay, new PwHttpClient.Callback() {
+                            @Override
+                            public void onError(int statusCode, String responseBody, Throwable error) {
+                                try {
+                                    mthError.invoke(fragment);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
-                @Override
-                public void onSuccess(int statusCode, String responseBody) {
+                            @Override
+                            public void onSuccess(int statusCode, String responseBody) {
 
-                    Log.i("RESPONSE_BODY", responseBody);
-                    try {
-                        JSONObject rootObj = new JSONObject(responseBody);
-                        if (rootObj.has("data")) {
-                            JSONObject dataObject = rootObj.getJSONObject("data");
+                                Log.i("RESPONSE_BODY", responseBody);
+                                try {
+                                    JSONObject rootObj = new JSONObject(responseBody);
+                                    if (rootObj.has("data")) {
+                                        JSONObject dataObject = rootObj.getJSONObject("data");
 //                            if (dataObject.has("version")) {
 //                                psUnionpay.setVersion(dataObject.getString("service"));
 //                            }
-                            JSONObject responseObj = dataObject.getJSONObject("response");
-                            if (responseObj.has("tn")) {
-                                psUnionpay.setTransactionNumber(responseObj.getString("tn"));
+                                        JSONObject responseObj = dataObject.getJSONObject("response");
+                                        if (responseObj.has("tn")) {
+                                            psUnionpay.setTransactionNumber(responseObj.getString("tn"));
+                                        }
+                                        processUnionpayPayment(context, psUnionpay);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            processUnionpayPayment(context, psUnionpay);
-                        }
+
+                            @Override
+                            public void onStart() {
+                                try {
+                                    mthShowWait.invoke(fragment);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onStop() {
+                                try {
+                                    mthHideWait.invoke(fragment);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+            }
+        });
 
-                @Override
-                public void onStart() {
-                    try {
-                        mthShowWait.invoke(fragment);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onStop() {
-                    try {
-                        mthHideWait.invoke(fragment);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void processUnionpayPayment(Context context, PsUnionpay psUnionpay) {

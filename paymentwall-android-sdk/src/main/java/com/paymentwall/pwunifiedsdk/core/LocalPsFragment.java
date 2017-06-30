@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,8 +86,12 @@ public class LocalPsFragment extends BaseFragment {
     private View clickedPs;
     private Object objAdapter;
 
+    public static final int PERMISSION_GRANTED = 0;
+    public static final int PERMISSION_DENIED = -1;
+
 
     private static LocalPsFragment instance;
+    private IOnRequestPermissionCallback permissionCallback;
 
     public static LocalPsFragment getInstance() {
         if (instance == null) {
@@ -179,6 +186,8 @@ public class LocalPsFragment extends BaseFragment {
                 }
             }
         });
+
+        PwUtils.setCustomAttributes(self, v);
     }
 
     @Override
@@ -281,37 +290,57 @@ public class LocalPsFragment extends BaseFragment {
     private void pay(String psName, Serializable params) {
         if (psName.equalsIgnoreCase("pwlocal")) {
             payWithPwLocal();
-        }
-        try {
-            Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + capitalize(psName) + "Adapter");
-            Constructor constructor = Adapter.getConstructor(Fragment.class);
-            objAdapter = constructor.newInstance(this);
-            Method payMethod = Adapter.getDeclaredMethod("pay", Context.class, Serializable.class, Map.class, Map.class);
-            payMethod.setAccessible(true);
-            payMethod.invoke(objAdapter, self, params, request.getBundle(), request.getCustomParams());
+        } else {
+            try {
+                Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + capitalize(psName) + "Adapter");
+                Constructor constructor = Adapter.getConstructor(Fragment.class);
+                objAdapter = constructor.newInstance(this);
+                Method payMethod = Adapter.getDeclaredMethod("pay", Context.class, Serializable.class, Map.class, Map.class);
+                payMethod.setAccessible(true);
+                payMethod.invoke(objAdapter, self, params, request.getBundle(), request.getCustomParams());
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean checkPermission(String permission) {
+        if (ContextCompat.checkSelfPermission(self,
+                permission)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    public void requestPermission(String permission, int RC, IOnRequestPermissionCallback callback) {
+        this.permissionCallback = callback;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkPermission(permission)) {
+                permissionCallback.callback(RC, this.PERMISSION_GRANTED);
+            } else {
+                requestPermissions(new String[]{permission}, RC);
+            }
+        } else {
+            permissionCallback.callback(RC, this.PERMISSION_GRANTED);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        switch (requestCode) {
-            case RC_READ_PHONE_STATE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Serializable params = bundle.getSerializable("PsAlipay");
-                    pay("Alipay", params);
-
-                } else {
-
-                }
-                return;
-            }
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            permissionCallback.callback(requestCode, this.PERMISSION_GRANTED);
+        } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            permissionCallback.callback(requestCode, this.PERMISSION_DENIED);
         }
+        return;
+    }
+
+    public interface IOnRequestPermissionCallback {
+        void callback(int requestCode, int status);
     }
 
 

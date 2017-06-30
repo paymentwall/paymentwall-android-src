@@ -77,13 +77,13 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
    * see http://www.milk.com/kodebase/dalvik-docs-mirror/docs/jni-tips.html
    */
 
-  jclass myClass = env->FindClass("io/card/payment/CardScanner");
+  jclass myClass = env->FindClass("com/paymentwall/cardio/CardScanner");
   if (!myClass) {
     dmz_error_log("Couldn't find CardScanner from JNI");
     return -1;
   }
   cardScannerId.classRef = (jclass)env->NewGlobalRef(myClass);
-  cardScannerId.edgeUpdateCallback = env->GetMethodID(myClass, "onEdgeUpdate", "(Lio/card/payment/DetectionInfo;)V");
+  cardScannerId.edgeUpdateCallback = env->GetMethodID(myClass, "onEdgeUpdate", "(Lcom/paymentwall/cardio/DetectionInfo;)V");
   if (!cardScannerId.edgeUpdateCallback) {
     dmz_error_log("Couldn't find edge update callback");
     return -1;
@@ -105,7 +105,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     return -1;
   }
 
-  jclass creditCardClass = (jclass)env->FindClass("io/card/payment/CreditCard");
+  jclass creditCardClass = (jclass)env->FindClass("com/paymentwall/cardio/CreditCard");
   if (creditCardClass == NULL) {
     dmz_error_log("Couldn't find CreditCard class");
     return -1;
@@ -119,7 +119,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     return -1;
   }
 
-  jclass dInfoClass = env->FindClass("io/card/payment/DetectionInfo");
+  jclass dInfoClass = env->FindClass("com/paymentwall/cardio/DetectionInfo");
   if (dInfoClass == NULL) {
     dmz_error_log("Couldn't find DetectionInfo class");
     return -1;
@@ -134,7 +134,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
   detectionInfoId.prediction = env->GetFieldID(dInfoClass, "prediction", "[I");
   detectionInfoId.expiry_month = env->GetFieldID(dInfoClass, "expiry_month", "I");
   detectionInfoId.expiry_year = env->GetFieldID(dInfoClass, "expiry_year", "I");
-  detectionInfoId.detectedCard = env->GetFieldID(dInfoClass, "detectedCard", "Lio/card/payment/CreditCard;");
+  detectionInfoId.detectedCard = env->GetFieldID(dInfoClass, "detectedCard", "Lcom/paymentwall/cardio/CreditCard;");
 
   if (!(detectionInfoId.complete && detectionInfoId.topEdge && detectionInfoId.bottomEdge
         && detectionInfoId.leftEdge && detectionInfoId.rightEdge
@@ -150,9 +150,9 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nSetup__ZFI(JNIEnv *env,
+JNIEXPORT void JNICALL Java_com_paymentwall_cardio_CardScanner_nSetup__ZFI(JNIEnv *env,
         jobject thiz, jboolean shouldOnlyDetectCard, jfloat jMinFocusScore, jint jUnblurDigits) {
-  dmz_debug_log("Java_io_card_payment_CardScanner_nSetup");
+  dmz_debug_log("Java_com_paymentwall_cardio_CardScanner_nSetup");
   dmz_trace_log("dmz trace enabled");
 
 
@@ -174,19 +174,19 @@ JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nSetup__ZFI(JNIEnv *env,
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nSetup__ZF(JNIEnv *env,
+JNIEXPORT void JNICALL Java_com_paymentwall_cardio_CardScanner_nSetup__ZF(JNIEnv *env,
         jobject thiz, jboolean shouldOnlyDetectCard, jfloat jMinFocusScore) {
-    return Java_io_card_payment_CardScanner_nSetup__ZFI(env, thiz, shouldOnlyDetectCard, jMinFocusScore, unblurDigits);
+    return Java_com_paymentwall_cardio_CardScanner_nSetup__ZFI(env, thiz, shouldOnlyDetectCard, jMinFocusScore, unblurDigits);
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nResetAnalytics(JNIEnv *env, jobject thiz) {
+JNIEXPORT void JNICALL Java_com_paymentwall_cardio_CardScanner_nResetAnalytics(JNIEnv *env, jobject thiz) {
   scanner_reset(&scannerState);
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nCleanup(JNIEnv *env, jobject thiz) {
-  dmz_debug_log("Java_io_card_payment_CardScanner_nCleanup");
+JNIEXPORT void JNICALL Java_com_paymentwall_cardio_CardScanner_nCleanup(JNIEnv *env, jobject thiz) {
+  dmz_debug_log("Java_com_paymentwall_cardio_CardScanner_nCleanup");
 
   if (dmz_refcount == 1) {
     scanner_destroy(&scannerState);
@@ -197,10 +197,10 @@ JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nCleanup(JNIEnv *env, jo
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nGetGuideFrame(JNIEnv *env, jobject thiz,
+JNIEXPORT void JNICALL Java_com_paymentwall_cardio_CardScanner_nGetGuideFrame(JNIEnv *env, jobject thiz,
     jint orientation, jint width, jint height, jobject rect)
 {
-  dmz_trace_log("Java_io_card_payment_CardScanner_nGetGuideFrame");
+  dmz_trace_log("Java_com_paymentwall_cardio_CardScanner_nGetGuideFrame");
 
   dmz_rect dr = dmz_guide_frame(orientation, width, height);
 
@@ -308,10 +308,10 @@ void setDetectedCardImage(JNIEnv* env, jobject jCardResultBitmap,
 
 /* This method forms the core of card.io scanning. All others (nCardDetected & nGetFocusScore) */
 extern "C"
-JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nScanFrame(JNIEnv *env, jobject thiz,
+JNIEXPORT void JNICALL Java_com_paymentwall_cardio_CardScanner_nScanFrame(JNIEnv *env, jobject thiz,
     jbyteArray jb, jint width, jint height, jint orientation, jobject dinfo,
     jobject jCardResultBitmap, jboolean jScanExpiry) {
-  dmz_trace_log("Java_io_card_payment_CardScanner_nScanFrame ... width:%i height:%i orientation:%i", width, height, orientation);
+  dmz_trace_log("Java_com_paymentwall_cardio_CardScanner_nScanFrame ... width:%i height:%i orientation:%i", width, height, orientation);
 
   if (orientation == 0) {
     dmz_error_log("orientation is 0. Nothing good can come from this.");
@@ -386,7 +386,7 @@ JNIEXPORT void JNICALL Java_io_card_payment_CardScanner_nScanFrame(JNIEnv *env, 
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_io_card_payment_CardScanner_nGetNumFramesScanned(JNIEnv *env, jobject thiz) {
+JNIEXPORT jint JNICALL Java_com_paymentwall_cardio_CardScanner_nGetNumFramesScanned(JNIEnv *env, jobject thiz) {
   return scannerState.session_analytics.num_frames_scanned;
 }
 

@@ -67,6 +67,7 @@ public class UnifiedRequest implements Parcelable {
     public UnifiedRequest() {
         this.externalPsList = new ArrayList<>();
         this.bundle = new HashMap<>();
+        this.customParams = new LinkedHashMap<>();
         bundle.put(KEY_TEST_MODE, false + "");
         pwlocalType = null;
     }
@@ -98,7 +99,7 @@ public class UnifiedRequest implements Parcelable {
         this.brickRequest = new BrickRequest();
         brickRequest.setAmount(getAmount());
         brickRequest.setCurrency(getCurrency());
-//        brickRequest.setAppKey("t_839d5549e2f6575ab3f2a81689775b");
+//        brickRequest.setAppKey("4816e84aed7ead72b46668fac6bc0953");
         brickRequest.setAppKey(getPwProjectKey());
         brickRequest.setName(getItemName());
         brickRequest.setItemResID(getItemResID());
@@ -330,8 +331,8 @@ public class UnifiedRequest implements Parcelable {
         this.customParams = customParams;
     }
 
-    public void addCustomParam(String key, String value){
-        if(customParams == null){
+    public void addCustomParam(String key, String value) {
+        if (customParams == null) {
             customParams = new LinkedHashMap<>();
         }
         customParams.put(key, value);

@@ -38,6 +38,30 @@ android {
     }
 }
 
+ext {
+    bintrayRepo = 'WebViewOverlay'
+    bintrayName = 'WebViewOverlay'
+
+    publishedGroupId = 'org.ptyagicodecamp'
+    libraryName = 'WebViewOverlay'
+    artifact = 'WebViewOverlay'
+
+    libraryDescription = 'A widget to load WebView as an Overlay.'
+
+    siteUrl = 'https://github.com/ptyagicodecamp/webview-overlay'
+    gitUrl = 'https://github.com/ptyagicodecamp/webview-overlay.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'developerId'
+    developerName = 'Developer Name'
+    developerEmail = 'developer@email.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -54,3 +78,6 @@ task copyLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

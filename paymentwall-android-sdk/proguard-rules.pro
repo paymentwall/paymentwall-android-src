@@ -103,6 +103,16 @@
     <methods>;
 }
 
+-keep class com.paymentwall.pwunifiedsdk.core.LocalPsFragment{
+    <fields>;
+    <methods>;
+}
+
+-keep class com.paymentwall.pwunifiedsdk.core.LocalPsFragment$IOnRequestPermissionCallback{
+    <fields>;
+    <methods>;
+}
+
 -keep class com.paymentwall.pwunifiedsdk.mobiamo.core.MobiamoDialogActivity{
     <fields>;
     <methods>;

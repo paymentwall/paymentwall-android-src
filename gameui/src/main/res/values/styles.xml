@@ -1,5 +1,14 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <style name="PaymentwallSDKTheme">
+        <item name="colorMain">@color/game_colorPrimary</item>
+        <item name="textMain">@color/game_textPrimary</item>
+        <item name="bgInputForm">@drawable/game_bg_input_form</item>
+        <item name="bgInputErrorForm">@drawable/game_bg_input_form_error</item>
+        <item name="textInputForm">@color/game_textPrimary</item>
+        <item name="textInputErrorForm">@color/text_error</item>
+    </style>
+
     <style name="game_style_ps_name">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -23,7 +32,7 @@
     <style name="game_cc_form_edittext">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:background">@drawable/bg_input_form</item>
+        <item name="android:background">@drawable/game_bg_input_form</item>
         <item name="android:drawablePadding">12dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
@@ -45,13 +54,13 @@
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_mint_form</item>
-        <item name="android:background">@drawable/bg_input_form</item>
+        <item name="android:background">@drawable/game_bg_input_form</item>
     </style>
 
     <style name="game_ps_button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">64dp</item>
-        <item name="android:background">@drawable/btn_ps</item>
+        <item name="android:background">@drawable/game_btn_ps</item>
         <item name="android:clickable">true</item>
     </style>
 

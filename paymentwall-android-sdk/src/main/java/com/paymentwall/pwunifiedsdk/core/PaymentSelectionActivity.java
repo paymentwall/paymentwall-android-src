@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -84,21 +86,6 @@ public class PaymentSelectionActivity extends FragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        setTheme(R.style.PaymentwallSDK);
-
-//        TypedValue typedValue = new TypedValue();
-//        Resources.Theme theme = getTheme();
-//        theme.resolveAttribute(R.attr.bgProductInfo, typedValue, true);
-//        int color = typedValue.data;
-//        Log.i("color", color + "");
-
-//        try {
-//            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
-//            int themeResId = packageInfo.applicationInfo.theme;
-//            Log.i("Theme name", getResources().getResourceEntryName(themeResId));
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
         super.onCreate(savedInstanceState);
 //        Fabric.with(this, new Crashlytics(), new Answers());
         PwUtils.logFabricCustom("Launch SDK");
@@ -106,7 +93,21 @@ public class PaymentSelectionActivity extends FragmentActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(getPackageName() + Brick.FILTER_BACK_PRESS_ACTIVITY));
         preInitUi();
         acquireMessage();
+
+        final GradientDrawable dialogDrawable = (GradientDrawable) getResources()
+                .getDrawable(R.drawable.bgr_successful_dialog);
+        dialogDrawable.setColor(PwUtils.getColorFromAttribute(this, "bgNotifyDialog"));
+        final LinearLayout llBgDialog = (LinearLayout) findViewById(R.id.llBgDialog);
+        if(llBgDialog != null){
+            llBgDialog.post(new Runnable() {
+                @Override
+                public void run() {
+                    llBgDialog.setBackgroundDrawable(dialogDrawable);
+                }
+            });
+        }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -491,7 +492,6 @@ public class PaymentSelectionActivity extends FragmentActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-
         super.onConfigurationChanged(newConfig);
     }
 

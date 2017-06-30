@@ -23,6 +23,7 @@ import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -37,6 +38,7 @@ public class Brick {
     private static final int READ_TIMEOUT = 30000;
     private static final String POST_URL = "https://pwgateway.com/api/token";
     private static final String POST_URL_TEST = "https://api.paymentwall.com/api/pro/v2/token";
+    private static final String URL_3DS = "http://testbed1.stuffio.com/bricktest/secure-form.php";
     private static final String PW_GATEWAY_URL = "pwgateway.com";
     public static final String BROADCAST_FILTER_SDK = ".brick.PAYMENT_SDK_BROADCAST_PERMISSION";
     public static final String BROADCAST_FILTER_MERCHANT = ".brick.PAYMENT_MERCHANT_BROADCAST_PERMISSION";
@@ -103,7 +105,7 @@ public class Brick {
             URL url = createUrl(publicKey);
             // Connect
             HttpURLConnection conn = createPostRequest(url, queryUrl);
-            conn = PwUtils.addExtraHeaders(context, conn);
+//            conn = PwUtils.addExtraHeaders(context, conn);
             // Get message
             String response = getResponseBody(conn.getInputStream());
             Log.i("RESPONSE", response + "");
@@ -133,6 +135,54 @@ public class Brick {
                 }
             }
         }
+    }
+
+    public static String get3DsForm(Context context, String token, String email){
+
+        // Prepare SSL
+        String originalDNSCacheTTL = null;
+        boolean allowedToSetTTL = true;
+        try {
+            originalDNSCacheTTL = Security
+                    .getProperty("networkaddress.cache.ttl");
+            Security.setProperty("networkaddress.cache.ttl", "0");
+        } catch (SecurityException se) {
+            allowedToSetTTL = false;
+        }
+        try {
+            // Create HTTP request
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("brick_token", token);
+            parameters.put("email", email);
+            Log.i("3D_token", token);
+            String queryUrl = BrickHelper.urlEncodeUTF8(parameters);
+            // Connect
+            HttpURLConnection conn = createPostRequest(new URL(URL_3DS), queryUrl);
+//            conn = PwUtils.addExtraHeaders(context, conn);
+            // Get message
+            String response = getResponseBody(conn.getInputStream());
+            Log.i("RESPONSE", response + "");
+            try {
+
+            } catch (Exception e) {
+                e.printStackTrace(
+
+                );
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (allowedToSetTTL) {
+                if (originalDNSCacheTTL == null) {
+                    Security.setProperty("networkaddress.cache.ttl", "-1");
+                } else {
+                    Security.setProperty("networkaddress.cache.ttl",
+                            originalDNSCacheTTL);
+                }
+            }
+        }
+        return "";
+
     }
 
     private static URL createUrl(String publicKey) throws BrickError {
@@ -222,7 +272,6 @@ public class Brick {
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
-
         } catch (IOException e) {
             throw new BrickError("IOException: (2) cannot get response", BrickError.Kind.UNEXPECTED);
         } finally {
@@ -235,7 +284,6 @@ public class Brick {
             }
         }
         return sb.toString();
-
     }
 
     private static void checkSSLCert(HttpURLConnection con) throws BrickError {
@@ -259,6 +307,7 @@ public class Brick {
 
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
+
             byte[] der = certs[0].getEncoded();
             md.update(der);
             byte[] digest = md.digest();

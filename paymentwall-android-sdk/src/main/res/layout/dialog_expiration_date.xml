@@ -11,6 +11,7 @@
     android:visibility="gone">
 
     <LinearLayout
+        android:id="@+id/llExpDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/saas_bg_expiration_date_dialog"

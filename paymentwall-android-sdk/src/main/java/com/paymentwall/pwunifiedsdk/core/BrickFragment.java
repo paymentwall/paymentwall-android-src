@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -196,7 +198,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
     private void checkScannerPlugin() {
         try {
-            Class<?> CardIOActivity = Class.forName("io.card.payment.CardIOActivity");
+            Class<?> CardIOActivity = Class.forName("com.paymentwall.cardio.CardIOActivity");
             if (CardIOActivity != null) llScanCard.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             llScanCard.setVisibility(View.GONE);
@@ -341,10 +343,10 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             public void onClick(View v) {
 
                 try {
-                    Class<?> CardIOActivity = Class.forName("io.card.payment.CardIOActivity");
+                    Class<?> CardIOActivity = Class.forName("com.paymentwall.cardio.CardIOActivity");
                     Intent scanIntent = new Intent(self, CardIOActivity);
 
-                    scanIntent.putExtra("io.card.payment.scanExpiry", true); // default: false
+                    scanIntent.putExtra("com.paymentwall.cardio.scanExpiry", true); // default: false
 
                     self.startActivityForResult(scanIntent, RC_SCAN_CARD);
 
@@ -610,15 +612,30 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 return false;
             }
         });
+
+        PwUtils.setCustomAttributes(self, v);
+
+        final GradientDrawable expDrawable = (GradientDrawable) v.getResources()
+                .getDrawable(R.drawable.saas_bg_expiration_date_dialog);
+        expDrawable.setColor(PwUtils.getColorFromAttribute(self, "bgExpDialog"));
+        final LinearLayout llExpDialog = (LinearLayout) v.findViewById(R.id.llExpDialog);
+        if(llExpDialog != null){
+            llExpDialog.post(new Runnable() {
+                @Override
+                public void run() {
+                    llExpDialog.setBackgroundDrawable(expDrawable);
+                }
+            });
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_SCAN_CARD) {
-            if (data != null && data.hasExtra("io.card.payment.scanResult")) {
+            if (data != null && data.hasExtra("com.paymentwall.cardio.scanResult")) {
                 try {
-                    Object scanResult = data.getParcelableExtra("io.card.payment.scanResult");
-                    Class<?> CreditCard = Class.forName("io.card.payment.CreditCard");
+                    Object scanResult = data.getParcelableExtra("com.paymentwall.cardio.scanResult");
+                    Class<?> CreditCard = Class.forName("com.paymentwall.cardio.CreditCard");
                     Object creditCard = CreditCard.cast(scanResult);
                     Method mthGetFormattedCardNumber = CreditCard.getMethod("getFormattedCardNumber");
 
@@ -689,7 +706,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 etCvv.setBackgroundDrawable(PwUtils.getDrawableFromAttribute(self, "bgInputErrorForm"));
                 etCvv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null);
             }
-
             if (!brickCard.isEmailValid()) {
                 etEmail.setHint(R.string.error_invalid_email);
                 etEmail.setBackgroundDrawable(PwUtils.getDrawableFromAttribute(self, "bgInputErrorForm"));
@@ -725,6 +741,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     public void onBrickSuccess(BrickToken brickToken) {
         String token = brickToken.getToken();
         if (token != null) {
+//            get3dsForm(token);
             Intent intent = new Intent();
             intent.setAction(getActivity().getPackageName() + Brick.BROADCAST_FILTER_MERCHANT);
             intent.putExtra(Brick.KEY_BRICK_TOKEN, token);
@@ -742,6 +759,10 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     @Override
     public void onBrickError(BrickError error) {
         showErrorLayout(null);
+    }
+
+    private void get3dsForm(String token){
+        Brick.get3DsForm(self, token, etEmail.getText().toString().trim());
     }
 
     private Runnable checkTimeoutTask = new Runnable() {

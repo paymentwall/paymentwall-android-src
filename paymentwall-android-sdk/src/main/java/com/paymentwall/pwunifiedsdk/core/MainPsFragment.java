@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -200,12 +202,7 @@ public class MainPsFragment extends BaseFragment {
             }
         });
 
-//        llPwLocal.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                payWithPwLocal();
-//            }
-//        });
+        PwUtils.setCustomAttributes(self, v);
     }
 
     @Override

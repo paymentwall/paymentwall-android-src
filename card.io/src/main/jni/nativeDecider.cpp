@@ -14,15 +14,15 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
   return JNI_VERSION_1_6;
 }
 
-extern "C" jboolean JNICALL Java_io_card_payment_CardScanner_nUseNeon() {
+extern "C" jboolean JNICALL Java_com_paymentwall_cardio_CardScanner_nUseNeon() {
   return (dmz_has_neon_runtime());
 }
 
-extern "C" jboolean JNICALL Java_io_card_payment_CardScanner_nUseTegra() {
+extern "C" jboolean JNICALL Java_com_paymentwall_cardio_CardScanner_nUseTegra() {
   return (dmz_use_vfp3_16());
 }
 
-extern "C" jboolean JNICALL Java_io_card_payment_CardScanner_nUseX86() {
+extern "C" jboolean JNICALL Java_com_paymentwall_cardio_CardScanner_nUseX86() {
 #if defined __i386__ || defined __x86_64__
   return true;
 #else

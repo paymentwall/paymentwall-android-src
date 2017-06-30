@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -220,6 +222,8 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
         PwUtils.setFontBold(self, new TextView[]{btnConfirm});
 
         init();
+
+        PwUtils.setCustomAttributes(self, v);
     }
 
     private void init() {

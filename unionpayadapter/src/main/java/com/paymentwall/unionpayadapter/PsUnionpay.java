@@ -194,14 +194,13 @@ public class PsUnionpay implements Serializable {
             }
         }
 
-        parametersMap.put("ps_name", "unionpay");
+//        parametersMap.put("ps_name", "unionpay");
 
         String orderInfo = printMap(sortMap(parametersMap));
-//        orderInfo += bundle.get("PW_PROJECT_SECRET");
-        orderInfo += "99438d36884f255f8853d6e04223128b";
+        orderInfo += bundle.get("PW_PROJECT_SECRET");
         String sign = sha256(orderInfo);
         parametersMap.put("sign", sign);
-        parametersMap.remove("ps_name");
+//        parametersMap.remove("ps_name");
         Log.i("ORDER_INFO", orderInfo);
         Log.i("SIGN", sign);
 

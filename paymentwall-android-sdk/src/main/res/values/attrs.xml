@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <declare-styleable name="PaymentwallSdk">
         <attr name="colorMain" format="color" />
         <attr name="textMain" format="color" />
@@ -14,29 +13,30 @@
         <attr name="bgInputForm" format="integer" />
         <attr name="bgInputErrorForm" format="integer" />
         <attr name="textInputForm" format="color" />
-        <attr name="textInputErrorForm" format="color"/>
-        <attr name="iconErrorForm" format="integer"/>
+        <attr name="textInputErrorForm" format="color" />
+        <attr name="iconErrorForm" format="integer" />
         <attr name="textFormTitle" format="color" />
         <attr name="bgConfirmButton" format="integer" />
         <attr name="textConfirmButton" format="color" />
-        <attr name="backButton" format="integer"/>
-        <attr name="bgExpDialog" format="color"/>
-        <attr name="textExpDialog" format="color"/>
-        <attr name="monthButtonNormal" format="integer"/>
-        <attr name="monthButtonPressed" format="integer"/>
-        <attr name="textMonth" format="color"/>
-        <attr name="yearLeftArrow" format="integer"/>
-        <attr name="yearRightArrow" format="integer"/>
-        <attr name="bgNotifyDialog" format="color"/>
-        <attr name="progressColor" format="color"/>
-        <attr name="successIcon" format="integer"/>
-        <attr name="failIcon" format="integer"/>
-        <attr name="textProgress" format="color"/>
-        <attr name="textSuccess" format="color"/>
-        <attr name="textFail" format="color"/>
-        <attr name="textExtraMessage" format="color"/>
+        <attr name="backButton" format="integer" />
+        <attr name="bgExpDialog" format="color" />
+        <attr name="textExpDialog" format="color" />
+        <attr name="monthButtonNormal" format="integer" />
+        <attr name="monthButtonPressed" format="integer" />
+        <attr name="textMonth" format="color" />
+        <attr name="yearLeftArrow" format="integer" />
+        <attr name="yearRightArrow" format="integer" />
+        <attr name="bgNotifyDialog" format="color" />
+        <attr name="progressColor" format="color" />
+        <attr name="successIcon" format="integer" />
+        <attr name="failIcon" format="integer" />
+        <attr name="textProgress" format="color" />
+        <attr name="textSuccess" format="color" />
+        <attr name="textFail" format="color" />
+        <attr name="textExtraMessage" format="color" />
 
     </declare-styleable>
+
 
     <declare-styleable name="RoundedImageView">
         <attr name="riv_corner_radius" format="dimension" />

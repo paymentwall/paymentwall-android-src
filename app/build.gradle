@@ -29,7 +29,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-        debug{
+        debug {
             debuggable true
         }
     }
@@ -44,11 +44,11 @@ android {
 dependencies {
     //    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.loopj.android:android-async-http:1.4.7'
-    compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile 'com.android.support:multidex:1.0.0'
+    compile 'com.loopj.android:android-async-http:1.4.7'
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile project(':paymentwall-android-sdk')
+    compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
     compile project(':alipayadapter')
     compile files('libs/alipaySdk-20170309.jar')
     compile project(':unionpayadapter')
@@ -62,7 +62,6 @@ dependencies {
     compile project(':baiduadapter')
     compile project(':paypaladapter')
     compile project(':dokuadapter')
-    compile project(':sdkocov2-release')
     compile 'com.squareup.okio:okio:1.11.0'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     //    compile('io.card:android-sdk:5.5.0') {
@@ -72,9 +71,7 @@ dependencies {
     //        transitive = true;
     //    }
     compile project(':mycardadapter')
-//    compile project(':card.io-release')
-    compile project(':card.io')
-    compile project(':gameui')
+    //    compile project(':card.io-release')
 }
 
 task copyNativeLibs(type: Copy) {

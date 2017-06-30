@@ -1,4 +1,6 @@
-package io.card.payment;
+package com.paymentwall.cardio;
+
+import com.paymentwall.cardio.CardType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

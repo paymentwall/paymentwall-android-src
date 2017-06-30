@@ -173,14 +173,14 @@ public class PsWechat implements Serializable {
             }
         }
 
-        parametersMap.put("ps_name", "wechatpayments");
+//        parametersMap.put("ps_name", "wechatpayments");
 
 
         String orderInfo = printMap(sortMap(parametersMap));
         orderInfo += bundle.get("PW_PROJECT_SECRET");
         String sign = sha256(orderInfo);
         parametersMap.put("sign", sign);
-        parametersMap.remove("ps_name");
+//        parametersMap.remove("ps_name");
         Log.i("ORDER_INFO", orderInfo);
         Log.i("SIGN", sign);
 

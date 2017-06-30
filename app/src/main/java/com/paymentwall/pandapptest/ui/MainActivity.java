@@ -264,7 +264,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.addBrick();
         request.addMint();
         request.addMobiamo();
-//        request.addPwLocal();
+        request.addPwLocal();
 
         CustomRequest customRequest = new CustomRequest();
         customRequest.put(Const.P.KEY, Constants.PW_PROJECT_KEY);
@@ -279,7 +279,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         customRequest.put(Const.P.EMAIL, "fixed");
         customRequest.setSecretKey(Constants.PW_SECRET_KEY);
         customRequest.setSignVersion(3);
-//        request.setPwlocalRequest(customRequest);
+        request.setPwlocalRequest(customRequest);
 
         // set params for Alipay
 //        PsAlipay alipay = new PsAlipay();
@@ -323,14 +323,14 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
 //        ExternalPs alipayPs = new ExternalPs("alipay", "Alipay Domestic", R.drawable.ps_logo_alipay, alipay);
         ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay International", R.drawable.ps_logo_alipay, alipayInternaltional);
-//        ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
+        ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
 //        ExternalPs molPs = new ExternalPs("mol", "MolPoints", R.drawable.ps_mol_logo, mol);
-//        ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
+        ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
 //        ExternalPs paypalPs = new ExternalPs("paypal", "Paypal", R.drawable.ps_logo_paypal, paypal);
 //        ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
 //        ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
 //        ExternalPs myCardPs = new ExternalPs("mycard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt);
+        request.add(alipayPsInt, unionpayPs, wechatPs);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
         Bundle bundle = new Bundle();

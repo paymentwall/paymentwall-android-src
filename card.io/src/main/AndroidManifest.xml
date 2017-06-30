@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.card.payment">
+    package="com.paymentwall.cardio"
+    android:versionName="1.0.0">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -14,8 +15,8 @@
 
     <application>
         <activity
-            android:name="io.card.payment.CardIOActivity"
+            android:name="com.paymentwall.cardio.CardIOActivity"
             android:configChanges="keyboardHidden|orientation" />
-        <activity android:name="io.card.payment.DataEntryActivity" />
+        <activity android:name="com.paymentwall.cardio.DataEntryActivity" />
     </application>
 </manifest>

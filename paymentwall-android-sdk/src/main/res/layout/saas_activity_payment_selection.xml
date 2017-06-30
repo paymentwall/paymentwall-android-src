@@ -58,8 +58,6 @@
             android:scaleType="center"
             android:src="@drawable/ic_help"
             android:visibility="gone" />
-
-
     </RelativeLayout>
 
     <include layout="@layout/saas_frag_dialog" />

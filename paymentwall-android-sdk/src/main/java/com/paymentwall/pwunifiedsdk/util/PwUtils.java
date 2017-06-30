@@ -8,10 +8,14 @@ import android.content.pm.Signature;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.brick.utils.Const;
 import com.paymentwall.sdk.pwlocal.utils.*;
 
@@ -170,7 +174,6 @@ public class PwUtils {
             connection.setRequestProperty(HTTP_X_UPDATE_TIME, packageInfo.lastUpdateTime + "");
             connection.setRequestProperty(HTTP_X_PERMISSON, getPermissions(context));
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,6 +237,55 @@ public class PwUtils {
             }
         }
         return "";
+    }
+
+    public static void setCustomAttributes(Context context, View v){
+        final GradientDrawable ovalDrawable = (GradientDrawable) context.getResources()
+                .getDrawable(R.drawable.bg_product_info_oval);
+        ovalDrawable.setColor(PwUtils.getColorFromAttribute(context, "colorMain"));
+
+        final GradientDrawable ovalDrawableLand = (GradientDrawable) context.getResources()
+                .getDrawable(R.drawable.bg_product_info_oval_land);
+        ovalDrawableLand.setColor(PwUtils.getColorFromAttribute(context, "mainBackground"));
+
+
+        final LayerDrawable layerDrawable = (LayerDrawable) context.getResources()
+                .getDrawable(R.drawable.bg_product_info);
+        GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable
+                .findDrawableByLayerId(R.id.bg_product_info_top);
+        gradientDrawable.setColor(PwUtils.getColorFromAttribute(context, "bgProductInfo"));
+        final View llProductInfo = v.findViewById(R.id.ll_product_info);
+        if (llProductInfo != null)
+            llProductInfo.post(new Runnable() {
+                @Override
+                public void run() {
+                    int paddingBottom = llProductInfo.getPaddingBottom();
+                    int paddingTop = llProductInfo.getPaddingTop();
+                    int paddingRight = llProductInfo.getPaddingRight();
+                    int paddingLeft = llProductInfo.getPaddingLeft();
+                    llProductInfo.setBackgroundDrawable(layerDrawable);
+                    llProductInfo.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+                }
+            });
+
+        final LayerDrawable layerDrawableLand = (LayerDrawable) context.getResources()
+                .getDrawable(R.drawable.bg_product_info_land);
+        GradientDrawable gradientDrawableLand = (GradientDrawable) layerDrawableLand
+                .findDrawableByLayerId(R.id.bg_product_info_top);
+        gradientDrawableLand.setColor(PwUtils.getColorFromAttribute(context, "bgProductInfoLand"));
+        final View llProductInfoLand = v.findViewById(R.id.ll_product_info);
+        if (llProductInfo != null)
+            llProductInfo.post(new Runnable() {
+                @Override
+                public void run() {
+                    int paddingBottom = llProductInfoLand.getPaddingBottom();
+                    int paddingTop = llProductInfoLand.getPaddingTop();
+                    int paddingRight = llProductInfoLand.getPaddingRight();
+                    int paddingLeft = llProductInfoLand.getPaddingLeft();
+                    llProductInfoLand.setBackgroundDrawable(layerDrawableLand);
+                    llProductInfoLand.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+                }
+            });
     }
 
 

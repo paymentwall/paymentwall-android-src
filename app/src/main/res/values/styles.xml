@@ -6,11 +6,11 @@
     </style>
 
     <style name="Theme.MyCompatTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/baseRedFont</item>
+        <item name="colorPrimary">@color/main_textcolor</item>
     </style>
 
     <style name="PwsdkCustomTheme" parent="@style/PaymentwallSDKTheme">
-        <item name="colorMain">@color/baseRedFont</item>
+        <item name="colorMain">@color/main_textcolor</item>
         <item name="textMain">@color/white</item>
         <item name="mainBackground">@color/pw_secondary_color</item>
         <item name="bgProductInfo">@color/pw_primary_color</item>
@@ -28,7 +28,7 @@
         <item name="bgConfirmButton">@drawable/payment_button_drawable</item>
         <item name="textConfirmButton">@color/white</item>
         <item name="backButton">@drawable/cloud</item>
-        <item name="bgExpDialog">@color/baseRedFont</item>
+        <item name="bgExpDialog">@color/main_textcolor</item>
         <item name="textExpDialog">@color/white</item>
         <item name="monthButtonNormal">@drawable/green_button_ninepatch</item>
         <item name="monthButtonPressed">@drawable/green_button_ninepatch_pressed</item>
@@ -36,13 +36,13 @@
         <item name="yearLeftArrow">@drawable/item_gem</item>
         <item name="yearRightArrow">@drawable/item_mana</item>
         <item name="bgNotifyDialog">@color/black</item>
-        <item name="progressColor">@color/baseRedFont</item>
+        <item name="progressColor">@color/main_textcolor</item>
         <item name="successIcon">@drawable/ic_form_error</item>
         <item name="failIcon">@drawable/ic_scan_card</item>
         <item name="textProgress">@color/white</item>
-        <item name="textSuccess">@color/baseBlueFont</item>
-        <item name="textFail">@color/baseRedFont</item>
-        <item name="textExtraMessage">@color/baseGreenFont</item>
+        <item name="textSuccess">@color/main_textcolor</item>
+        <item name="textFail">@color/main_textcolor</item>
+        <item name="textExtraMessage">@color/main_textcolor</item>
     </style>
 
 

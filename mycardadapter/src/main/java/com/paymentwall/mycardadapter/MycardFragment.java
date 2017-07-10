@@ -100,6 +100,8 @@ public class MycardFragment extends Fragment {
         etCardPassword = (EditText) v.findViewById(R.id.etCardPassword);
         btnProceed = (Button) v.findViewById(R.id.btnProceed);
 
+        etCardId.requestFocus();
+
         btnProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +194,7 @@ public class MycardFragment extends Fragment {
         params.put("step", "1");
         params.put("data[card_id]", etCardId.getText().toString().trim());
         params.put("data[card_password]", etCardPassword.getText().toString().trim());
-        params.put("ref_id", transactionId);
+//        params.put("ref_id", transactionId);
         params.put("sign_version", "3");
 
         params = psMyCard.makeTransactionProcessingMap(params);

@@ -10,26 +10,38 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.paymentwall.pwunifiedsdk.BuildConfig;
 import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.brick.core.Brick;
 import com.paymentwall.pwunifiedsdk.ui.WaveHelper;
@@ -40,6 +52,14 @@ import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
 import com.paymentwall.sdk.pwlocal.ui.PwLocalActivity;
 
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.StringReader;
 import java.util.Stack;
 
 /**
@@ -68,6 +88,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
     public boolean isUnsuccessfulShowing;
     public static String paymentError;
     private WaveHelper waveHelper;
+    private WebView webView;
 
     protected Handler handler = new Handler();
 
@@ -98,7 +119,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 .getDrawable(R.drawable.bgr_successful_dialog);
         dialogDrawable.setColor(PwUtils.getColorFromAttribute(this, "bgNotifyDialog"));
         final LinearLayout llBgDialog = (LinearLayout) findViewById(R.id.llBgDialog);
-        if(llBgDialog != null){
+        if (llBgDialog != null) {
             llBgDialog.post(new Runnable() {
                 @Override
                 public void run() {
@@ -108,11 +129,9 @@ public class PaymentSelectionActivity extends FragmentActivity {
         }
     }
 
-
     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
-
         super.onDestroy();
     }
 
@@ -176,6 +195,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
 
         replaceContentFragment(MainPsFragment.getInstance(), bundle);
 
+        webView = (WebView) findViewById(R.id.webView);
         waveView = (WaveView) findViewById(R.id.waveView);
         llDialog = (LinearLayout) findViewById(R.id.llDialog);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -446,7 +466,10 @@ public class PaymentSelectionActivity extends FragmentActivity {
     public void onBackPressed() {
         if (mStackFragments.size() > 0 && !(mStackFragments.get(mStackFragments.size() - 1) instanceof BaseFragment)) {
             backFragment(null);
-        } else
+        }else if(webView.getVisibility() == View.VISIBLE){
+            webView.setVisibility(View.GONE);
+        }
+        else
             LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent().setAction(getPackageName() + Brick.FILTER_BACK_PRESS_FRAGMENT));
 
     }
@@ -512,7 +535,105 @@ public class PaymentSelectionActivity extends FragmentActivity {
         dialog.setCancelable(true);
 
         dialog.show();
+    }
 
+    public void show3dsWebView(String url) {
+        webView.setVisibility(View.VISIBLE);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(this, "HTMLOUT");
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
+        }
+        CookieManager.getInstance().setAcceptCookie(true);
+        webView.setWebChromeClient(new WebChromeClient());
+//        webView.getSettings().setUserAgentString("fasterpay");
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+                Log.i("URL Redirecting", url);
+//                view.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                    }
+//                }, 1000);
+
+                return false;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+            }
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+//                Log.i("REQUEST", request.getRequestHeaders() + "");
+                return null;
+            }
+        });
+        webView.loadUrl(url);
+    }
+
+    public void hide3dsWebview(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl("about:blank");
+                webView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void processHTML(String html) {
+        if (html == null)
+            return;
+//        Log.i("HTML", html);
+        try {
+            Document doc = Jsoup.parse(html);
+            Element body = doc.select("body").first();
+            Log.i("BODY", body.text());
+            if(body.text().equalsIgnoreCase("")) return;
+
+            JSONObject obj = new JSONObject(body.text());
+            if(obj.has("object") && obj.getString("object").equalsIgnoreCase("charge")){
+                final String permanentToken = obj.getJSONObject("card").getString("token");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BrickFragment.getInstance().onChargeSuccess(permanentToken);
+                    }
+                });
+                return;
+            }
+            if(obj.has("type") && obj.getString("type").equalsIgnoreCase("error")){
+                final String error = obj.getString("error");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BrickFragment.getInstance().onChargeFailed(error);
+                    }
+                });
+                return;
+            }
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    BrickFragment.getInstance().onChargeSuccess("lfkjdsalfjalsfjlsjfalsfjs");
+//                }
+//            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void onPaymentSuccessful() {

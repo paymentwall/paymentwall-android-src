@@ -72,6 +72,7 @@ dependencies {
     //    compile('com.crashlytics.sdk.android:answers:1.3.10@aar') {
     //        transitive = true;
     //    }
+    compile files('libs/jsoup-1.10.3.jar')
 }
 
 task copyLibs(type: Copy) {

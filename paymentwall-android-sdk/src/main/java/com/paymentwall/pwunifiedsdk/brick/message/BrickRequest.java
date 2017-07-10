@@ -26,7 +26,6 @@ public class BrickRequest implements Parcelable {
     private File itemFile;
     private int itemResID;
     private String itemContentProvider;
-    private boolean nativeDialog;
     private int timeout;
 
     public String getName() {
@@ -93,14 +92,6 @@ public class BrickRequest implements Parcelable {
         this.itemContentProvider = itemContentProvider;
     }
 
-    public boolean isNativeDialog() {
-        return nativeDialog;
-    }
-
-    public void setNativeDialog(boolean nativeDialog) {
-        this.nativeDialog = nativeDialog;
-    }
-
     public int getTimeout() {
         return timeout;
     }
@@ -137,7 +128,6 @@ public class BrickRequest implements Parcelable {
         dest.writeSerializable(this.itemFile);
         dest.writeInt(this.itemResID);
         dest.writeString(this.itemContentProvider);
-        dest.writeByte(this.nativeDialog ? (byte) 1 : (byte) 0);
         dest.writeInt(this.timeout);
     }
 
@@ -150,7 +140,6 @@ public class BrickRequest implements Parcelable {
         this.itemFile = (File) in.readSerializable();
         this.itemResID = in.readInt();
         this.itemContentProvider = in.readString();
-        this.nativeDialog = in.readByte() != 0;
         this.timeout = in.readInt();
     }
 

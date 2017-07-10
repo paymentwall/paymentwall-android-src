@@ -1,41 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<style name="PaymentwallSDKTheme">-->
-        <!--<item name="colorMain">@color/saas_colorPrimary</item>-->
-        <!--<item name="textMain">@color/saas_textPrimary</item>-->
-        <!--<item name="mainBackground">@color/bg_main</item>-->
-        <!--<item name="bgProductInfo">@color/white</item>-->
-        <!--<item name="bgProductInfoLand">@color/white</item>-->
-        <!--<item name="textProductInfo">@color/saas_textPrimary</item>-->
-        <!--<item name="bgPsButton">@drawable/saas_btn_ps</item>-->
-        <!--<item name="textPsButton">@color/saas_textPrimary</item>-->
-        <!--<item name="textCopyright">@color/saas_textPrimary</item>-->
-        <!--<item name="bgInputForm">@drawable/saas_bg_input_form</item>-->
-        <!--<item name="bgInputErrorForm">@drawable/saas_bg_input_form_error</item>-->
-        <!--<item name="textInputForm">@color/saas_textPrimary</item>-->
-        <!--<item name="textInputErrorForm">@color/input_form_error</item>-->
-        <!--<item name="iconErrorForm">@drawable/ic_form_error</item>-->
-        <!--<item name="textFormTitle">@color/saas_textSecondary</item>-->
-        <!--<item name="bgConfirmButton">@drawable/saas_btn_confirm</item>-->
-        <!--<item name="textConfirmButton">@color/text_confirm</item>-->
-        <!--<item name="backButton">@drawable/ic_arrow_back</item>-->
-        <!--<item name="bgExpDialog">@color/bg_expiration_date</item>-->
-        <!--<item name="textExpDialog">@color/saas_textPrimary</item>-->
-        <!--<item name="monthButtonNormal">@drawable/btn_price_point_normal</item>-->
-        <!--<item name="monthButtonPressed">@drawable/btn_price_point_pressed</item>-->
-        <!--<item name="textMonth">@color/saas_textSecondary</item>-->
-        <!--<item name="yearLeftArrow">@drawable/icon_previous</item>-->
-        <!--<item name="yearRightArrow">@drawable/icon_next</item>-->
-        <!--<item name="bgNotifyDialog">@color/white</item>-->
-        <!--<item name="progressColor">@color/saas_colorPrimary</item>-->
-        <!--<item name="successIcon">@drawable/ic_succeed</item>-->
-        <!--<item name="failIcon">@drawable/ic_failed</item>-->
-        <!--<item name="textProgress">@color/text_loading</item>-->
-        <!--<item name="textSuccess">@color/text_loading</item>-->
-        <!--<item name="textFail">@color/text_payment_failed</item>-->
-        <!--<item name="textExtraMessage">@color/text_accepted_subtitle</item>-->
-    <!--</style>-->
-
     <style name="PaymentwallSDKTheme">
         <item name="colorMain">@color/saas_colorPrimary</item>
         <item name="textMain">@color/saas_textPrimary</item>

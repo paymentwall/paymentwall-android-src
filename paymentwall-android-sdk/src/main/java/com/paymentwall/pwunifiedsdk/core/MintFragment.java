@@ -115,7 +115,7 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
                 if (getMainActivity().isUnsuccessfulShowing) {
                     hideErrorLayout();
                     return;
-                } else if (getMainActivity().isWaitLayoutShowing || getMainActivity().isSuccessfulShowing) {
+                } else if (isWaitLayoutShowing() || getMainActivity().isSuccessfulShowing) {
                     return;
                 } else {
                     Intent i = new Intent();
@@ -495,7 +495,6 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
 
     @Override
     public void onMintError(int statusCode, String body, Throwable error) {
-        Log.i("ON_MINT_ERROR", statusCode + "");
 
         isMintError = true;
 
@@ -546,7 +545,8 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
                             + ")");
                 }
             }
-
+            hideErrorLayout();
+            displayPaymentSucceeded();
         }
     }
 

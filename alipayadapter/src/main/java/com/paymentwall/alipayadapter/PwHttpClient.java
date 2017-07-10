@@ -99,6 +99,7 @@ public class PwHttpClient {
                     if (statusCode < HttpURLConnection.HTTP_OK || statusCode >= HttpURLConnection.HTTP_MULT_CHOICE) {
                         try {
                             String errorResponse = getResponseBody(connection.getErrorStream());
+                            Log.i("RESPONSE_BODY", errorResponse);
                             postAlipayError(statusCode, errorResponse, null, callback, handler);
                         } catch (IOException e) {
                             postAlipayError(statusCode, null, null, callback, handler);

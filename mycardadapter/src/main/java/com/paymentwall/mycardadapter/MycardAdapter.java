@@ -37,7 +37,7 @@ public class MycardAdapter {
             mthShowWait = BaseFragment.getMethod("showWaitLayout");
             mthHideWait = BaseFragment.getMethod("hideWaitLayout");
 
-            Activity activity= localPsFragment.getActivity();
+            Activity activity = localPsFragment.getActivity();
             Class<?> PaymentSelectionActivity = Class.forName("com.paymentwall.pwunifiedsdk.core.PaymentSelectionActivity");
             psActivity = PaymentSelectionActivity.cast(activity);
             mthReplaceFragment = PaymentSelectionActivity.getMethod("replaceContentFragment", Fragment.class, Bundle.class);
@@ -47,9 +47,10 @@ public class MycardAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
-        psMyCard = (PsMyCard)params;
+    private void pay(final Context context, Serializable params, Map<String, Object> bundle, Map<String, String> customParams) {
+        psMyCard = (PsMyCard) params;
         psMyCard.setBundle(bundle);
+        psMyCard.setCustomParams(customParams);
 //        Intent intent = new Intent(fragment.getActivity(), MycardActivity.class);
 //        intent.putExtra(MycardActivity.MYCARD_OBJECT, psMyCard);
 //        fragment.startActivity(intent);
@@ -57,7 +58,7 @@ public class MycardAdapter {
         b.putSerializable(MycardFragment.MYCARD_OBJECT, psMyCard);
         try {
             mthReplaceFragment.invoke(psActivity, MycardFragment.getInstance(), b);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

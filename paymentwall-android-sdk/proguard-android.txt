@@ -88,6 +88,21 @@
     <methods>;
 }
 
+-keep class com.paymentwall.pwunifiedsdk.brick.core.BrickError {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.paymentwall.pwunifiedsdk.brick.core.BrickError$Kind {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.paymentwall.pwunifiedsdk.brick.core.BrickHelper {
+    <fields>;
+    <methods>;
+}
+
 -keep class com.paymentwall.pwunifiedsdk.core.BaseFragment {
     <fields>;
     <methods>;
@@ -114,6 +129,11 @@
 }
 
 -keep class com.paymentwall.pwunifiedsdk.mobiamo.core.MobiamoDialogActivity{
+    <fields>;
+    <methods>;
+}
+
+-keep class com.paymentwall.pwunifiedsdk.mobiamo.core.MobiamoBroadcastReceiver{
     <fields>;
     <methods>;
 }
@@ -147,3 +167,6 @@
     <fields>;
     <methods>;
 }
+
+-keep class org.jsoup.**
+

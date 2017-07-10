@@ -3,6 +3,8 @@ package com.paymentwall.pwunifiedsdk.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONObject;
+
 /**
  * Created by nguyen.anh on 6/1/2017.
  */
@@ -20,6 +22,7 @@ public class SharedPreferenceManager {
     // ==============================================================
 
     public static final String UI_STYLE = "UI_STYLE";
+    public static final String STORED_CARDS = "STORED_CARDS";
 
     private SharedPreferenceManager() {
     }
@@ -52,6 +55,49 @@ public class SharedPreferenceManager {
         if (getStringValue(UI_STYLE).equalsIgnoreCase(""))
             return "saas";
         return getStringValue(UI_STYLE);
+    }
+
+    public boolean isCardExisting(String cardNumber) {
+        String cards = getStringValue(STORED_CARDS);
+        if (cards.equalsIgnoreCase("")) return false;
+        try {
+            JSONObject obj = new JSONObject(cards);
+            return (obj.has(cardNumber));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean addCard(String cardNumber, String permanentToken) {
+        JSONObject obj = null;
+        String cards = getStringValue(STORED_CARDS);
+        try {
+            if (cards.equalsIgnoreCase("")) {
+                obj = new JSONObject();
+            } else {
+                obj = new JSONObject(cards);
+            }
+            obj.put(cardNumber, permanentToken);
+            putStringValue(STORED_CARDS, obj.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public String getTokenFromCard(String cardNumber){
+        String cards = getStringValue(STORED_CARDS);
+        if (cards.equalsIgnoreCase("")) return null;
+        try {
+            JSONObject obj = new JSONObject(cards);
+            if(!obj.has(cardNumber)) return null;
+            return obj.getString(cardNumber);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

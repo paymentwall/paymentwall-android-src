@@ -1,11 +1,16 @@
 package com.paymentwall.pwunifiedsdk.brick.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,29 +43,33 @@ public class Brick {
     private static final int READ_TIMEOUT = 30000;
     private static final String POST_URL = "https://pwgateway.com/api/token";
     private static final String POST_URL_TEST = "https://api.paymentwall.com/api/pro/v2/token";
-    private static final String URL_3DS = "http://testbed1.stuffio.com/bricktest/secure-form.php";
     private static final String PW_GATEWAY_URL = "pwgateway.com";
+    private static final String GENERATE_TOKEN_URL = "https://api.paymentwall.com/api/brick/token";
+
     public static final String BROADCAST_FILTER_SDK = ".brick.PAYMENT_SDK_BROADCAST_PERMISSION";
     public static final String BROADCAST_FILTER_MERCHANT = ".brick.PAYMENT_MERCHANT_BROADCAST_PERMISSION";
+
     public static final String KEY_BRICK_TOKEN = "KEY_BRICK_TOKEN";
     public static final String KEY_MERCHANT_SUCCESS = "KEY_MERCHANT_SUCCESS";
+    public static final String KEY_PERMANENT_TOKEN = "KEY_PERMANENT_TOKEN";
+    public static final String KEY_3DS_FORM = "KEY_3DS_FORM";
     public static final String FILTER_BACK_PRESS_FRAGMENT = "FILTER_BACK_PRESS_FRAGMENT";
     public static final String FILTER_BACK_PRESS_ACTIVITY = "FILTER_BACK_PRESS_ACTIVITY";
-    private Handler mHandler;
-    private String mPublicKey;
+    private Context context;
+    public static Brick instance;
 
-    public Brick(Context context, String publicKey) {
-        mHandler = new Handler(context.getMainLooper());
-        this.mPublicKey = publicKey;
+    public static Brick getInstance() {
+        if (instance == null)
+            instance = new Brick();
+        return instance;
     }
 
-    public Brick(Handler handler, String publicKey) {
-        mHandler = handler;
-        this.mPublicKey = publicKey;
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     // Static async mode
-    public static void createToken(final Context context, final Handler handler, final String publicKey, final BrickCard brickCard, final Callback callback) {
+    public void createToken(final Context context, final Handler handler, final String publicKey, final BrickCard brickCard, final Callback callback) {
         Thread createTokenThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -74,13 +83,13 @@ public class Brick {
         createTokenThread.start();
     }
 
-    public static void createToken(Context context, final String publicKey, final BrickCard brickCard, final Callback callback) {
+    public void createToken(Context context, final String publicKey, final BrickCard brickCard, final Callback callback) {
         final Handler handler = new Handler(context.getMainLooper());
         createToken(context, handler, publicKey, brickCard, callback);
     }
 
     // Static sync mode
-    public static BrickToken createToken(Context context, String publicKey, BrickCard brickCard) throws BrickError {
+    public BrickToken createToken(Context context, String publicKey, BrickCard brickCard) throws BrickError {
         if (!brickCard.isValid()) {
             throw new BrickError("Invalid card", BrickError.Kind.INVALID);
         }
@@ -137,53 +146,73 @@ public class Brick {
         }
     }
 
-    public static String get3DsForm(Context context, String token, String email){
+    public void generateTokenFromPermanentToken(final String publicKey, final String permanentToken, final String cvv, final Callback callback) {
 
-        // Prepare SSL
-        String originalDNSCacheTTL = null;
-        boolean allowedToSetTTL = true;
-        try {
-            originalDNSCacheTTL = Security
-                    .getProperty("networkaddress.cache.ttl");
-            Security.setProperty("networkaddress.cache.ttl", "0");
-        } catch (SecurityException se) {
-            allowedToSetTTL = false;
-        }
-        try {
-            // Create HTTP request
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("brick_token", token);
-            parameters.put("email", email);
-            Log.i("3D_token", token);
-            String queryUrl = BrickHelper.urlEncodeUTF8(parameters);
-            // Connect
-            HttpURLConnection conn = createPostRequest(new URL(URL_3DS), queryUrl);
+        SmartLog.i("Gen token: " + permanentToken + " - " + cvv);
+        Thread createTokenThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Prepare SSL
+                String originalDNSCacheTTL = null;
+                boolean allowedToSetTTL = true;
+                try {
+                    originalDNSCacheTTL = Security
+                            .getProperty("networkaddress.cache.ttl");
+                    Security.setProperty("networkaddress.cache.ttl", "0");
+                } catch (SecurityException se) {
+                    allowedToSetTTL = false;
+                }
+                try {
+                    // Create HTTP request
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("public_key", publicKey);
+                    parameters.put("card[token]", permanentToken);
+                    parameters.put("card[cvv]", cvv);
+                    String queryUrl = BrickHelper.urlEncodeUTF8(parameters);
+                    // Connect
+                    HttpURLConnection conn = createPostRequest(new URL(GENERATE_TOKEN_URL), queryUrl);
 //            conn = PwUtils.addExtraHeaders(context, conn);
-            // Get message
-            String response = getResponseBody(conn.getInputStream());
-            Log.i("RESPONSE", response + "");
-            try {
+                    // Get message
+                    String response = getResponseBody(conn.getInputStream());
+                    Log.i("RESPONSE", response + "");
+                    try {
+                        BrickToken token = BrickHelper.createTokenFromJson(response);
+                        callback.onBrickSuccess(token);
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                } catch (Exception e) {
 
-            } catch (Exception e) {
-                e.printStackTrace(
-
-                );
-            }
-        } catch (Exception e) {
-
-        } finally {
-            if (allowedToSetTTL) {
-                if (originalDNSCacheTTL == null) {
-                    Security.setProperty("networkaddress.cache.ttl", "-1");
-                } else {
-                    Security.setProperty("networkaddress.cache.ttl",
-                            originalDNSCacheTTL);
+                } finally {
+                    if (allowedToSetTTL) {
+                        if (originalDNSCacheTTL == null) {
+                            Security.setProperty("networkaddress.cache.ttl", "-1");
+                        } else {
+                            Security.setProperty("networkaddress.cache.ttl",
+                                    originalDNSCacheTTL);
+                        }
+                    }
                 }
             }
-        }
-        return "";
-
+        });
+        createTokenThread.start();
     }
+
+    public void setResult(int success, String permanentToken) {
+        Intent intent = new Intent();
+        intent.setAction(context.getPackageName() + Brick.BROADCAST_FILTER_SDK);
+        intent.putExtra(Brick.KEY_MERCHANT_SUCCESS, success);
+        intent.putExtra(Brick.KEY_PERMANENT_TOKEN, permanentToken);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    public void setResult(String form3ds) {
+        Intent intent = new Intent();
+        intent.setAction(context.getPackageName() + Brick.BROADCAST_FILTER_SDK);
+        intent.putExtra(Brick.KEY_3DS_FORM, form3ds);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
 
     private static URL createUrl(String publicKey) throws BrickError {
         try {
@@ -197,11 +226,11 @@ public class Brick {
         }
     }
 
-    private static HttpURLConnection createPostRequest(URL url, String queryUrl) throws BrickError {
+    private HttpURLConnection createPostRequest(URL url, String queryUrl) throws BrickError {
         return createPostRequest(url, queryUrl, CONNECTION_TIMEOUT, READ_TIMEOUT);
     }
 
-    private static HttpURLConnection createPostRequest(URL url, String queryUrl, int connectionTimeout, int readTimeout) throws BrickError {
+    private HttpURLConnection createPostRequest(URL url, String queryUrl, int connectionTimeout, int readTimeout) throws BrickError {
         HttpURLConnection conn;
         try {
             conn = (HttpURLConnection) url.openConnection();
@@ -220,6 +249,7 @@ public class Brick {
         conn.setRequestProperty("Content-Type", String.format(
                 "application/x-www-form-urlencoded;charset=%s",
                 new Object[]{"UTF-8"}));
+        conn = PwUtils.addExtraHeaders(context, conn);
         checkSSLCert(conn);
         OutputStream output = null;
         try {
@@ -353,27 +383,9 @@ public class Brick {
             });
     }
 
-    public Brick setHandler(Handler handler) {
-        this.mHandler = handler;
-        return this;
-    }
-
-    public Brick setPublicKey(String publicKey) {
-        this.mPublicKey = publicKey;
-        return this;
-    }
-
-//    public BrickToken createToken(BrickCard brickCard) throws BrickError {
-//        return createToken(mPublicKey, brickCard);
-//    }
-//
-//    public void createToken(BrickCard brickCard, Callback callback) throws BrickError {
-//        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
-//        createToken(mHandler, mPublicKey, brickCard, callback);
-//    }
-
     public interface Callback {
         void onBrickSuccess(BrickToken brickToken);
+
         void onBrickError(BrickError error);
     }
 }

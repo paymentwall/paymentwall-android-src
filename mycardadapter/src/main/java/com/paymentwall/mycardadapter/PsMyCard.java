@@ -28,6 +28,7 @@ public class PsMyCard implements Serializable {
 
     private String pwSign;
     private Map<String, Object> bundle;
+    private Map<String, String> customParams;
 
     public Map<String, Object> getBundle() {
         return bundle;
@@ -47,6 +48,14 @@ public class PsMyCard implements Serializable {
 
     public void setPwSign(String pwSign) {
         this.pwSign = pwSign;
+    }
+
+    public Map<String, String> getCustomParams() {
+        return customParams;
+    }
+
+    public void setCustomParams(Map<String, String> customParams) {
+        this.customParams = customParams;
     }
 
     public Map<String, String> getInitTransactionParameterMap() {

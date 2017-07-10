@@ -97,6 +97,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         startService(intent);
 
         initUi();
+
     }
 
     @Override
@@ -247,15 +248,15 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
+//        request.setPwProjectKey("4816e84aed7ead72b46668fac6bc0953");
         request.setPwSecretKey(Constants.PW_SECRET_KEY);
         request.setAmount(good.getPrice());
         request.setCurrency("USD");
         request.setItemName(good.getName());
-        request.setItemId(good.getId());
+        request.setItemId("sample_001_20170101_020399");
         request.setUserId(Constants.USER_ID);
         request.setSignVersion(3);
         request.setItemResID(good.getImage());
-        request.setNativeDialog(true);
         request.setTimeout(30000);
 
         request.setTestMode(false);
@@ -329,8 +330,8 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 //        ExternalPs paypalPs = new ExternalPs("paypal", "Paypal", R.drawable.ps_logo_paypal, paypal);
 //        ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
 //        ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
-//        ExternalPs myCardPs = new ExternalPs("mycard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt, unionpayPs, wechatPs);
+        ExternalPs myCardPs = new ExternalPs("mycard", "MyCard", R.drawable.ps_logo_mycard, myCard);
+        request.add(alipayPsInt, unionpayPs, wechatPs, myCardPs);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
         Bundle bundle = new Bundle();

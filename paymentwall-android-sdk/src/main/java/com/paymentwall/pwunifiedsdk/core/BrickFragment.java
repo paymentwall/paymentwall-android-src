@@ -1,5 +1,6 @@
 package com.paymentwall.pwunifiedsdk.core;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +8,10 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.PhoneNumberUtils;
@@ -22,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.brick.core.Brick;
@@ -40,10 +43,15 @@ import com.paymentwall.pwunifiedsdk.brick.ui.adapter.ExpireMonthAdapter;
 import com.paymentwall.pwunifiedsdk.brick.ui.views.MaskedEditText;
 import com.paymentwall.pwunifiedsdk.brick.utils.MiscUtils;
 import com.paymentwall.pwunifiedsdk.brick.utils.PaymentMethod;
+import com.paymentwall.pwunifiedsdk.ui.StoredCardEditText;
 import com.paymentwall.pwunifiedsdk.ui.WaveHelper;
 import com.paymentwall.pwunifiedsdk.util.Key;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
+import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -51,6 +59,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 import glide.Glide;
@@ -64,12 +73,20 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     private TextView tvProduct, tvPrice, tvCopyright;
     private ImageView ivProduct;
 
+    private LinearLayout llInputCard, llStoredCard;
+
     private MaskedEditText etCardNumber;
     private EditText etCvv, etExpirationDate;
     private EditText etEmail, etNameOnCard;
     private static String cardNumber, cvv, expDate, email, nameOnCard;
     private LinearLayout llScanCard;
     private static int monthSelection = -1;
+
+    //Layout stored cards
+    private LinearLayout llCardList;
+    private EditText etNewCard;
+    private StoredCardEditText clickedCard;
+    private String permanentToken;
 
     private WaveHelper helper;
 
@@ -78,11 +95,10 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     private int statusCode;
     private BrickRequest request;
 
-    private boolean nativePaymentSucessfulDialog;
     private int timeout;
     private boolean isBrickError;
 
-    private Calendar calendar;
+
     private int month = -1, year = -1, currentYear = -1;
 
     //layout datePicker
@@ -92,6 +108,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     private GridView gvMonth;
     private ExpireMonthAdapter expireMonthAdapter;
     private static boolean isDatePickerShowing;
+    private Handler handler = new Handler();
 
     public static final int RC_SCAN_CARD = 2505;
 
@@ -107,31 +124,44 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         return instance;
     }
 
-
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equalsIgnoreCase(self.getPackageName() + Brick.BROADCAST_FILTER_SDK) && intent.getExtras().containsKey(Brick.KEY_MERCHANT_SUCCESS)) {
+            if (intent.getAction().equalsIgnoreCase(self.getPackageName() + Brick.BROADCAST_FILTER_SDK)) {
 
-                int success = intent.getIntExtra(Brick.KEY_MERCHANT_SUCCESS, -1);
-                Log.i("BRICK_RECEIVER", success + "");
-                if (getMainActivity().isWaitLayoutShowing) {
-                    getMainActivity().handler.removeCallbacks(checkTimeoutTask);
+                if (intent.getExtras().containsKey(Brick.KEY_MERCHANT_SUCCESS)) {
+                    int success = intent.getIntExtra(Brick.KEY_MERCHANT_SUCCESS, -1);
+                    Log.i("BRICK_RECEIVER", success + "");
+                    if (isWaitLayoutShowing()) {
+                        hideWaitLayout();
+                    }
+                    handler.removeCallbacks(checkTimeoutTask);
                     if (success == 1) {
-                        statusCode = ResponseCode.SUCCESSFUL;
-                        displayPaymentSucceeded();
+                        String permanentToken = intent.getStringExtra(Brick.KEY_PERMANENT_TOKEN);
+                        if (!permanentToken.equalsIgnoreCase("")) {
+                            onChargeSuccess(permanentToken);
+                        } else {
+                            statusCode = ResponseCode.SUCCESSFUL;
+                            displayPaymentSucceeded();
+                        }
                     } else {
                         isBrickError = true;
                         getMainActivity().paymentError = getString(R.string.payment_error);
                         showErrorLayout(null);
                     }
+                } else if (intent.getExtras().containsKey(Brick.KEY_3DS_FORM)) {
+                    String form3ds = intent.getStringExtra(Brick.KEY_3DS_FORM);
+                    if (isWaitLayoutShowing()) {
+                        hideWaitLayout();
+                    }
+                    getMainActivity().show3dsWebView(form3ds);
                 }
             } else if (intent.getAction().equalsIgnoreCase(self.getPackageName() + Brick.FILTER_BACK_PRESS_FRAGMENT)) {
                 if (isDatePickerShowing) {
                     hideDatePicker();
                 } else if (getMainActivity().isUnsuccessfulShowing) {
                     hideErrorLayout();
-                } else if (getMainActivity().isSuccessfulShowing || getMainActivity().isWaitLayoutShowing) {
+                } else if (getMainActivity().isSuccessfulShowing || isWaitLayoutShowing()) {
                     return;
                 } else {
                     Intent i = new Intent();
@@ -155,10 +185,14 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         filter.addAction(self.getPackageName() + Brick.BROADCAST_FILTER_SDK);
         LocalBroadcastManager.getInstance(self).registerReceiver(receiver, filter);
 
+        Brick.getInstance().setContext(self);
+
         cardNumber = null;
         cvv = null;
         expDate = null;
         email = null;
+        nameOnCard = null;
+
         monthSelection = -1;
         currentYear = -1;
         month = -1;
@@ -205,8 +239,49 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         }
     }
 
-    private void bindView(View v) {
+    private void checkStoredCard() {
+        String cards = SharedPreferenceManager.getInstance(self).getStringValue(SharedPreferenceManager.STORED_CARDS);
+        SmartLog.i("CardList: " + cards);
+        if (cards.equalsIgnoreCase("")) {
+            llInputCard.setVisibility(View.VISIBLE);
+            llStoredCard.setVisibility(View.GONE);
+        } else {
+            llInputCard.setVisibility(View.GONE);
+            llStoredCard.setVisibility(View.VISIBLE);
+            try {
+                LayoutInflater inflater = (LayoutInflater) self.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                JSONObject obj = new JSONObject(cards);
+                Iterator<String> iter = obj.keys();
+                llCardList.removeAllViews();
+                while (iter.hasNext()) {
+                    String key = iter.next();
+                    String value = obj.getString(key);
+                    View view = inflater.inflate(PwUtils.getLayoutId(self, "stored_card_layout"), null);
+                    StoredCardEditText etCard = (StoredCardEditText) view.findViewById(R.id.etStoredCard);
+                    etCard.setCardNumber(key);
+                    etCard.setPermanentToken(value);
+                    etCard.setText("xxxx xxxx xxxx " + key.substring(key.length() - 4, key.length()));
+                    etCard.setOnClickListener(onClickStoredCard);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) PwUtils.dpToPx(self, 64f));
+                    params.setMargins(0, (int) PwUtils.dpToPx(self, 2f), 0, 0);
+                    view.setLayoutParams(params);
+                    llCardList.addView(view);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    private View.OnClickListener onClickStoredCard = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            clickedCard = (StoredCardEditText) v;
+            showInputCvvDialog(clickedCard.getPermanentToken());
+        }
+    };
+
+    private void bindView(View v) {
         Bundle extras = getArguments();
         if (extras == null) {
             Intent result = new Intent();
@@ -236,7 +311,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             self.setResult(statusCode, result);
             getMainActivity().backFragment(null);
         }
-
         if (request == null) {
             Intent result = new Intent();
             result.putExtra(Key.SDK_ERROR_MESSAGE, "NULL REQUEST OBJECT");
@@ -245,7 +319,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             getMainActivity().backFragment(null);
             return;
         }
-
         if (!request.validate()) {
             Intent result = new Intent();
             result.putExtra(Key.SDK_ERROR_MESSAGE, "MORE PARAMETER(S) NEEDED");
@@ -264,9 +337,10 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             return;
         }
 
-        nativePaymentSucessfulDialog = request.isNativeDialog();
         timeout = request.getTimeout();
 
+        llInputCard = (LinearLayout) v.findViewById(R.id.llInputCard);
+        llStoredCard = (LinearLayout) v.findViewById(R.id.llStoredCard);
 
         tvProduct = (TextView) v.findViewById(R.id.tvProduct);
         tvPrice = (TextView) v.findViewById(R.id.tvPrice);
@@ -281,6 +355,9 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         etEmail = (EditText) v.findViewById(R.id.etEmail);
         etNameOnCard = (EditText) v.findViewById(R.id.etName);
         llScanCard = (LinearLayout) v.findViewById(R.id.llScanCard);
+
+        llCardList = (LinearLayout) v.findViewById(R.id.llCardList);
+        etNewCard = (EditText) v.findViewById(R.id.etNewCard);
 
         btnConfirm = (Button) v.findViewById(R.id.btnConfirm);
 
@@ -326,7 +403,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         etCardNumber.addOnFullFillListener(new MaskedEditText.onFullFillListener() {
             @Override
             public void onFullFill() {
-
             }
         });
 
@@ -341,7 +417,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         llScanCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
                     Class<?> CardIOActivity = Class.forName("com.paymentwall.cardio.CardIOActivity");
                     Intent scanIntent = new Intent(self, CardIOActivity);
@@ -379,6 +454,14 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             }
         });
 
+        etNewCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llInputCard.setVisibility(View.VISIBLE);
+                llStoredCard.setVisibility(View.GONE);
+            }
+        });
+
         if (cardNumber != null) {
             etCardNumber.setText(cardNumber);
         }
@@ -395,7 +478,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             etEmail.setText(email);
         }
 
-        if(nameOnCard != null){
+        if (nameOnCard != null) {
             etNameOnCard.setText(nameOnCard);
         }
 
@@ -405,6 +488,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
         init(v);
         checkScannerPlugin();
+        checkStoredCard();
     }
 
     private void init(View v) {
@@ -601,12 +685,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     hideKeyboard();
-//                    etCardNumber.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            etCardNumber.clearFocus();
-//                        }
-//                    },100);
                     return true;
                 }
                 return false;
@@ -619,7 +697,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 .getDrawable(R.drawable.saas_bg_expiration_date_dialog);
         expDrawable.setColor(PwUtils.getColorFromAttribute(self, "bgExpDialog"));
         final LinearLayout llExpDialog = (LinearLayout) v.findViewById(R.id.llExpDialog);
-        if(llExpDialog != null){
+        if (llExpDialog != null) {
             llExpDialog.post(new Runnable() {
                 @Override
                 public void run() {
@@ -640,7 +718,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     Method mthGetFormattedCardNumber = CreditCard.getMethod("getFormattedCardNumber");
 
                     etCardNumber.setText(mthGetFormattedCardNumber.invoke(creditCard) + "");
-
 //                    if (scanResult.isExpiryValid()) {
 //                        etExpirationDate.setText(scanResult.expiryMonth + "/" + scanResult.expiryYear);
 //                    }
@@ -656,6 +733,140 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             } else {
             }
         }
+    }
+
+    public void showStoreCardConfirmationDialog() {
+        final Dialog dialog = new Dialog(self);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_store_card_confirm);
+        dialog.setCancelable(false);
+        TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
+
+        tvYes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                BrickFragment.getInstance().onStoreCardConfirm(true);
+            }
+        });
+
+        tvNo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                BrickFragment.getInstance().onStoreCardConfirm(true);
+            }
+        });
+
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showInputCvvDialog(final String permanentToken) {
+        final Dialog dialog = new Dialog(self);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_input_cvv);
+        dialog.setCancelable(false);
+        final TextView tvSubmit = (TextView) dialog.findViewById(R.id.tvSubmit);
+        tvSubmit.setEnabled(false);
+        TextView tvCancel = (TextView) dialog.findViewById(R.id.tvCancel);
+        final EditText etCvv = (EditText) dialog.findViewById(R.id.etCvv);
+
+        etCvv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 3) {
+                    tvSubmit.setEnabled(true);
+                } else {
+                    tvSubmit.setEnabled(false);
+                }
+            }
+        });
+
+        tvSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                hideKeyboard();
+                try {
+                    showWaitLayout();
+                    Brick.getInstance().generateTokenFromPermanentToken(request.getAppKey(), permanentToken, etCvv.getText().toString().trim(), BrickFragment.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                hideKeyboard();
+            }
+        });
+
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void onChargeSuccess(String permanentToken) {
+        this.permanentToken = permanentToken;
+        if (isWaitLayoutShowing()) {
+            hideWaitLayout();
+        }
+        hide3dsWebview();
+        handler.removeCallbacks(checkTimeoutTask);
+        if (SharedPreferenceManager.getInstance(self).isCardExisting(cardNumber)) {
+            statusCode = ResponseCode.SUCCESSFUL;
+            displayPaymentSucceeded();
+        } else {
+            showStoreCardConfirmationDialog();
+        }
+    }
+
+    public void onChargeFailed(String error) {
+        if (isWaitLayoutShowing()) {
+            hideWaitLayout();
+        }
+        hide3dsWebview();
+        isBrickError = true;
+        getMainActivity().paymentError = (error == null ? getString(R.string.payment_error) : error);
+        showErrorLayout(error);
+    }
+
+    public void onStoreCardConfirm(boolean agree) {
+        if (agree) {
+            SharedPreferenceManager.getInstance(self).addCard(cardNumber, permanentToken);
+            Toast.makeText(self, getString(R.string.store_card_success), Toast.LENGTH_SHORT).show();
+        }
+        statusCode = ResponseCode.SUCCESSFUL;
+        displayPaymentSucceeded();
     }
 
     private void onChangeExpirationYear(int increase) {
@@ -684,7 +895,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         // Check if the card data is possible or not
         if (!brickCard.isValid()) {
             // if confirm button is not pressed
-            if(!confirmed){
+            if (!confirmed) {
                 btnConfirm.setEnabled(false);
                 return;
             }
@@ -719,7 +930,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         } else {
             if (confirmed) {
                 showWaitLayout();
-                Brick.createToken(self, request.getAppKey(), brickCard, this);
+                Brick.getInstance().createToken(self, request.getAppKey(), brickCard, this);
             } else {
                 btnConfirm.setEnabled(true);
             }
@@ -741,18 +952,11 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     public void onBrickSuccess(BrickToken brickToken) {
         String token = brickToken.getToken();
         if (token != null) {
-//            get3dsForm(token);
             Intent intent = new Intent();
             intent.setAction(getActivity().getPackageName() + Brick.BROADCAST_FILTER_MERCHANT);
             intent.putExtra(Brick.KEY_BRICK_TOKEN, token);
             LocalBroadcastManager.getInstance(self).sendBroadcast(intent);
-
-            if (!nativePaymentSucessfulDialog) {
-                self.setResult(ResponseCode.MERCHANT_PROCESSING);
-                self.finish();
-            } else {
-                getMainActivity().handler.postDelayed(checkTimeoutTask, timeout);
-            }
+            handler.postDelayed(checkTimeoutTask, timeout);
         }
     }
 
@@ -761,16 +965,12 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         showErrorLayout(null);
     }
 
-    private void get3dsForm(String token){
-        Brick.get3DsForm(self, token, etEmail.getText().toString().trim());
-    }
-
     private Runnable checkTimeoutTask = new Runnable() {
         @Override
         public void run() {
             isBrickError = true;
             getMainActivity().paymentError = getString(R.string.timeout_connnection);
-            getMainActivity().handler.removeCallbacks(this);
+            handler.removeCallbacks(this);
             hideWaitLayout();
         }
     };

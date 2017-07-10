@@ -58,23 +58,39 @@ public class BaseFragment extends Fragment {
     }
 
     public void showWaitLayout() {
-        getMainActivity().showWaitLayout();
+        if (getMainActivity() != null)
+            getMainActivity().showWaitLayout();
     }
 
     public void hideWaitLayout() {
-        getMainActivity().hideWaitLayout();
+        if (getMainActivity() != null)
+            getMainActivity().hideWaitLayout();
     }
 
     public void showErrorLayout(final String error) {
-        getMainActivity().showErrorLayout(error);
+        if (getMainActivity() != null)
+            getMainActivity().showErrorLayout(error);
     }
 
     public void hideErrorLayout() {
-        getMainActivity().hideErrorLayout();
+        if (getMainActivity() != null)
+            getMainActivity().hideErrorLayout();
     }
 
     public void displayPaymentSucceeded() {
-        getMainActivity().displayPaymentSucceeded();
+        if (getMainActivity() != null)
+            getMainActivity().displayPaymentSucceeded();
+    }
+
+    public boolean isWaitLayoutShowing() {
+        if (getMainActivity() != null)
+            return getMainActivity().isWaitLayoutShowing;
+        return false;
+    }
+
+    public void hide3dsWebview() {
+        if (getMainActivity() != null)
+            getMainActivity().hide3dsWebview();
     }
 
     public void onPaymentSuccessful() {
@@ -89,7 +105,7 @@ public class BaseFragment extends Fragment {
 
     }
 
-    public void onPaymentError(String error){
+    public void onPaymentError(String error) {
 
     }
 

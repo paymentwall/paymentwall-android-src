@@ -41,7 +41,7 @@ public class UnifiedRequest implements Parcelable {
     private int itemResID;
     private String itemContentProvider;
     private int timeout;
-    private boolean nativeDialog;
+//    private boolean nativeDialog;
     private boolean testMode;
     private BrickRequest brickRequest;
     private MobiamoPayment mobiamoRequest;
@@ -99,14 +99,13 @@ public class UnifiedRequest implements Parcelable {
         this.brickRequest = new BrickRequest();
         brickRequest.setAmount(getAmount());
         brickRequest.setCurrency(getCurrency());
-//        brickRequest.setAppKey("4816e84aed7ead72b46668fac6bc0953");
         brickRequest.setAppKey(getPwProjectKey());
         brickRequest.setName(getItemName());
         brickRequest.setItemResID(getItemResID());
         brickRequest.setItemUrl(getItemUrl());
         brickRequest.setItemFile(getItemFile());
         brickRequest.setItemContentProvider(getItemContentProvider());
-        brickRequest.setNativeDialog(isNativeDialog());
+//        brickRequest.setNativeDialog(isNativeDialog());
         brickRequest.setTimeout(30000);
     }
 
@@ -248,13 +247,13 @@ public class UnifiedRequest implements Parcelable {
         this.timeout = timeout;
     }
 
-    public boolean isNativeDialog() {
-        return nativeDialog;
-    }
-
-    public void setNativeDialog(boolean nativeDialog) {
-        this.nativeDialog = nativeDialog;
-    }
+//    public boolean isNativeDialog() {
+//        return nativeDialog;
+//    }
+//
+//    public void setNativeDialog(boolean nativeDialog) {
+//        this.nativeDialog = nativeDialog;
+//    }
 
     public String getUserId() {
         return userId;
@@ -399,7 +398,7 @@ public class UnifiedRequest implements Parcelable {
         dest.writeInt(this.itemResID);
         dest.writeString(this.itemContentProvider);
         dest.writeInt(this.timeout);
-        dest.writeByte(this.nativeDialog ? (byte) 1 : (byte) 0);
+//        dest.writeByte(this.nativeDialog ? (byte) 1 : (byte) 0);
         dest.writeByte(this.testMode ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.brickRequest, flags);
         dest.writeSerializable(this.mobiamoRequest);
@@ -446,7 +445,7 @@ public class UnifiedRequest implements Parcelable {
         this.itemResID = in.readInt();
         this.itemContentProvider = in.readString();
         this.timeout = in.readInt();
-        this.nativeDialog = in.readByte() != 0;
+//        this.nativeDialog = in.readByte() != 0;
         this.testMode = in.readByte() != 0;
         this.brickRequest = in.readParcelable(BrickRequest.class.getClassLoader());
         this.mobiamoRequest = (MobiamoPayment) in.readSerializable();

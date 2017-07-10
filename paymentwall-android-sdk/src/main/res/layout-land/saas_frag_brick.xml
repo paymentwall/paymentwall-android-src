@@ -33,10 +33,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/llInputCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -220,14 +222,53 @@
                             android:layout_height="48dp"
                             android:layout_marginTop="32dp"
                             android:background="?bgConfirmButton"
-                            android:gravity="center"
                             android:enabled="false"
+                            android:gravity="center"
                             android:hint="@string/email_hint"
                             android:text="@string/confirm"
                             android:textAllCaps="true"
                             android:textColor="?textConfirmButton"
                             android:textSize="22sp"
                             android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llStoredCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/stored_card"
+                            android:textColor="?textFormTitle"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:id="@+id/llCardList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+
+                        <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularEditText
+                            android:id="@+id/etNewCard"
+                            style="@style/saas_ps_button"
+                            android:layout_width="match_parent"
+                            android:clickable="true"
+                            android:drawableLeft="@drawable/ic_new_card"
+                            android:focusable="false"
+                            android:layout_marginTop="2dp"
+                            android:focusableInTouchMode="false"
+                            android:gravity="center_vertical|right"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:text="@string/use_a_new_card"
+                            android:textColor="?textInputForm"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 

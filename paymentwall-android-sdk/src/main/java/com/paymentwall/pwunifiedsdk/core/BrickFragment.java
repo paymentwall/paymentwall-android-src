@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -202,6 +203,8 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         getMainActivity().isUnsuccessfulShowing = false;
         getMainActivity().isSuccessfulShowing = false;
         isDatePickerShowing = false;
+
+        //{"4033 9200 2832 3824":"439f78d333b9685c9f05ffca6811c842"}
     }
 
     @Override
@@ -265,6 +268,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) PwUtils.dpToPx(self, 64f));
                     params.setMargins(0, (int) PwUtils.dpToPx(self, 2f), 0, 0);
                     view.setLayoutParams(params);
+                    view.setOnLongClickListener(onLongClickStoredCard);
                     llCardList.addView(view);
                 }
             } catch (Exception e) {
@@ -278,6 +282,15 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         public void onClick(View v) {
             clickedCard = (StoredCardEditText) v;
             showInputCvvDialog(clickedCard.getPermanentToken());
+        }
+    };
+
+
+    private View.OnLongClickListener onLongClickStoredCard = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showDeleteCardConfirmation((StoredCardEditText) v);
+            return true;
         }
     };
 
@@ -741,6 +754,8 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_store_card_confirm);
         dialog.setCancelable(false);
+        TextView tvTitle = (TextView)dialog.findViewById(R.id.tvConfirmation);
+        tvTitle.setText(getString(R.string.store_card_confirmation));
         TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
         TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
 
@@ -761,6 +776,51 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 // TODO Auto-generated method stub
                 dialog.dismiss();
                 BrickFragment.getInstance().onStoreCardConfirm(true);
+            }
+        });
+
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showDeleteCardConfirmation(final StoredCardEditText et) {
+        final Dialog dialog = new Dialog(self);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_store_card_confirm);
+        dialog.setCancelable(false);
+        TextView tvTitle = (TextView)dialog.findViewById(R.id.tvConfirmation);
+        tvTitle.setText(getString(R.string.delete_card_confirmation));
+        TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
+
+        tvYes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                String cards = SharedPreferenceManager.getInstance(self).getStringValue(SharedPreferenceManager.STORED_CARDS);
+                try{
+                    JSONObject obj = new JSONObject(cards);
+                    obj.remove(et.getCardNumber());
+                    SharedPreferenceManager.getInstance(self).putStringValue(SharedPreferenceManager.STORED_CARDS, obj.toString());
+                    llCardList.removeView(et);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        tvNo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
             }
         });
 

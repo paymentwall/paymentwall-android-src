@@ -697,7 +697,6 @@ public class MobiamoDialogActivity extends Activity {
         }
     }
 
-
     @Override
     public void onDestroy() {
         request = null;
@@ -753,7 +752,6 @@ public class MobiamoDialogActivity extends Activity {
                 ((CheckedTextView) view).setCheckMarkDrawable(null);
             }
             return view;
-
         }
 
         @SuppressLint("InlinedApi")
@@ -1071,7 +1069,7 @@ public class MobiamoDialogActivity extends Activity {
     }
 
     private boolean isShowPaymentConfirmation(MobiamoPayment request) {
-        Log.i("NULL CHECK", request == null?"NULL": "NOT NULL");
+        Log.i("NULL CHECK", request == null ? "NULL" : "NOT NULL");
         Log.i("REQUEST", request.getAmount() + " " + request.getCurrency() + " " + request.getKey());
         return (!"".equals(request.getAmount())
                 && !" ".equals(request.getAmount())

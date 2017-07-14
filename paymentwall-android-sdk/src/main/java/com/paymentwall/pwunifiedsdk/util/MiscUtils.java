@@ -1,8 +1,13 @@
 package com.paymentwall.pwunifiedsdk.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -148,19 +153,6 @@ public class MiscUtils {
         return sortedMap;
     }
 
-//    public static String printMap(Map<String, String> params) {
-//        StringBuilder out = new StringBuilder();
-//        final Set<Entry<String, String>> entrySet = params.entrySet();
-//        for (Entry<String, String> entry : entrySet) {
-////            out.append('|');
-//            out.append(entry.getKey());
-//            out.append('=');
-//            out.append("\"" + entry.getValue() + "\"");
-//            out.append('&');
-//        }
-//        String printedStr = out.toString().substring(0, out.toString().length() - 1);
-//        return printedStr;
-//    }
 
     public static String printPwMap(Map<String, String> params){
         StringBuilder out = new StringBuilder();
@@ -319,4 +311,26 @@ public class MiscUtils {
             throw new IllegalArgumentException("Data type is not accepted");
         }
     }
+
+    public static String getRealPathFromURI(Uri contentURI, Activity context) {
+        Log.i("URI", contentURI.toString());
+        String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(contentURI, projection, null,
+                null, null);
+        if (cursor == null) {
+            Log.i("CURSOR","CURSOR_NULL");
+            return null;
+        }
+        Log.i("CURSOR",cursor.getCount()+"");
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        if (cursor.moveToFirst()) {
+            String s = cursor.getString(column_index);
+            // cursor.close();
+            return s;
+        }
+        // cursor.close();
+        return null;
+    }
+
 }

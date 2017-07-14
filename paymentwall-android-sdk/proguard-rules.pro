@@ -170,3 +170,7 @@
 
 -keep class org.jsoup.**
 
+-keep class com.paymentwall.pwunifiedsdk.object.AlipayPs {
+    <fields>;
+    <methods>;
+}

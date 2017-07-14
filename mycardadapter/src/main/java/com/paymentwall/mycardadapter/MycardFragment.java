@@ -1,14 +1,9 @@
 package com.paymentwall.mycardadapter;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -34,7 +29,7 @@ public class MycardFragment extends Fragment {
     private EditText etCardId, etCardPassword;
     private Button btnProceed;
     private String transactionId;
-    private PsMyCard psMyCard;
+    private PsMycard psMyCard;
     public static String MYCARD_OBJECT = "MYCARD_OBJECT";
     private Object psActivity;
 
@@ -69,7 +64,7 @@ public class MycardFragment extends Fragment {
         }
 
         if (bundle != null && bundle.containsKey(MYCARD_OBJECT)) {
-            psMyCard = (PsMyCard) bundle.getSerializable(MYCARD_OBJECT);
+            psMyCard = (PsMycard) bundle.getParcelable(MYCARD_OBJECT);
         }
     }
 

@@ -35,11 +35,11 @@ import com.paymentwall.pwunifiedsdk.mint.message.MintRequest;
 import com.paymentwall.pwunifiedsdk.mint.message.MintResponse;
 import com.paymentwall.pwunifiedsdk.mint.ui.views.AutoFitEditText;
 import com.paymentwall.pwunifiedsdk.mint.utils.Const;
-import com.paymentwall.pwunifiedsdk.mint.utils.MiscUtils;
 import com.paymentwall.pwunifiedsdk.mint.utils.PWHttpClient;
 import com.paymentwall.pwunifiedsdk.mint.utils.PaymentMethod;
 import com.paymentwall.pwunifiedsdk.mint.utils.SntpClient;
 import com.paymentwall.pwunifiedsdk.util.Key;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 

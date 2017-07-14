@@ -49,7 +49,7 @@ public class AlipayAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable ps, Map<String, Object> bundle, Map<String, String> customParams) {
+    private void pay(final Context context, Parcelable ps, Map<String, String> bundle, Map<String, String> customParams) {
         this.psAlipay = (PsAlipay) ps;
         this.context = context;
         this.psAlipay.setParams(bundle);

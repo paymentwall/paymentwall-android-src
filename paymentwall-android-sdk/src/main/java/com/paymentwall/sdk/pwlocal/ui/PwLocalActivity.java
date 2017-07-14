@@ -38,7 +38,7 @@ import com.paymentwall.sdk.pwlocal.utils.ApiType;
 import com.paymentwall.sdk.pwlocal.utils.Const;
 import com.paymentwall.sdk.pwlocal.utils.Const.PW_URL;
 import com.paymentwall.sdk.pwlocal.utils.Key;
-import com.paymentwall.sdk.pwlocal.utils.MiscUtils;
+import com.paymentwall.sdk.pwlocal.utils.PwLocalMiscUtils;
 import com.paymentwall.sdk.pwlocal.utils.PaymentMethod;
 import com.paymentwall.sdk.pwlocal.utils.PaymentStatusComplexCallback;
 import com.paymentwall.sdk.pwlocal.utils.PaymentStatusUtils;
@@ -673,9 +673,9 @@ public class PwLocalActivity extends FragmentActivity implements
 
     public boolean isSuccessful(String url) {
         if (successfulUrl != null) {
-            return MiscUtils.urlEqual(url, successfulUrl);
+            return PwLocalMiscUtils.urlEqual(url, successfulUrl);
         } else {
-            return MiscUtils.urlEqual(url, Const.DEFAULT_SUCCESS_URL);
+            return PwLocalMiscUtils.urlEqual(url, Const.DEFAULT_SUCCESS_URL);
         }
     }
 
@@ -704,7 +704,7 @@ public class PwLocalActivity extends FragmentActivity implements
             for (Signature sig : packageInfo.signatures) {
                 stringBuilder.append(sig.toChars());
             }
-            parameters.put(Const.P.HISTORY_MOBILE_PACKAGE_SIGNATURE, MiscUtils.sha256(stringBuilder.toString()));
+            parameters.put(Const.P.HISTORY_MOBILE_PACKAGE_SIGNATURE, PwLocalMiscUtils.sha256(stringBuilder.toString()));
             parameters.put(Const.P.HISTORY_MOBILE_APP_VERSION, packageInfo.versionName);*/
             ApplicationInfo applicationInfo = appContext.getApplicationInfo();
             int appLabelResId = applicationInfo.labelRes;

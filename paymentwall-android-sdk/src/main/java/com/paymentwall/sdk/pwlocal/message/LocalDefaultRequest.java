@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.paymentwall.sdk.pwlocal.utils.Const;
 import com.paymentwall.sdk.pwlocal.utils.Const.P;
-import com.paymentwall.sdk.pwlocal.utils.MiscUtils;
+import com.paymentwall.sdk.pwlocal.utils.PwLocalMiscUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -93,7 +93,7 @@ public class LocalDefaultRequest extends LocalRequest implements Serializable, P
         dest.writeValue(this.timeStamp);
         dest.writeString(this.uid);
         dest.writeString(this.secretKey);
-        dest.writeBundle(MiscUtils.stringMapToBundle(this.parameters));
+        dest.writeBundle(PwLocalMiscUtils.stringMapToBundle(this.parameters));
         dest.writeString(this.email);
         dest.writeValue(this.evaluation);
         dest.writeString(this.firstname);
@@ -112,12 +112,12 @@ public class LocalDefaultRequest extends LocalRequest implements Serializable, P
         dest.writeString(this.birthday);
         dest.writeString(this.countryCode);
         dest.writeString(this.apiType);
-        dest.writeBundle(MiscUtils.intMapToBundle(this.externalIds));
-        dest.writeBundle(MiscUtils.pricesToBundle(this.prices));
-        dest.writeBundle(MiscUtils.intMapToBundle(this.currencies));
+        dest.writeBundle(PwLocalMiscUtils.intMapToBundle(this.externalIds));
+        dest.writeBundle(PwLocalMiscUtils.pricesToBundle(this.prices));
+        dest.writeBundle(PwLocalMiscUtils.intMapToBundle(this.currencies));
         dest.writeString(this.defaultGoodsId);
-        dest.writeBundle(MiscUtils.intMapToBundle(this.displayGoods));
-        dest.writeBundle(MiscUtils.intMapToBundle(this.hideGoods));
+        dest.writeBundle(PwLocalMiscUtils.intMapToBundle(this.displayGoods));
+        dest.writeBundle(PwLocalMiscUtils.intMapToBundle(this.hideGoods));
         dest.writeParcelable(this.userProfile, flags);
         dest.writeString(this.mobileDownloadLink);
     }
@@ -130,7 +130,7 @@ public class LocalDefaultRequest extends LocalRequest implements Serializable, P
         this.timeStamp = (Long) in.readValue(Long.class.getClassLoader());
         this.uid = in.readString();
         this.secretKey = in.readString();
-        this.parameters = MiscUtils.bundleToStringTreeMap(in.readBundle());
+        this.parameters = PwLocalMiscUtils.bundleToStringTreeMap(in.readBundle());
         this.email = in.readString();
         this.evaluation = (Integer) in.readValue(Integer.class.getClassLoader());
         this.firstname = in.readString();
@@ -149,12 +149,12 @@ public class LocalDefaultRequest extends LocalRequest implements Serializable, P
         this.birthday = in.readString();
         this.countryCode = in.readString();
         this.apiType = in.readString();
-        this.externalIds = MiscUtils.bundleToIntegerTreeMap(in.readBundle());
-        this.prices = MiscUtils.bundleToPrices(in.readBundle());
-        this.currencies = MiscUtils.bundleToIntegerTreeMap(in.readBundle());
+        this.externalIds = PwLocalMiscUtils.bundleToIntegerTreeMap(in.readBundle());
+        this.prices = PwLocalMiscUtils.bundleToPrices(in.readBundle());
+        this.currencies = PwLocalMiscUtils.bundleToIntegerTreeMap(in.readBundle());
         this.defaultGoodsId = in.readString();
-        this.displayGoods = MiscUtils.bundleToIntegerTreeMap(in.readBundle());
-        this.hideGoods = MiscUtils.bundleToIntegerTreeMap(in.readBundle());
+        this.displayGoods = PwLocalMiscUtils.bundleToIntegerTreeMap(in.readBundle());
+        this.hideGoods = PwLocalMiscUtils.bundleToIntegerTreeMap(in.readBundle());
         this.userProfile = in.readParcelable(UserProfile.class.getClassLoader());
         this.mobileDownloadLink = in.readString();
     }

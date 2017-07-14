@@ -1,6 +1,7 @@
 package com.paymentwall.pwunifiedsdk.ui;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
 public class ExtPsLayout extends LinearLayout {
 
     private String psId;
-    private Serializable params;
+    private Parcelable params;
 
     public ExtPsLayout(Context context) {
         super(context);
@@ -35,11 +36,11 @@ public class ExtPsLayout extends LinearLayout {
         this.psId = psId;
     }
 
-    public Serializable getParams() {
+    public Parcelable getParams() {
         return params;
     }
 
-    public void setParams(Serializable params) {
+    public void setParams(Parcelable params) {
         this.params = params;
     }
 }

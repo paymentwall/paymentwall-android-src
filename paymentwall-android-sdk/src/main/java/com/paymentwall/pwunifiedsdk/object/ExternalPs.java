@@ -3,20 +3,22 @@ package com.paymentwall.pwunifiedsdk.object;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
+
 import java.io.Serializable;
 
 /**
  * Created by nguyen.anh on 9/9/2016.
  */
 
-public class ExternalPs implements Serializable {
+public class ExternalPs implements Parcelable {
 
     private String id;
     private String displayName;
     private int iconResId;
-    private Serializable params;
+    private Parcelable params;
 
-    public ExternalPs(String id , String displayName, int iconResId, Serializable params){
+    public ExternalPs(String id, String displayName, int iconResId, Parcelable params) {
         this.id = id;
         this.displayName = displayName;
         this.iconResId = iconResId;
@@ -47,12 +49,56 @@ public class ExternalPs implements Serializable {
         this.iconResId = iconResId;
     }
 
-    public Serializable getParams() {
+    public Parcelable getParams() {
         return params;
     }
 
-    public void setParams(Serializable params) {
+    public void setParams(Parcelable params) {
         this.params = params;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.displayName);
+        dest.writeInt(this.iconResId);
+        if (!this.id.equalsIgnoreCase("pwlocal")) {
+            dest.writeParcelable(this.params, flags);
+        }
+
+    }
+
+    protected ExternalPs(Parcel in) {
+        this.id = in.readString();
+        this.displayName = in.readString();
+        this.iconResId = in.readInt();
+        if (this.id.equalsIgnoreCase("pwlocal")) {
+            this.params = null;
+        } else {
+            try {
+                Class<?> PsClass = Class.forName("com.paymentwall." + (this.id + "Adapter.").toLowerCase() + "Ps" + PwUtils.capitalize(this.id));
+                this.params = in.readParcelable(PsClass.getClassLoader());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static final Creator<ExternalPs> CREATOR = new Creator<ExternalPs>() {
+        @Override
+        public ExternalPs createFromParcel(Parcel source) {
+            return new ExternalPs(source);
+        }
+
+        @Override
+        public ExternalPs[] newArray(int size) {
+            return new ExternalPs[size];
+        }
+    };
 }

@@ -17,7 +17,7 @@ import com.paymentwall.alipayadapter.PsAlipay;
 import com.paymentwall.baiduadapter.PsBaidu;
 import com.paymentwall.dokuadapter.PsDoku;
 import com.paymentwall.moladapter.PsMol;
-import com.paymentwall.mycardadapter.PsMyCard;
+import com.paymentwall.mycardadapter.PsMycard;
 import com.paymentwall.pandapptest.R;
 import com.paymentwall.pandapptest.config.Constants;
 import com.paymentwall.pandapptest.config.SharedPreferenceManager;
@@ -253,7 +253,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.setAmount(good.getPrice());
         request.setCurrency("USD");
         request.setItemName(good.getName());
-        request.setItemId("sample_001_20170101_020399");
+        request.setItemId(good.getId());
         request.setUserId(Constants.USER_ID);
         request.setSignVersion(3);
         request.setItemResID(good.getImage());
@@ -318,20 +318,20 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
         PsDoku doku = new PsDoku();
 
-        PsMyCard myCard = new PsMyCard();
+        PsMycard myCard = new PsMycard();
 
         request.addCustomParam("date_timeStamp", System.currentTimeMillis() / 1000 + "");
 
 //        ExternalPs alipayPs = new ExternalPs("alipay", "Alipay Domestic", R.drawable.ps_logo_alipay, alipay);
         ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay International", R.drawable.ps_logo_alipay, alipayInternaltional);
-        ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
+//        ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
 //        ExternalPs molPs = new ExternalPs("mol", "MolPoints", R.drawable.ps_mol_logo, mol);
-        ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
+//        ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
 //        ExternalPs paypalPs = new ExternalPs("paypal", "Paypal", R.drawable.ps_logo_paypal, paypal);
 //        ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
 //        ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
         ExternalPs myCardPs = new ExternalPs("mycard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt, unionpayPs, wechatPs, myCardPs);
+        request.add(alipayPsInt, myCardPs);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
         Bundle bundle = new Bundle();

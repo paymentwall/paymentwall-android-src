@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MiscUtils {
+public class PwLocalMiscUtils {
     public static String md5(String inputString) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

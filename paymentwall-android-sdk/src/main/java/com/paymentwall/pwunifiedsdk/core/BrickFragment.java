@@ -42,11 +42,11 @@ import com.paymentwall.pwunifiedsdk.brick.core.BrickToken;
 import com.paymentwall.pwunifiedsdk.brick.message.BrickRequest;
 import com.paymentwall.pwunifiedsdk.brick.ui.adapter.ExpireMonthAdapter;
 import com.paymentwall.pwunifiedsdk.brick.ui.views.MaskedEditText;
-import com.paymentwall.pwunifiedsdk.brick.utils.MiscUtils;
 import com.paymentwall.pwunifiedsdk.brick.utils.PaymentMethod;
 import com.paymentwall.pwunifiedsdk.ui.StoredCardEditText;
 import com.paymentwall.pwunifiedsdk.ui.WaveHelper;
 import com.paymentwall.pwunifiedsdk.util.Key;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
@@ -949,7 +949,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
         etCardNumber.clearFocus();
 
-        Log.i("CARD_INFO", cardNumber + "-" + expMonth + "-" + expYear + "-" + cvv);
+//        Log.i("CARD_INFO", cardNumber + "-" + expMonth + "-" + expYear + "-" + cvv);
         // Create a brickcard object
         final BrickCard brickCard = new BrickCard(cardNumber, expMonth, expYear, cvv, email);
         // Check if the card data is possible or not

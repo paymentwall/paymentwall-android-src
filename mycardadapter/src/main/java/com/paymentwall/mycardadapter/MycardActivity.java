@@ -23,7 +23,7 @@ public class MycardActivity extends Activity {
     private EditText etCardId, etCardPassword;
     private Button btnProceed;
     private String transactionId;
-    private PsMyCard psMyCard;
+    private PsMycard psMyCard;
     public static String MYCARD_OBJECT = "MYCARD_OBJECT";
 
     @Override
@@ -33,7 +33,7 @@ public class MycardActivity extends Activity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey(MYCARD_OBJECT)) {
-            psMyCard = (PsMyCard) bundle.getSerializable(MYCARD_OBJECT);
+            psMyCard = (PsMycard) bundle.getSerializable(MYCARD_OBJECT);
         }
 
         initUI();

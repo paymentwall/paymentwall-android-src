@@ -2,39 +2,29 @@ package com.paymentwall.mycardadapter;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Base64;
 import android.util.Log;
 
-import java.io.Serializable;
-import java.net.URLEncoder;
-import java.security.KeyFactory;
-import java.security.MessageDigest;
-import java.security.PrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.ArrayList;
-import java.util.Collections;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
+
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
  * Created by nguyen.anh on 5/15/2017.
  */
 
-public class PsMyCard implements Serializable {
+public class PsMycard implements Parcelable {
 
     private String pwSign;
-    private Map<String, Object> bundle;
+    private Map<String, String> bundle;
     private Map<String, String> customParams;
 
-    public Map<String, Object> getBundle() {
+    public Map<String, String> getBundle() {
         return bundle;
     }
 
-    public void setBundle(Map<String, Object> bundle) {
+    public void setBundle(Map<String, String> bundle) {
         this.bundle = bundle;
     }
 
@@ -70,13 +60,10 @@ public class PsMyCard implements Serializable {
         parametersMap.put("product_name", (String) bundle.get("ITEM_NAME"));
         parametersMap.put("sign_version", "3");
 
-        String orderInfo = printWallApiMap(sortMap(parametersMap));
+        String orderInfo = MiscUtils.printPwMap(MiscUtils.sortMap(parametersMap));
         orderInfo += bundle.get("PW_PROJECT_SECRET");
         String sign = "";
-//        if (((String)bundle.get("SIGN_VERSION")).equalsIgnoreCase("3"))
-//            sign = sha256(orderInfo);
-//        else if(((String)bundle.get("SIGN_VERSION")).equalsIgnoreCase("2"))
-        sign = sha256(orderInfo);
+        sign = MiscUtils.sha256(orderInfo);
         parametersMap.put("sign", sign);
         Log.i("ORDER_INFO", orderInfo);
         Log.i("SIGN", sign);
@@ -86,7 +73,7 @@ public class PsMyCard implements Serializable {
 
     public Map<String, String> makeTransactionProcessingMap(Map<String, String> parametersMap) {
 
-        String orderInfo = printWallApiMap(sortMap(parametersMap));
+        String orderInfo = MiscUtils.printPwMap(MiscUtils.sortMap(parametersMap));
         orderInfo += bundle.get("PW_PROJECT_SECRET");
 //        try {
 //            orderInfo = URLEncoder.encode(orderInfo, "UTF-8");
@@ -95,9 +82,9 @@ public class PsMyCard implements Serializable {
 //        }
         String sign = "";
         if (parametersMap.get("sign_version").equalsIgnoreCase("3"))
-            sign = sha256(orderInfo);
+            sign = MiscUtils.sha256(orderInfo);
         else if (parametersMap.get("sign_version").equalsIgnoreCase("2"))
-            sign = md5(orderInfo);
+            sign = MiscUtils.md5(orderInfo);
         parametersMap.put("sign", sign);
         Log.i("ORDER_INFO", orderInfo);
         Log.i("SIGN", sign);
@@ -106,125 +93,58 @@ public class PsMyCard implements Serializable {
     }
 
 
-    public static Map<String, String> sortMap(Map<String, String> aMap) {
-        Map<String, String> sortedMap = new TreeMap<String, String>(aMap);
-        return sortedMap;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public static String printWallApiMap(Map<String, String> params) {
-        StringBuilder out = new StringBuilder();
-        final Set<Map.Entry<String, String>> entrySet = params.entrySet();
-        for (Map.Entry<String, String> entry : entrySet) {
-//            out.append('|');
-            out.append(entry.getKey());
-            out.append('=');
-            out.append(entry.getValue());
-
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.pwSign);
+        dest.writeInt(this.bundle.size());
+        for (Map.Entry<String, String> entry : this.bundle.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
         }
-        return out.toString();
-    }
-
-    public static String printInternationalMap(Map<String, String> params) {
-        StringBuilder out = new StringBuilder();
-        Iterator it = params.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            out.append(pair.getKey());
-            out.append('=');
-            out.append("\"" + pair.getValue() + "\"");
-            out.append('&');
+        dest.writeInt(this.customParams.size());
+        for (Map.Entry<String, String> entry : this.customParams.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
         }
-
-        String printedStr = out.toString().substring(0, out.toString().length() - 1);
-        return printedStr;
     }
 
-    public static String buildAlipayParam(Map<String, String> map) {
-        List<String> keys = new ArrayList<>(map.keySet());
+    public PsMycard() {
+        this.customParams = new HashMap<>();
+        this.bundle = new HashMap<>();
+    }
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < keys.size() - 1; i++) {
-            String key = keys.get(i);
-            String value = map.get(key);
-            sb.append(buildKeyValue(key, value, true));
-            sb.append("&");
+    protected PsMycard(Parcel in) {
+        this.pwSign = in.readString();
+        int bundleSize = in.readInt();
+        this.bundle = new HashMap<String, String>(bundleSize);
+        for (int i = 0; i < bundleSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.bundle.put(key, value);
         }
-
-        String tailKey = keys.get(keys.size() - 1);
-        String tailValue = map.get(tailKey);
-        sb.append(buildKeyValue(tailKey, tailValue, true));
-
-        return sb.toString();
-    }
-
-    private static String buildKeyValue(String key, String value, boolean isEncode) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(key);
-        sb.append("=");
-//        sb.append("\"");
-        if (isEncode) {
-            try {
-                sb.append(URLEncoder.encode(value, "UTF-8"));
-//                sb.append(value);
-            } catch (Exception e) {
-                sb.append(value);
-            }
-        } else {
-            sb.append(value);
+        int customParamsSize = in.readInt();
+        this.customParams = new HashMap<String, String>(customParamsSize);
+        for (int i = 0; i < customParamsSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.customParams.put(key, value);
         }
-//        sb.append("\"");
-        return sb.toString();
     }
 
-    public static String sha256(String inputString) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] array = md.digest(inputString.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
-            }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
-        }
-        return null;
-    }
-
-    public static String signRsa(String content, String privateKey) {
-        try {
-
-            PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(
-                    Base64.decode(privateKey, Base64.DEFAULT));
-            KeyFactory keyf = KeyFactory.getInstance("RSA");
-            PrivateKey priKey = keyf.generatePrivate(priPKCS8);
-
-            java.security.Signature signature = java.security.Signature
-                    .getInstance("SHA1WithRSA");
-
-            signature.initSign(priKey);
-            signature.update(content.getBytes("UTF-8"));
-
-            byte[] signed = signature.sign();
-
-            return Base64.encodeToString(signed, Base64.DEFAULT);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static final Creator<PsMycard> CREATOR = new Creator<PsMycard>() {
+        @Override
+        public PsMycard createFromParcel(Parcel source) {
+            return new PsMycard(source);
         }
 
-        return null;
-    }
-
-    public static String md5(String inputString) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(inputString.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
-            }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
+        @Override
+        public PsMycard[] newArray(int size) {
+            return new PsMycard[size];
         }
-        return null;
-    }
+    };
 }

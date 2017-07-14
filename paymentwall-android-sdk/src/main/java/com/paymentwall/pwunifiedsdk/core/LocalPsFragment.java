@@ -11,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,10 +29,10 @@ import android.widget.Toast;
 
 import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.brick.core.Brick;
-import com.paymentwall.pwunifiedsdk.brick.utils.MiscUtils;
 import com.paymentwall.pwunifiedsdk.object.ExternalPs;
 import com.paymentwall.pwunifiedsdk.ui.ExtPsLayout;
 import com.paymentwall.pwunifiedsdk.util.Key;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
@@ -247,7 +248,7 @@ public class LocalPsFragment extends BaseFragment {
             if (clickedPs == null) return;
             String psName = ((ExtPsLayout) clickedPs).getPsId();
             try {
-                Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + capitalize(psName) + "Adapter");
+                Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + PwUtils.capitalize(psName) + "Adapter");
                 Method resultMethod = Adapter.getDeclaredMethod("onActivityResult", int.class, int.class, Intent.class);
                 resultMethod.setAccessible(true);
                 resultMethod.invoke(objAdapter, requestCode, resultCode, data);
@@ -287,15 +288,15 @@ public class LocalPsFragment extends BaseFragment {
 
     }
 
-    private void pay(String psName, Serializable params) {
+    private void pay(String psName, Parcelable params) {
         if (psName.equalsIgnoreCase("pwlocal")) {
             payWithPwLocal();
         } else {
             try {
-                Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + capitalize(psName) + "Adapter");
+                Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + PwUtils.capitalize(psName) + "Adapter");
                 Constructor constructor = Adapter.getConstructor(Fragment.class);
                 objAdapter = constructor.newInstance(this);
-                Method payMethod = Adapter.getDeclaredMethod("pay", Context.class, Serializable.class, Map.class, Map.class);
+                Method payMethod = Adapter.getDeclaredMethod("pay", Context.class, Parcelable.class, Map.class, Map.class);
                 payMethod.setAccessible(true);
                 payMethod.invoke(objAdapter, self, params, request.getBundle(), request.getCustomParams());
 
@@ -387,14 +388,10 @@ public class LocalPsFragment extends BaseFragment {
         Toast.makeText(self, "Payment Error" + System.getProperty("line.separator") + error, Toast.LENGTH_SHORT).show();
     }
 
-    private String capitalize(final String line) {
-        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
-    }
-
     public void onNewIntent(Intent intent) {
         try {
             String psName = ((ExtPsLayout) clickedPs).getPsId();
-            Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + capitalize(psName) + "Adapter");
+            Class<?> Adapter = Class.forName("com.paymentwall." + (psName + "Adapter.").toLowerCase() + PwUtils.capitalize(psName) + "Adapter");
             Method resultMethod = Adapter.getDeclaredMethod("onHandleIntent", Intent.class);
             resultMethod.setAccessible(true);
             resultMethod.invoke(objAdapter, intent);

@@ -25,7 +25,7 @@ import java.util.TreeMap;
  * Created by nguyen.anh on 9/6/2016.
  */
 
-public class PsAlipay implements Serializable {
+public class PsAlipay implements Parcelable {
 
     private String partnerId;
     private String sellerId;
@@ -50,7 +50,7 @@ public class PsAlipay implements Serializable {
     private String method;
     private String productCode;
     private String pwSign;
-    private Map<String, Object> params;
+    private Map<String, String> params;
     private Map<String, String> customParams;
 
 
@@ -231,11 +231,11 @@ public class PsAlipay implements Serializable {
         this.productCode = productCode;
     }
 
-    public Map<String, Object> getParams() {
+    public Map<String, String> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
+    public void setParams(Map<String, String> params) {
         this.params = params;
     }
 
@@ -462,4 +462,101 @@ public class PsAlipay implements Serializable {
     public PsAlipay() {
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.partnerId);
+        dest.writeString(this.sellerId);
+        dest.writeString(this.service);
+        dest.writeString(this.outTradeNo);
+        dest.writeString(this.inputCharset);
+        dest.writeString(this.currencyCode);
+        dest.writeString(this.signType);
+        dest.writeString(this.notifyUrl);
+        dest.writeString(this.subject);
+        dest.writeString(this.paymentType);
+        dest.writeString(this.totalFee);
+        dest.writeString(this.body);
+        dest.writeString(this.signature);
+        dest.writeString(this.itbPay);
+        dest.writeString(this.forexBiz);
+        dest.writeString(this.appId);
+        dest.writeString(this.appenv);
+        dest.writeString(this.privateKey);
+        dest.writeString(this.timeStamp);
+        dest.writeString(this.version);
+        dest.writeString(this.method);
+        dest.writeString(this.productCode);
+        dest.writeString(this.pwSign);
+
+//        dest.writeInt(this.params.size());
+//        for (Map.Entry<String, String> entry : this.params.entrySet()) {
+//            dest.writeString(entry.getKey());
+//            dest.writeString(entry.getValue());
+//        }
+//        dest.writeInt(this.customParams.size());
+//        for (Map.Entry<String, String> entry : this.customParams.entrySet()) {
+//            dest.writeString(entry.getKey());
+//            dest.writeString(entry.getValue());
+//        }
+    }
+
+    protected PsAlipay(Parcel in) {
+        this.partnerId = in.readString();
+        this.sellerId = in.readString();
+        this.service = in.readString();
+        this.outTradeNo = in.readString();
+        this.inputCharset = in.readString();
+        this.currencyCode = in.readString();
+        this.signType = in.readString();
+        this.notifyUrl = in.readString();
+        this.subject = in.readString();
+        this.paymentType = in.readString();
+        this.totalFee = in.readString();
+        this.body = in.readString();
+        this.signature = in.readString();
+        this.itbPay = in.readString();
+        this.forexBiz = in.readString();
+        this.appId = in.readString();
+        this.appenv = in.readString();
+        this.privateKey = in.readString();
+        this.timeStamp = in.readString();
+        this.version = in.readString();
+        this.method = in.readString();
+        this.productCode = in.readString();
+        this.pwSign = in.readString();
+
+//        int paramsSize = in.readInt();
+
+//        this.params = new HashMap<String, String>(paramsSize);
+//        for (int i = 0; i < paramsSize; i++) {
+//            String key = in.readString();
+//            String value = in.readParcelable(Object.class.getClassLoader());
+//            this.params.put(key, value);
+//        }
+//        int customParamsSize = in.readInt();
+//        this.customParams = new HashMap<String, String>(customParamsSize);
+//        for (int i = 0; i < customParamsSize; i++) {
+//            String key = in.readString();
+//            String value = in.readString();
+//            this.customParams.put(key, value);
+//        }
+    }
+
+    public static final Creator<PsAlipay> CREATOR = new Creator<PsAlipay>() {
+        @Override
+        public PsAlipay createFromParcel(Parcel source) {
+            return new PsAlipay(source);
+        }
+
+        @Override
+        public PsAlipay[] newArray(int size) {
+            return new PsAlipay[size];
+        }
+    };
 }

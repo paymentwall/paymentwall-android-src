@@ -1,7 +1,7 @@
 package com.paymentwall.sdk.pwlocal.message;
 
 import com.paymentwall.sdk.pwlocal.utils.Const.P;
-import com.paymentwall.sdk.pwlocal.utils.MiscUtils;
+import com.paymentwall.sdk.pwlocal.utils.PwLocalMiscUtils;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -58,7 +58,7 @@ abstract class PWSDKRequest implements Serializable {
             StringBuilder stringBuilder = new StringBuilder();
 //            String joinedString = "";
             if (!(params instanceof TreeMap<?, ?>)) {
-                params = MiscUtils.sortMap(params);
+                params = PwLocalMiscUtils.sortMap(params);
             }
             for (Entry<String, String> entry : params.entrySet()) {
 //                joinedString = joinedString + entry.getKey() + "=" + entry.getValue();
@@ -67,8 +67,8 @@ abstract class PWSDKRequest implements Serializable {
                 stringBuilder.append(entry.getValue());
             }
             stringBuilder.append(secret);
-            if (version == 2) return MiscUtils.md5(stringBuilder.toString());
-            else return MiscUtils.sha256(stringBuilder.toString());
+            if (version == 2) return PwLocalMiscUtils.md5(stringBuilder.toString());
+            else return PwLocalMiscUtils.sha256(stringBuilder.toString());
         } else return "";
     }
 
@@ -79,9 +79,9 @@ abstract class PWSDKRequest implements Serializable {
         Iterator<Entry<String,String>> iterator = entrySet.iterator();
         while(iterator.hasNext()) {
             Entry<String, String> entry = iterator.next();
-            urlBuilder.append(MiscUtils.urlStringEncode(entry.getKey()));
+            urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getKey()));
             urlBuilder.append('=');
-            urlBuilder.append(MiscUtils.urlStringEncode(entry.getValue()));
+            urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getValue()));
             if(iterator.hasNext()) {
                 urlBuilder.append('&');
             }
@@ -96,9 +96,9 @@ abstract class PWSDKRequest implements Serializable {
         Iterator<Entry<String,String>> iterator = entrySet.iterator();
         while(iterator.hasNext()) {
             Entry<String, String> entry = iterator.next();
-            urlBuilder.append(MiscUtils.urlStringEncode(entry.getKey()));
+            urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getKey()));
             urlBuilder.append('=');
-            urlBuilder.append(MiscUtils.urlStringEncode(entry.getValue()));
+            urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getValue()));
             if(iterator.hasNext()) {
                 urlBuilder.append('&');
             }

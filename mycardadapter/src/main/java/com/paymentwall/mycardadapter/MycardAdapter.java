@@ -2,11 +2,10 @@ package com.paymentwall.mycardadapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -16,18 +15,15 @@ import java.util.Map;
 
 public class MycardAdapter {
 
-    private PsMyCard psMyCard;
+    private PsMycard psMyCard;
     private Method mthSuccess, mthError, mthCancel, mthShowWait, mthHideWait, mthReplaceFragment;
     private Fragment fragment;
     private final String mMode = "01";
     private Context context;
-    private Object api;
-    private final int COMMAND_PAY_BY_WX = 5;
-    private final int STATUS_OK = 0;
-    private final int STATUS_CANCEL = -2;
     private Object psActivity;
 
     public MycardAdapter(Fragment localPsFragment) {
+
         try {
             this.fragment = localPsFragment;
             Class<?> BaseFragment = Class.forName("com.paymentwall.pwunifiedsdk.core.BaseFragment");
@@ -47,15 +43,12 @@ public class MycardAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle, Map<String, String> customParams) {
-        psMyCard = (PsMyCard) params;
+    private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
+        psMyCard = (PsMycard) params;
         psMyCard.setBundle(bundle);
         psMyCard.setCustomParams(customParams);
-//        Intent intent = new Intent(fragment.getActivity(), MycardActivity.class);
-//        intent.putExtra(MycardActivity.MYCARD_OBJECT, psMyCard);
-//        fragment.startActivity(intent);
         Bundle b = new Bundle();
-        b.putSerializable(MycardFragment.MYCARD_OBJECT, psMyCard);
+        b.putParcelable(MycardFragment.MYCARD_OBJECT, psMyCard);
         try {
             mthReplaceFragment.invoke(psActivity, MycardFragment.getInstance(), b);
         } catch (Exception e) {

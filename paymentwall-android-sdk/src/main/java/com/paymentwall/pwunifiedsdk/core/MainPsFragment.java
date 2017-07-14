@@ -26,12 +26,12 @@ import android.widget.TextView;
 
 import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.brick.core.Brick;
-import com.paymentwall.pwunifiedsdk.brick.utils.MiscUtils;
 import com.paymentwall.pwunifiedsdk.mint.utils.PaymentMethod;
 import com.paymentwall.pwunifiedsdk.mobiamo.core.MobiamoDialogActivity;
 import com.paymentwall.pwunifiedsdk.mobiamo.core.MobiamoResponse;
 import com.paymentwall.pwunifiedsdk.mobiamo.utils.Const;
 import com.paymentwall.pwunifiedsdk.util.Key;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 import com.paymentwall.sdk.pwlocal.ui.PwLocalActivity;

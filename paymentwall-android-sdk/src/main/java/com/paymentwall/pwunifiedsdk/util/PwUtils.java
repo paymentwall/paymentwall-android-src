@@ -10,13 +10,10 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.paymentwall.pwunifiedsdk.R;
-import com.paymentwall.pwunifiedsdk.brick.utils.Const;
 import com.paymentwall.sdk.pwlocal.utils.*;
 
 import java.net.HttpURLConnection;
@@ -167,7 +164,7 @@ public class PwUtils {
                 stringBuilder.append(sig.toChars());
             }
 
-            connection.setRequestProperty(HTTP_X_APP_SIGNATURE, com.paymentwall.sdk.pwlocal.utils.MiscUtils.sha256(stringBuilder.toString()));
+            connection.setRequestProperty(HTTP_X_APP_SIGNATURE, PwLocalMiscUtils.sha256(stringBuilder.toString()));
             connection.setRequestProperty(HTTP_X_VERSION_NAME, packageInfo.versionName);
             connection.setRequestProperty(HTTP_X_PACKAGE_CODE, packageInfo.versionCode + "");
             connection.setRequestProperty(HTTP_X_INSTALL_TIME, packageInfo.firstInstallTime + "");
@@ -193,7 +190,7 @@ public class PwUtils {
                 stringBuilder.append(sig.toChars());
             }
 
-            connection.setRequestProperty(HTTP_X_APP_SIGNATURE, com.paymentwall.sdk.pwlocal.utils.MiscUtils.sha256(stringBuilder.toString()));
+            connection.setRequestProperty(HTTP_X_APP_SIGNATURE, PwLocalMiscUtils.sha256(stringBuilder.toString()));
             connection.setRequestProperty(HTTP_X_VERSION_NAME, packageInfo.versionName);
             connection.setRequestProperty(HTTP_X_PACKAGE_CODE, packageInfo.versionCode + "");
             connection.setRequestProperty(HTTP_X_INSTALL_TIME, packageInfo.firstInstallTime + "");
@@ -288,6 +285,9 @@ public class PwUtils {
             });
     }
 
+    public static String capitalize(final String line) {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+    }
 
     public static final Map<String, String> CURRENCY_MAP = new HashMap<String, String>() {
         {

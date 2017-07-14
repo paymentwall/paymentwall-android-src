@@ -398,7 +398,6 @@ public class UnifiedRequest implements Parcelable {
         dest.writeInt(this.itemResID);
         dest.writeString(this.itemContentProvider);
         dest.writeInt(this.timeout);
-//        dest.writeByte(this.nativeDialog ? (byte) 1 : (byte) 0);
         dest.writeByte(this.testMode ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.brickRequest, flags);
         dest.writeSerializable(this.mobiamoRequest);
@@ -445,7 +444,6 @@ public class UnifiedRequest implements Parcelable {
         this.itemResID = in.readInt();
         this.itemContentProvider = in.readString();
         this.timeout = in.readInt();
-//        this.nativeDialog = in.readByte() != 0;
         this.testMode = in.readByte() != 0;
         this.brickRequest = in.readParcelable(BrickRequest.class.getClassLoader());
         this.mobiamoRequest = (MobiamoPayment) in.readSerializable();

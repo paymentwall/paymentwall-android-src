@@ -3,7 +3,7 @@ package com.paymentwall.pwunifiedsdk.mobiamo.payment;
 import android.util.Log;
 
 import com.paymentwall.pwunifiedsdk.mobiamo.utils.Const;
-import com.paymentwall.pwunifiedsdk.mobiamo.utils.MiscUtils;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -77,7 +77,7 @@ public abstract class PWSDKRequest implements Serializable {
 			urlParam = urlParam.substring(0, urlParam.length() - 1);
 		}
 		Log.d(TAG,
-				"String generateUrlParam param=" + MiscUtils.printMap(params));
+				"String generateUrlParam param=" + MiscUtils.printPwMap(params));
 		Log.d(TAG, "String generateUrlParam URL=" + urlParam);
 		return urlParam;
 	}

@@ -5,10 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.paymentwall.pwunifiedsdk.mint.utils.Const;
-import com.paymentwall.pwunifiedsdk.mint.utils.MiscUtils;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;

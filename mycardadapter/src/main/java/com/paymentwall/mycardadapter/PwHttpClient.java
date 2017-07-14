@@ -45,7 +45,7 @@ public class PwHttpClient {
 
     private static ProgressDialog dialog;
 
-    public static void initTransaction(Context context, final PsMyCard request, final Callback callback){
+    public static void initTransaction(Context context, final PsMycard request, final Callback callback){
         post(context, URL_INIT_TRANSACTION, request.getInitTransactionParameterMap(), callback);
     }
 

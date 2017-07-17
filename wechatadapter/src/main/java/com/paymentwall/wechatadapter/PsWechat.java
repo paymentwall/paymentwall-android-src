@@ -1,5 +1,7 @@
 package com.paymentwall.wechatadapter;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.paymentwall.wechatadapter.utils.MD5;
@@ -17,10 +19,10 @@ import java.util.TreeMap;
  * Created by nguyen.anh on 10/26/2016.
  */
 
-public class PsWechat implements Serializable {
+public class PsWechat implements Parcelable {
 
     private String appId, secret, merchantId, prepayId, nonceStr, body, outTradeNo, totalFee, createIp, notifyUrl, tradeType, timeStamp, packageValue, signature;
-    private Map<String, Object> bundle;
+    private Map<String, String> bundle;
     private Map<String, String> customParams;
 
     public String getAppId() {
@@ -135,11 +137,11 @@ public class PsWechat implements Serializable {
         this.signature = signature;
     }
 
-    public Map<String, Object> getBundle() {
+    public Map<String, String> getBundle() {
         return bundle;
     }
 
-    public void setBundle(Map<String, Object> bundle) {
+    public void setBundle(Map<String, String> bundle) {
         this.bundle = bundle;
     }
 
@@ -289,4 +291,86 @@ public class PsWechat implements Serializable {
 
         return temp;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.appId);
+        dest.writeString(this.secret);
+        dest.writeString(this.merchantId);
+        dest.writeString(this.prepayId);
+        dest.writeString(this.nonceStr);
+        dest.writeString(this.body);
+        dest.writeString(this.outTradeNo);
+        dest.writeString(this.totalFee);
+        dest.writeString(this.createIp);
+        dest.writeString(this.notifyUrl);
+        dest.writeString(this.tradeType);
+        dest.writeString(this.timeStamp);
+        dest.writeString(this.packageValue);
+        dest.writeString(this.signature);
+        dest.writeInt(this.bundle.size());
+        for (Map.Entry<String, String> entry : this.bundle.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+        dest.writeInt(this.customParams.size());
+        for (Map.Entry<String, String> entry : this.customParams.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+    }
+
+    public PsWechat() {
+        this.bundle = new HashMap<>();
+        this.customParams = new HashMap<>();
+    }
+
+    protected PsWechat(Parcel in) {
+        this.appId = in.readString();
+        this.secret = in.readString();
+        this.merchantId = in.readString();
+        this.prepayId = in.readString();
+        this.nonceStr = in.readString();
+        this.body = in.readString();
+        this.outTradeNo = in.readString();
+        this.totalFee = in.readString();
+        this.createIp = in.readString();
+        this.notifyUrl = in.readString();
+        this.tradeType = in.readString();
+        this.timeStamp = in.readString();
+        this.packageValue = in.readString();
+        this.signature = in.readString();
+        int bundleSize = in.readInt();
+        this.bundle = new HashMap<String, String>(bundleSize);
+        for (int i = 0; i < bundleSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.bundle.put(key, value);
+        }
+        int customParamsSize = in.readInt();
+        this.customParams = new HashMap<String, String>(customParamsSize);
+        for (int i = 0; i < customParamsSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.customParams.put(key, value);
+        }
+    }
+
+    public static final Creator<PsWechat> CREATOR = new Creator<PsWechat>() {
+        @Override
+        public PsWechat createFromParcel(Parcel source) {
+            return new PsWechat(source);
+        }
+
+        @Override
+        public PsWechat[] newArray(int size) {
+            return new PsWechat[size];
+        }
+    };
 }

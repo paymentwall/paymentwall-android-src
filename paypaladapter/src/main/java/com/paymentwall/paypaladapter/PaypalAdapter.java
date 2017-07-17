@@ -8,25 +8,17 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-//import com.paypal.android.sdk.payments.PayPalPayment;
-//import com.paypal.android.sdk.payments.PayPalService;
-//import com.paypal.android.sdk.payments.PaymentActivity;
-
-import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Map;
+
+//import com.paypal.android.sdk.payments.PayPalPayment;
+//import com.paypal.android.sdk.payments.PayPalService;
+//import com.paypal.android.sdk.payments.PaymentActivity;
 
 /**
  * Created by nguyen.anh on 2/21/2017.
@@ -57,9 +49,10 @@ public class PaypalAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
+    private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
         this.psPaypal = (PsPaypal) params;
         this.psPaypal.setBundle(bundle);
+        this.psPaypal.setCustomParams(customParams);
         this.context = context;
 
         try {
@@ -146,7 +139,7 @@ public class PaypalAdapter {
 
             Class<?> PayPalPayment = Class.forName("com.paypal.android.sdk.payments.PayPalPayment");
             Constructor constructor = PayPalPayment.getConstructor(new Class[]{BigDecimal.class, String.class, String.class, String.class});
-            Object thingToBuy = constructor.newInstance(new BigDecimal((Double) psPaypal.getBundle().get("AMOUNT")),
+            Object thingToBuy = constructor.newInstance(new BigDecimal((String) psPaypal.getBundle().get("AMOUNT")),
                     (String) psPaypal.getBundle().get("CURRENCY"), (String) psPaypal.getBundle().get("ITEM_NAME"), (PayPalPayment.getDeclaredField("PAYMENT_INTENT_SALE")).get(null));
             Method mthCustom = PayPalPayment.getMethod("custom", String.class);
             mthCustom.invoke(thingToBuy, psPaypal.getClickId());
@@ -203,6 +196,5 @@ public class PaypalAdapter {
                 e.printStackTrace();
             }
         }
-
     }
 }

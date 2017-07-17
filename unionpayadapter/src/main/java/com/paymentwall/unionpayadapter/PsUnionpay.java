@@ -2,6 +2,8 @@ package com.paymentwall.unionpayadapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Base64;
 import android.util.Log;
 
@@ -10,6 +12,7 @@ import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -19,13 +22,13 @@ import java.util.TreeMap;
  * Created by nguyen.anh on 9/8/2016.
  */
 
-public class PsUnionpay implements Serializable {
+public class PsUnionpay implements Parcelable {
 
     private String signature;
     private String version, encoding, signMethod, txnType, txnSubType, bizType, channelType, accessType, merId, backUrl, orderId, txnTime, certId;
     private int txnAmt;
     private String transactionNumber;
-    private Map<String, Object> bundle;
+    private Map<String, String> bundle;
     private Map<String, String> customParams;
 
     public String getSignature() {
@@ -160,11 +163,11 @@ public class PsUnionpay implements Serializable {
         return (bundle.get("TEST_MODE") + "").equalsIgnoreCase("true");
     }
 
-    public Map<String, Object> getBundle() {
+    public Map<String, String> getBundle() {
         return bundle;
     }
 
-    public void setBundle(Map<String, Object> bundle) {
+    public void setBundle(Map<String, String> bundle) {
         this.bundle = bundle;
     }
 
@@ -239,4 +242,88 @@ public class PsUnionpay implements Serializable {
         return null;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.signature);
+        dest.writeString(this.version);
+        dest.writeString(this.encoding);
+        dest.writeString(this.signMethod);
+        dest.writeString(this.txnType);
+        dest.writeString(this.txnSubType);
+        dest.writeString(this.bizType);
+        dest.writeString(this.channelType);
+        dest.writeString(this.accessType);
+        dest.writeString(this.merId);
+        dest.writeString(this.backUrl);
+        dest.writeString(this.orderId);
+        dest.writeString(this.txnTime);
+        dest.writeString(this.certId);
+        dest.writeInt(this.txnAmt);
+        dest.writeString(this.transactionNumber);
+        dest.writeInt(this.bundle.size());
+        for (Map.Entry<String, String> entry : this.bundle.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+        dest.writeInt(this.customParams.size());
+        for (Map.Entry<String, String> entry : this.customParams.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+    }
+
+    public PsUnionpay() {
+        this.bundle = new HashMap<>();
+        this.customParams = new HashMap<>();
+    }
+
+    protected PsUnionpay(Parcel in) {
+        this.signature = in.readString();
+        this.version = in.readString();
+        this.encoding = in.readString();
+        this.signMethod = in.readString();
+        this.txnType = in.readString();
+        this.txnSubType = in.readString();
+        this.bizType = in.readString();
+        this.channelType = in.readString();
+        this.accessType = in.readString();
+        this.merId = in.readString();
+        this.backUrl = in.readString();
+        this.orderId = in.readString();
+        this.txnTime = in.readString();
+        this.certId = in.readString();
+        this.txnAmt = in.readInt();
+        this.transactionNumber = in.readString();
+        int bundleSize = in.readInt();
+        this.bundle = new HashMap<String, String>(bundleSize);
+        for (int i = 0; i < bundleSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.bundle.put(key, value);
+        }
+        int customParamsSize = in.readInt();
+        this.customParams = new HashMap<String, String>(customParamsSize);
+        for (int i = 0; i < customParamsSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.customParams.put(key, value);
+        }
+    }
+
+    public static final Creator<PsUnionpay> CREATOR = new Creator<PsUnionpay>() {
+        @Override
+        public PsUnionpay createFromParcel(Parcel source) {
+            return new PsUnionpay(source);
+        }
+
+        @Override
+        public PsUnionpay[] newArray(int size) {
+            return new PsUnionpay[size];
+        }
+    };
 }

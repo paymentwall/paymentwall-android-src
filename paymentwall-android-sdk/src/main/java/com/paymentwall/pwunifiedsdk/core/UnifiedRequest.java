@@ -124,8 +124,9 @@ public class UnifiedRequest implements Parcelable {
         mobiamoRequest.setItemContentProvider(getItemContentProvider());
         mobiamoRequest.setItemFile(getItemFile());
         mobiamoRequest.setItemUrl(getItemUrl());
-        mobiamoRequest.setAmount(10000 + "");
-        mobiamoRequest.setCurrency("VND");
+        mobiamoRequest.setAmount(getAmount() + "");
+//        mobiamoRequest.setAmount(10000 + "");
+//        mobiamoRequest.setCurrency("VND");
 //        10/20/50 php
 //        5000/10000/15000 vnd
     }

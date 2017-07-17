@@ -204,6 +204,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         getMainActivity().isSuccessfulShowing = false;
         isDatePickerShowing = false;
 
+//        SharedPreferenceManager.getInstance(self).putStringValue(SharedPreferenceManager.STORED_CARDS, "{\"4033 9200 2832 3824\":\"439f78d333b9685c9f05ffca6811c842\"}");
         //{"4033 9200 2832 3824":"439f78d333b9685c9f05ffca6811c842"}
     }
 
@@ -754,7 +755,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_store_card_confirm);
         dialog.setCancelable(false);
-        TextView tvTitle = (TextView)dialog.findViewById(R.id.tvConfirmation);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tvConfirmation);
         tvTitle.setText(getString(R.string.store_card_confirmation));
         TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
         TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
@@ -792,7 +793,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_store_card_confirm);
         dialog.setCancelable(false);
-        TextView tvTitle = (TextView)dialog.findViewById(R.id.tvConfirmation);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tvConfirmation);
         tvTitle.setText(getString(R.string.delete_card_confirmation));
         TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
         TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
@@ -804,12 +805,17 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 // TODO Auto-generated method stub
                 dialog.dismiss();
                 String cards = SharedPreferenceManager.getInstance(self).getStringValue(SharedPreferenceManager.STORED_CARDS);
-                try{
+                try {
                     JSONObject obj = new JSONObject(cards);
                     obj.remove(et.getCardNumber());
-                    SharedPreferenceManager.getInstance(self).putStringValue(SharedPreferenceManager.STORED_CARDS, obj.toString());
+                    SmartLog.i("CardList: " + obj.toString());
+                    if (obj.toString().equalsIgnoreCase("{}")) {
+                        SharedPreferenceManager.getInstance(self).putStringValue(SharedPreferenceManager.STORED_CARDS, "");
+                    } else {
+                        SharedPreferenceManager.getInstance(self).putStringValue(SharedPreferenceManager.STORED_CARDS, obj.toString());
+                    }
                     llCardList.removeView(et);
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -2,6 +2,7 @@ package com.paymentwall.wechatadapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -44,7 +45,7 @@ public class WechatAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle, Map<String, String> customParams) {
+    private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
         this.psWechat = (PsWechat) params;
         this.psWechat.setBundle(bundle);
         this.psWechat.setCustomParams(customParams);
@@ -128,7 +129,6 @@ public class WechatAdapter {
     }
 
     private void getPrepaidId() {
-
         PwHttpClient.getPrepaidId(context, psWechat, new PwHttpClient.Callback() {
             @Override
             public void onError(int statusCode, String responseBody, Throwable error) {

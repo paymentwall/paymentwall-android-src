@@ -1,5 +1,7 @@
 package com.paymentwall.paypaladapter;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -13,10 +15,10 @@ import java.util.TreeMap;
  * Created by nguyen.anh on 2/21/2017.
  */
 
-public class PsPaypal implements Serializable{
+public class PsPaypal implements Parcelable{
 
     private String environment, clientId, receiverEmail, clickId, intent;
-    private Map<String, Object> bundle;
+    private Map<String, String> bundle, customParams;
 
     public String getEnvironment() {
         return environment;
@@ -58,12 +60,20 @@ public class PsPaypal implements Serializable{
         this.intent = intent;
     }
 
-    public Map<String, Object> getBundle() {
+    public Map<String, String> getBundle() {
         return bundle;
     }
 
-    public void setBundle(Map<String, Object> bundle) {
+    public void setBundle(Map<String, String> bundle){
         this.bundle = bundle;
+    }
+
+    public Map<String, String> getCustomParams() {
+        return customParams;
+    }
+
+    public void setCustomParams(Map<String, String> customParams) {
+        this.customParams = customParams;
     }
 
     public boolean isTestMode(){
@@ -138,4 +148,56 @@ public class PsPaypal implements Serializable{
         }
         return null;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.environment);
+        dest.writeString(this.clientId);
+        dest.writeString(this.receiverEmail);
+        dest.writeString(this.clickId);
+        dest.writeString(this.intent);
+        dest.writeInt(this.bundle.size());
+        for (Map.Entry<String, String> entry : this.bundle.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+    }
+
+    public PsPaypal() {
+        this.bundle = new HashMap<>();
+        this.customParams = new HashMap<>();
+    }
+
+    protected PsPaypal(Parcel in) {
+        this.environment = in.readString();
+        this.clientId = in.readString();
+        this.receiverEmail = in.readString();
+        this.clickId = in.readString();
+        this.intent = in.readString();
+        int bundleSize = in.readInt();
+        this.bundle = new HashMap<String, String>(bundleSize);
+        for (int i = 0; i < bundleSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.bundle.put(key, value);
+        }
+    }
+
+    public static final Creator<PsPaypal> CREATOR = new Creator<PsPaypal>() {
+        @Override
+        public PsPaypal createFromParcel(Parcel source) {
+            return new PsPaypal(source);
+        }
+
+        @Override
+        public PsPaypal[] newArray(int size) {
+            return new PsPaypal[size];
+        }
+    };
 }

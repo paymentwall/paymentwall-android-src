@@ -324,14 +324,14 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
 //        ExternalPs alipayPs = new ExternalPs("alipay", "Alipay Domestic", R.drawable.ps_logo_alipay, alipay);
         ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay International", R.drawable.ps_logo_alipay, alipayInternaltional);
-//        ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
+        ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
 //        ExternalPs molPs = new ExternalPs("mol", "MolPoints", R.drawable.ps_mol_logo, mol);
-//        ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
-//        ExternalPs paypalPs = new ExternalPs("paypal", "Paypal", R.drawable.ps_logo_paypal, paypal);
+        ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
+        ExternalPs paypalPs = new ExternalPs("paypal", "Paypal", R.drawable.ps_logo_paypal, paypal);
 //        ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
 //        ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
         ExternalPs myCardPs = new ExternalPs("mycard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt, myCardPs);
+        request.add(alipayPsInt, myCardPs, unionpayPs, wechatPs, paypalPs);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
         Bundle bundle = new Bundle();

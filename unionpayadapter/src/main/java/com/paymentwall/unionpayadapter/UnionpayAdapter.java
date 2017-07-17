@@ -3,6 +3,7 @@ package com.paymentwall.unionpayadapter;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -41,7 +42,7 @@ public class UnionpayAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle, Map<String, String> customParams) {
+    private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
         this.psUnionpay = (PsUnionpay) params;
         this.psUnionpay.setBundle(bundle);
         this.psUnionpay.setCustomParams(customParams);

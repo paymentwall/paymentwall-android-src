@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class MycardAdapter {
 
-    private PsMycard psMyCard;
+    private PsMyCard psMyCard;
     private Method mthSuccess, mthError, mthCancel, mthShowWait, mthHideWait, mthReplaceFragment;
     private Fragment fragment;
     private final String mMode = "01";
@@ -44,7 +44,7 @@ public class MycardAdapter {
     }
 
     private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
-        psMyCard = (PsMycard) params;
+        psMyCard = (PsMyCard) params;
         psMyCard.setBundle(bundle);
         psMyCard.setCustomParams(customParams);
         Bundle b = new Bundle();

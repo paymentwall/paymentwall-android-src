@@ -29,7 +29,7 @@ public class MycardFragment extends Fragment {
     private EditText etCardId, etCardPassword;
     private Button btnProceed;
     private String transactionId;
-    private PsMycard psMyCard;
+    private PsMyCard psMyCard;
     public static String MYCARD_OBJECT = "MYCARD_OBJECT";
     private Object psActivity;
 
@@ -64,7 +64,7 @@ public class MycardFragment extends Fragment {
         }
 
         if (bundle != null && bundle.containsKey(MYCARD_OBJECT)) {
-            psMyCard = (PsMycard) bundle.getParcelable(MYCARD_OBJECT);
+            psMyCard = (PsMyCard) bundle.getParcelable(MYCARD_OBJECT);
         }
     }
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -52,10 +53,11 @@ public class BaiduAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
+    private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
         this.psBaidu = (PsBaidu) params;
         this.context = context;
         this.psBaidu.setBundle(bundle);
+        this.psBaidu.setCustomParams(customParams);
 
         try {
             Class<?> BaseFragment = Class.forName("com.paymentwall.pwunifiedsdk.core.BaseFragment");

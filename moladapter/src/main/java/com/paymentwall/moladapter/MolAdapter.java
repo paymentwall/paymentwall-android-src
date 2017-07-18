@@ -2,6 +2,7 @@ package com.paymentwall.moladapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -37,9 +38,10 @@ public class MolAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
+    private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
         this.psMol = (PsMol) params;
         this.psMol.setBundle(bundle);
+        this.psMol.setCustomParams(customParams);
 
         try {
             processPayment(context, psMol);
@@ -146,7 +148,7 @@ public class MolAdapter {
                     MolPayment.getConstructor(new Class[]{Context.class, String.class, String.class});
             Object mol = constructor.newInstance(context, psMol.getSecretKey(), psMol.getAppKey());
             Log.i("MOL", psMol.getSecretKey() + "-" + psMol.getAppKey());
-            Double strAmount = (Double)psMol.getBundle().get("AMOUNT");
+            Double strAmount = Double.parseDouble(psMol.getBundle().get("AMOUNT") + "");
             long amount = (long) (strAmount * 100);
             Bundle inputBundle = new Bundle();
             inputBundle.putString("referenceId", makeReferenceId()); // Must

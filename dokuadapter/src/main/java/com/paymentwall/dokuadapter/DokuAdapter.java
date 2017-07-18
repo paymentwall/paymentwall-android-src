@@ -1,22 +1,10 @@
 package com.paymentwall.dokuadapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -25,7 +13,7 @@ import java.util.Map;
 
 public class DokuAdapter {
 
-    private PsDoku psPaypal;
+    private PsDoku psDoku;
     private Method mthSuccess, mthError, mthCancel, mthShowWait, mthHideWait;
     private Fragment fragment;
     private Context context;
@@ -48,13 +36,14 @@ public class DokuAdapter {
         }
     }
 
-    private void pay(final Context context, Serializable params, Map<String, Object> bundle) {
-        this.psPaypal = (PsDoku) params;
-        this.psPaypal.setBundle(bundle);
+    private void pay(final Context context, Parcelable params, Map<String, String> bundle, Map<String, String> customParams) {
+        this.psDoku = (PsDoku) params;
+        this.psDoku.setBundle(bundle);
+        this.psDoku.setCustomParams(customParams);
         this.context = context;
 
 //        try {
-//            PwHttpClient.getSignature(context, psPaypal, new PwHttpClient.Callback() {
+//            PwHttpClient.getSignature(context, psDoku, new PwHttpClient.Callback() {
 //                @Override
 //                public void onError(int statusCode, String responseBody, Throwable error) {
 //                    try {
@@ -72,21 +61,21 @@ public class DokuAdapter {
 //                        JSONObject rootObj = new JSONObject(responseBody);
 //                        if (rootObj.has("data")) {
 //                            JSONObject dataObject = rootObj.getJSONObject("data");
-//                            psPaypal.setAppId(dataObject.getString("appid"));
-//                            psPaypal.setMerchantId(dataObject.getString("partnerid"));
-//                            psPaypal.setNonceStr(dataObject.getString("noncestr"));
-//                            psPaypal.setPrepayId(dataObject.getString("prepayid"));
-////                            psPaypal.setOutTradeNo(dataObject.getString("out_trade_no"));
-////                            psPaypal.setTotalFee(dataObject.getString("total_fee"));
-////                            psPaypal.setNotifyUrl(dataObject.getString("notify_url"));
-////                            psPaypal.setTradeType(dataObject.getString("trade_type"));
-////                            psPaypal.setBody(dataObject.getString("body"));
-////                            psPaypal.setCreateIp(IpAddress.getIPAddress(true));
-//                            psPaypal.setPackageValue(dataObject.getString("package"));
-//                            psPaypal.setTimeStamp(dataObject.getInt("timestamp") + "");
-//                            psPaypal.setSignature(dataObject.getString("sign"));
+//                            psDoku.setAppId(dataObject.getString("appid"));
+//                            psDoku.setMerchantId(dataObject.getString("partnerid"));
+//                            psDoku.setNonceStr(dataObject.getString("noncestr"));
+//                            psDoku.setPrepayId(dataObject.getString("prepayid"));
+////                            psDoku.setOutTradeNo(dataObject.getString("out_trade_no"));
+////                            psDoku.setTotalFee(dataObject.getString("total_fee"));
+////                            psDoku.setNotifyUrl(dataObject.getString("notify_url"));
+////                            psDoku.setTradeType(dataObject.getString("trade_type"));
+////                            psDoku.setBody(dataObject.getString("body"));
+////                            psDoku.setCreateIp(IpAddress.getIPAddress(true));
+//                            psDoku.setPackageValue(dataObject.getString("package"));
+//                            psDoku.setTimeStamp(dataObject.getInt("timestamp") + "");
+//                            psDoku.setSignature(dataObject.getString("sign"));
 ////                            getPrepaidId();
-//                            processPayment(context, psPaypal);
+//                            processPayment(context, psDoku);
 //                        }
 //                    } catch (Exception e) {
 //                        e.printStackTrace();

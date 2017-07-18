@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by nguyen.anh on 5/15/2017.
  */
 
-public class MycardAdapter {
+public class MyCardAdapter {
 
     private PsMyCard psMyCard;
     private Method mthSuccess, mthError, mthCancel, mthShowWait, mthHideWait, mthReplaceFragment;
@@ -22,7 +22,7 @@ public class MycardAdapter {
     private Context context;
     private Object psActivity;
 
-    public MycardAdapter(Fragment localPsFragment) {
+    public MyCardAdapter(Fragment localPsFragment) {
 
         try {
             this.fragment = localPsFragment;
@@ -48,9 +48,9 @@ public class MycardAdapter {
         psMyCard.setBundle(bundle);
         psMyCard.setCustomParams(customParams);
         Bundle b = new Bundle();
-        b.putParcelable(MycardFragment.MYCARD_OBJECT, psMyCard);
+        b.putParcelable(MyCardFragment.MYCARD_OBJECT, psMyCard);
         try {
-            mthReplaceFragment.invoke(psActivity, MycardFragment.getInstance(), b);
+            mthReplaceFragment.invoke(psActivity, MyCardFragment.getInstance(), b);
         } catch (Exception e) {
             e.printStackTrace();
         }

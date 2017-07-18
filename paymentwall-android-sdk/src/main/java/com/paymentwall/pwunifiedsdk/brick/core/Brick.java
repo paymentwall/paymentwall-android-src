@@ -114,7 +114,7 @@ public class Brick {
             URL url = createUrl(publicKey);
             // Connect
             HttpURLConnection conn = createPostRequest(url, queryUrl);
-//            conn = PwUtils.addExtraHeaders(context, conn);
+            conn = PwUtils.addExtraHeaders(context, conn);
             // Get message
             String response = getResponseBody(conn.getInputStream());
             Log.i("RESPONSE", response + "");

@@ -249,6 +249,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
 //        request.setPwProjectKey("4816e84aed7ead72b46668fac6bc0953");
+//        request.setPwProjectKey("t_839d5549e2f6575ab3f2a81689775b");
         request.setPwSecretKey(Constants.PW_SECRET_KEY);
         request.setAmount(good.getPrice());
         request.setCurrency("USD");
@@ -325,13 +326,13 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 //        ExternalPs alipayPs = new ExternalPs("alipay", "Alipay Domestic", R.drawable.ps_logo_alipay, alipay);
         ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay International", R.drawable.ps_logo_alipay, alipayInternaltional);
         ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
-//        ExternalPs molPs = new ExternalPs("mol", "MolPoints", R.drawable.ps_mol_logo, mol);
+        ExternalPs molPs = new ExternalPs("mol", "MolPoints", R.drawable.ps_mol_logo, mol);
         ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
         ExternalPs paypalPs = new ExternalPs("paypal", "Paypal", R.drawable.ps_logo_paypal, paypal);
-//        ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
-//        ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
+        ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
+        ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
         ExternalPs myCardPs = new ExternalPs("myCard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt, myCardPs, unionpayPs, wechatPs, paypalPs);
+        request.add(alipayPsInt, myCardPs);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
         Bundle bundle = new Bundle();

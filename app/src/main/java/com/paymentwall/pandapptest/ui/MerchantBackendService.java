@@ -52,6 +52,8 @@ public class MerchantBackendService extends Service {
             if (intent.getAction().equalsIgnoreCase(getPackageName() + Brick.BROADCAST_FILTER_MERCHANT)) {
                 Log.i(getClass().getSimpleName(), intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
                 processBackend(intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
+//                Brick.getInstance().setResult(1, intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
+
             }
         }
     };

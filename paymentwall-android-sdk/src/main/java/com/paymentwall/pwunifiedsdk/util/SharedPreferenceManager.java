@@ -62,7 +62,8 @@ public class SharedPreferenceManager {
         if (cards.equalsIgnoreCase("")) return false;
         try {
             JSONObject obj = new JSONObject(cards);
-            return (obj.has(cardNumber));
+            String last4Numbers = cardNumber.substring(cardNumber.length() - 4, cardNumber.length());
+            return (obj.has(last4Numbers));
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -78,7 +79,8 @@ public class SharedPreferenceManager {
             } else {
                 obj = new JSONObject(cards);
             }
-            obj.put(cardNumber, permanentToken);
+            String last4Numbers = cardNumber.substring(cardNumber.length() - 4, cardNumber.length());
+            obj.put(last4Numbers, permanentToken);
             putStringValue(STORED_CARDS, obj.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,12 +89,12 @@ public class SharedPreferenceManager {
         return true;
     }
 
-    public String getTokenFromCard(String cardNumber){
+    public String getTokenFromCard(String cardNumber) {
         String cards = getStringValue(STORED_CARDS);
         if (cards.equalsIgnoreCase("")) return null;
         try {
             JSONObject obj = new JSONObject(cards);
-            if(!obj.has(cardNumber)) return null;
+            if (!obj.has(cardNumber)) return null;
             return obj.getString(cardNumber);
         } catch (Exception e) {
             e.printStackTrace();

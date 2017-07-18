@@ -203,9 +203,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         getMainActivity().isUnsuccessfulShowing = false;
         getMainActivity().isSuccessfulShowing = false;
         isDatePickerShowing = false;
-
-//        SharedPreferenceManager.getInstance(self).putStringValue(SharedPreferenceManager.STORED_CARDS, "{\"4033 9200 2832 3824\":\"439f78d333b9685c9f05ffca6811c842\"}");
-        //{"4033 9200 2832 3824":"439f78d333b9685c9f05ffca6811c842"}
     }
 
     @Override
@@ -264,7 +261,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     StoredCardEditText etCard = (StoredCardEditText) view.findViewById(R.id.etStoredCard);
                     etCard.setCardNumber(key);
                     etCard.setPermanentToken(value);
-                    etCard.setText("xxxx xxxx xxxx " + key.substring(key.length() - 4, key.length()));
+                    etCard.setText("xxxx xxxx xxxx " + key);
                     etCard.setOnClickListener(onClickStoredCard);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) PwUtils.dpToPx(self, 64f));
                     params.setMargins(0, (int) PwUtils.dpToPx(self, 2f), 0, 0);

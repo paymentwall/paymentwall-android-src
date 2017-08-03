@@ -152,11 +152,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
-            android:name="com.paymentwall.mycardadapter.MycardActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
-
-        <activity
             android:name="com.baidu.wallet.passport.PassLoginActivity"
             android:configChanges="keyboardHidden|navigation|orientation|screenSize"
             android:hardwareAccelerated="false"

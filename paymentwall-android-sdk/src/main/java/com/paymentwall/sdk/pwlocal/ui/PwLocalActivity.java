@@ -1,18 +1,25 @@
 package com.paymentwall.sdk.pwlocal.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
@@ -50,12 +58,21 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_APP_NAME;
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_APP_SIGNATURE;
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_INSTALL_TIME;
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_PACKAGE_CODE;
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_PACKAGE_NAME;
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_PERMISSON;
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_UPDATE_TIME;
+import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_VERSION_NAME;
+
 public class PwLocalActivity extends FragmentActivity implements
 //        PwLocalJsInterface.Callback,
         PaymentStatusComplexCallback {
     public static final String TAG_WEB_DIALOG = "WebDialog";
     public static final int REQUEST_CODE = 0x8087;
-//    private static final String TAG = "PwLocalWebActivity";
+    //    private static final String TAG = "PwLocalWebActivity";
     private static float dpFactor = 1f;
     private WebView rootWebView;
     private ImageView backBtn;
@@ -108,7 +125,7 @@ public class PwLocalActivity extends FragmentActivity implements
     }
 
     protected void acquireMessage() {
-        Map<String, String> extraHeaders = getAppParameters(this);
+        Map<String, String> extraHeaders = getAppParametersFull(this);
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             Intent result = new Intent();
@@ -558,6 +575,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onLoadResource(final WebView view, String url) {
                     super.onLoadResource(view, url);
+//                    Log.i("PWLocal", "onLoadResource url = "+ url);
                     if (isSuccessful(url)) {
                         PwLocalActivity.this.onPWLocalCallback();
                     }
@@ -566,6 +584,8 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onReceivedError(WebView view, int errorCode,
                                             String description, String failingUrl) {
+//                    Log.i("PWLocal", "onReceivedError failingUrl = "+ failingUrl);
+                    if(isFpLink(failingUrl)) return;
                     if (!isSuccessful(failingUrl)) {
                         // Handle the error
                         Toast.makeText(PwLocalActivity.this, "Please check your internet connection", Toast.LENGTH_LONG).show();
@@ -580,6 +600,21 @@ public class PwLocalActivity extends FragmentActivity implements
 
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    if(isFpLink(url)) return true;
+                    if(getGooglePlayLink(url) != null) {
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            Activity host = (Activity) view.getContext();
+                            host.startActivity(intent);
+                            return true;
+                        } catch (ActivityNotFoundException e) {
+                            // Google Play app is not installed, open the app store link
+                            Uri uri = Uri.parse(url);
+                            view.loadUrl("http://play.google.com/store/apps/" + uri.getHost() + "?" + uri.getQuery());
+                            return false;
+                        }
+                    }
                     if (!isSuccessful(url)) {
                         return false;
                     } else {
@@ -591,6 +626,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onPageStarted(WebView view, String url,
                                           Bitmap favicon) {
+//                    Log.i("PWLocal", "onPageStarted url = "+ url);
                     startLoading();
                     super.onPageStarted(view, url, favicon);
                 }
@@ -704,7 +740,7 @@ public class PwLocalActivity extends FragmentActivity implements
             for (Signature sig : packageInfo.signatures) {
                 stringBuilder.append(sig.toChars());
             }
-            parameters.put(Const.P.HISTORY_MOBILE_PACKAGE_SIGNATURE, PwLocalMiscUtils.sha256(stringBuilder.toString()));
+            parameters.put(Const.P.HISTORY_MOBILE_PACKAGE_SIGNATURE, MiscUtils.sha256(stringBuilder.toString()));
             parameters.put(Const.P.HISTORY_MOBILE_APP_VERSION, packageInfo.versionName);*/
             ApplicationInfo applicationInfo = appContext.getApplicationInfo();
             int appLabelResId = applicationInfo.labelRes;
@@ -720,5 +756,62 @@ public class PwLocalActivity extends FragmentActivity implements
             e.printStackTrace();
         }
         return parameters;
+    }
+
+    public static boolean isFpLink(String url) {
+        if(TextUtils.isEmpty(url)) return false;
+        Uri uri = Uri.parse(url);
+        return (uri != null && "fasterpay".equals(uri.getScheme()) && "pay".equals(uri.getHost()));
+    }
+
+    public static String getGooglePlayLink(String url) {
+        if(TextUtils.isEmpty(url)) return null;
+        if(url.startsWith("https://play.google.com/store/apps/")) {
+            Uri uri = Uri.parse(url);
+            String appPackageName = uri.getQueryParameter("id");
+            if(appPackageName != null) return "market://details?id="+appPackageName;
+            else return null;
+        } else {
+            Uri uri = Uri.parse(url);
+            if(uri != null && "market".equals(uri.getScheme())) return url;
+            else return null;
+        }
+    }
+
+    public static Map<String, String> getAppParametersFull(Context context) {
+        TreeMap<String, String> headers = new TreeMap<>();
+        try {
+            Context appContext = context.getApplicationContext();
+            PackageManager pm = appContext.getPackageManager();
+            String packageName = appContext.getPackageName();
+            headers.put(HTTP_X_PACKAGE_NAME, packageName);
+
+            ApplicationInfo ai;
+            try {
+                ai = pm.getApplicationInfo(packageName, 0);
+            } catch (final PackageManager.NameNotFoundException e) {
+                ai = null;
+            }
+            String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+            headers.put(HTTP_X_APP_NAME, applicationName);
+
+            PackageInfo packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Signature sig : packageInfo.signatures) {
+                stringBuilder.append(sig.toChars());
+            }
+
+            headers.put(HTTP_X_APP_SIGNATURE, PwLocalMiscUtils.sha256(stringBuilder.toString()));
+            headers.put(HTTP_X_VERSION_NAME, packageInfo.versionName);
+            headers.put(HTTP_X_PACKAGE_CODE, packageInfo.versionCode + "");
+            headers.put(HTTP_X_INSTALL_TIME, packageInfo.firstInstallTime + "");
+            headers.put(HTTP_X_UPDATE_TIME, packageInfo.lastUpdateTime + "");
+            headers.put(HTTP_X_PERMISSON, PwUtils.getPermissions(context));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return headers;
     }
 }

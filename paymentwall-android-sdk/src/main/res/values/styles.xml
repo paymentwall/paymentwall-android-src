@@ -9,7 +9,7 @@
         <item name="textProductInfo">@color/saas_textPrimary</item>
         <item name="bgPsButton">@drawable/saas_btn_ps</item>
         <item name="textPsButton">@color/saas_textPrimary</item>
-        <item name="textCopyright">@color/saas_textPrimary</item>
+        <item name="textCopyright">@color/saas_textSecondary</item>
         <item name="bgInputForm">@drawable/saas_bg_input_form</item>
         <item name="bgInputErrorForm">@drawable/saas_bg_input_form_error</item>
         <item name="textInputForm">@color/saas_textPrimary</item>

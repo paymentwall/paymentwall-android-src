@@ -248,8 +248,6 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
-//        request.setPwProjectKey("4816e84aed7ead72b46668fac6bc0953");
-//        request.setPwProjectKey("t_839d5549e2f6575ab3f2a81689775b");
         request.setPwSecretKey(Constants.PW_SECRET_KEY);
         request.setAmount(good.getPrice());
         request.setCurrency("USD");
@@ -259,6 +257,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.setSignVersion(3);
         request.setItemResID(good.getImage());
         request.setTimeout(30000);
+        request.enableFooter();
 
         request.setTestMode(false);
 //        request.setUiStyle("game");
@@ -266,33 +265,23 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.addBrick();
         request.addMint();
         request.addMobiamo();
-        request.addPwLocal();
 
-        CustomRequest customRequest = new CustomRequest();
-        customRequest.put(Const.P.KEY, Constants.PW_PROJECT_KEY);
-        customRequest.put(Const.P.WIDGET, "pw");
-        customRequest.put(Const.P.EVALUATION, "1");
-        customRequest.put(Const.P.UID, request.getUserId());
-        customRequest.put(Const.P.AG_EXTERNAL_ID, request.getItemId());
-        customRequest.put(Const.P.AG_NAME, request.getItemName());
-        customRequest.put(Const.P.CURRENCYCODE, request.getCurrency());
-        customRequest.put(Const.P.AMOUNT, request.getAmount() + "");
-        customRequest.put(Const.P.AG_TYPE, "fixed");
-        customRequest.put(Const.P.EMAIL, "fixed");
-        customRequest.setSecretKey(Constants.PW_SECRET_KEY);
-        customRequest.setSignVersion(3);
-        request.setPwlocalRequest(customRequest);
+//        request.addPwLocal();
+        request.addPwlocalParams(Const.P.EMAIL, "fixed");
+        request.addPwlocalParams(Const.P.WIDGET, "pw");
+        request.addPwlocalParams(Const.P.EVALUATION, "1");
 
-        // set params for Alipay
+
+        // set params for Alipay domestic
 //        PsAlipay alipay = new PsAlipay();
 //        alipay.setAppId(Constants.ALIPAY.APP_ID);
 //        alipay.setPaymentType("1");
 //        alipay.setPwSign(genPwSignature());
 
+        //Alipay international
         PsAlipay alipayInternaltional = new PsAlipay();
         alipayInternaltional.setAppId("external");
         alipayInternaltional.setPaymentType("1");
-        // extra params for international account
         alipayInternaltional.setItbPay("30m");
         alipayInternaltional.setForexBiz("FP");
         alipayInternaltional.setAppenv("system=android^version=3.0.1.2");
@@ -305,10 +294,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         mol.setSecretKey(Constants.MOLPOINTS.SECRET);
 
         PsWechat wechat = new PsWechat();
-//        wechat.setAppId(Constants.WECHAT.APP_ID);
-//        wechat.setMerchantId(Constants.WECHAT.MCH_ID);
         wechat.setTradeType("APP");
-//        wechat.setSecret(Constants.WECHAT.SECRET);
 
         PsBaidu baidu = new PsBaidu();
 
@@ -324,7 +310,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.addCustomParam("date_timeStamp", System.currentTimeMillis() / 1000 + "");
 
 //        ExternalPs alipayPs = new ExternalPs("alipay", "Alipay Domestic", R.drawable.ps_logo_alipay, alipay);
-        ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay International", R.drawable.ps_logo_alipay, alipayInternaltional);
+        ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay", R.drawable.ps_logo_alipay, alipayInternaltional);
         ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
         ExternalPs molPs = new ExternalPs("mol", "MolPoints", R.drawable.ps_mol_logo, mol);
         ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);
@@ -340,7 +326,6 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         intent.putExtras(bundle);
         startActivityForResult(intent, PaymentSelectionActivity.REQUEST_CODE);
 
-//        payWithMol();
         Log.d(TAG, request.toString());
     }
 

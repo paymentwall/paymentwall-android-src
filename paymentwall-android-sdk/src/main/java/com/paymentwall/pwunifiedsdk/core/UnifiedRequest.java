@@ -1,5 +1,6 @@
 package com.paymentwall.pwunifiedsdk.core;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
+import com.paymentwall.sdk.pwlocal.utils.Const;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +43,8 @@ public class UnifiedRequest implements Parcelable {
     private int itemResID;
     private String itemContentProvider;
     private int timeout;
-//    private boolean nativeDialog;
+    private boolean footerEnabled;
+    //    private boolean nativeDialog;
     private boolean testMode;
     private BrickRequest brickRequest;
     private MobiamoPayment mobiamoRequest;
@@ -51,8 +54,7 @@ public class UnifiedRequest implements Parcelable {
     private Map<String, String> customParams;
     private String uiStyle;
 
-    private Parcelable pwlocalRequest;
-    private static String pwlocalType;
+    private CustomRequest pwlocalRequest;
 
     private final String KEY_PW_PROJECT_KEY = "PW_PROJECT_KEY";
     private final String KEY_PW_PROJECT_SECRET = "PW_PROJECT_SECRET";
@@ -67,9 +69,8 @@ public class UnifiedRequest implements Parcelable {
     public UnifiedRequest() {
         this.externalPsList = new ArrayList<>();
         this.bundle = new HashMap<>();
-        this.customParams = new LinkedHashMap<>();
+        this.customParams = new HashMap<>();
         bundle.put(KEY_TEST_MODE, false + "");
-        pwlocalType = null;
     }
 
     public String getPwProjectKey() {
@@ -100,6 +101,7 @@ public class UnifiedRequest implements Parcelable {
         brickRequest.setAmount(getAmount());
         brickRequest.setCurrency(getCurrency());
         brickRequest.setAppKey(getPwProjectKey());
+//        brickRequest.setAppKey("t_6b9ef0bb5019a5ec55e3535bc57fd9");
         brickRequest.setName(getItemName());
         brickRequest.setItemResID(getItemResID());
         brickRequest.setItemUrl(getItemUrl());
@@ -153,6 +155,15 @@ public class UnifiedRequest implements Parcelable {
         this.pwlocalEnabled = true;
         ExternalPs pwLocal = new ExternalPs("pwlocal", "", R.drawable.others, null);
         this.externalPsList.add(0, pwLocal);
+        this.pwlocalRequest = new CustomRequest();
+        pwlocalRequest.put(Const.P.KEY, getPwProjectKey());
+        pwlocalRequest.put(Const.P.UID, getUserId());
+        pwlocalRequest.put(Const.P.AG_EXTERNAL_ID, getItemId());
+        pwlocalRequest.put(Const.P.AG_NAME, getItemName());
+        pwlocalRequest.put(Const.P.CURRENCYCODE, getCurrency());
+        pwlocalRequest.put(Const.P.AMOUNT, getAmount() + "");
+        pwlocalRequest.setSecretKey(getPwSecretKey());
+        pwlocalRequest.setSignVersion(getSignVersion());
     }
 
     public ArrayList<ExternalPs> getExternalPsList() {
@@ -278,18 +289,6 @@ public class UnifiedRequest implements Parcelable {
         return pwlocalRequest;
     }
 
-    public void setPwlocalRequest(Parcelable pwlocalRequest) {
-        this.pwlocalRequest = pwlocalRequest;
-        if (this.pwlocalRequest instanceof LocalDefaultRequest) {
-            this.pwlocalType = "localDefault";
-        } else if (this.pwlocalRequest instanceof LocalFlexibleRequest) {
-            this.pwlocalType = "localFlexible";
-        } else if (this.pwlocalRequest instanceof CustomRequest) {
-            this.pwlocalType = "custom";
-        }
-        Log.i("PwlocalType", pwlocalType);
-    }
-
     public boolean isPwlocalEnabled() {
         return pwlocalEnabled;
     }
@@ -315,6 +314,14 @@ public class UnifiedRequest implements Parcelable {
         bundle.put(KEY_TEST_MODE, testMode + "");
     }
 
+    public boolean isFooterEnabled() {
+        return footerEnabled;
+    }
+
+    public void enableFooter() {
+        this.footerEnabled = true;
+    }
+
     public Map<String, String> getBundle() {
         return bundle;
     }
@@ -327,15 +334,18 @@ public class UnifiedRequest implements Parcelable {
         return customParams;
     }
 
-    public void setCustomParams(Map<String, String> customParams) {
-        this.customParams = customParams;
-    }
-
     public void addCustomParam(String key, String value) {
         if (customParams == null) {
             customParams = new LinkedHashMap<>();
         }
         customParams.put(key, value);
+    }
+
+
+    public void addPwlocalParams(String key, String value) {
+        if (this.pwlocalRequest != null) {
+            this.pwlocalRequest.put(key, value);
+        }
     }
 
     public void add(ExternalPs... externalPss) {
@@ -399,6 +409,7 @@ public class UnifiedRequest implements Parcelable {
         dest.writeInt(this.itemResID);
         dest.writeString(this.itemContentProvider);
         dest.writeInt(this.timeout);
+        dest.writeByte(this.footerEnabled ? (byte) 1 : (byte) 0);
         dest.writeByte(this.testMode ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.brickRequest, flags);
         dest.writeSerializable(this.mobiamoRequest);
@@ -445,6 +456,7 @@ public class UnifiedRequest implements Parcelable {
         this.itemResID = in.readInt();
         this.itemContentProvider = in.readString();
         this.timeout = in.readInt();
+        this.footerEnabled = in.readByte() != 0;
         this.testMode = in.readByte() != 0;
         this.brickRequest = in.readParcelable(BrickRequest.class.getClassLoader());
         this.mobiamoRequest = (MobiamoPayment) in.readSerializable();
@@ -466,13 +478,7 @@ public class UnifiedRequest implements Parcelable {
             this.customParams.put(key, value);
         }
         this.uiStyle = in.readString();
-        if (pwlocalType != null && pwlocalType.equalsIgnoreCase("localDefault")) {
-            this.pwlocalRequest = in.readParcelable(LocalDefaultRequest.class.getClassLoader());
-        } else if (pwlocalType != null && pwlocalType.equalsIgnoreCase("localFlexible")) {
-            this.pwlocalRequest = in.readParcelable(LocalFlexibleRequest.class.getClassLoader());
-        } else if (pwlocalType != null && pwlocalType.equalsIgnoreCase("custom")) {
-            this.pwlocalRequest = in.readParcelable(CustomRequest.class.getClassLoader());
-        }
+        this.pwlocalRequest = in.readParcelable(CustomRequest.class.getClassLoader());
     }
 
     public static final Creator<UnifiedRequest> CREATOR = new Creator<UnifiedRequest>() {

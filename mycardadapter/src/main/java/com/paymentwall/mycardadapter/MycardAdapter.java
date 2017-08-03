@@ -23,7 +23,6 @@ public class MyCardAdapter {
     private Object psActivity;
 
     public MyCardAdapter(Fragment localPsFragment) {
-
         try {
             this.fragment = localPsFragment;
             Class<?> BaseFragment = Class.forName("com.paymentwall.pwunifiedsdk.core.BaseFragment");

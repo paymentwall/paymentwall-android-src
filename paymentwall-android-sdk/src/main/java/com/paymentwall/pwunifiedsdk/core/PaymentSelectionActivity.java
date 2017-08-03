@@ -167,7 +167,6 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 SharedPreferenceManager.getInstance(this).setUIStyle(request.getUiStyle());
         }
 
-
         int resID = PwUtils.getLayoutId(this, "activity_payment_selection");
         setContentView(resID);
 

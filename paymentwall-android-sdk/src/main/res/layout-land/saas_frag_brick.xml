@@ -194,6 +194,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:layout_marginBottom="32dp"
                             android:orientation="vertical">
 
                             <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularTextView
@@ -216,11 +217,17 @@
 
                         </LinearLayout>
 
+                        <include
+                            layout="@layout/layout_bank_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginBottom="16dp" />
+
                         <com.paymentwall.pwunifiedsdk.ui.ProximaNovaRegularButton
                             android:id="@+id/btnConfirm"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:layout_marginTop="32dp"
                             android:background="?bgConfirmButton"
                             android:enabled="false"
                             android:gravity="center"

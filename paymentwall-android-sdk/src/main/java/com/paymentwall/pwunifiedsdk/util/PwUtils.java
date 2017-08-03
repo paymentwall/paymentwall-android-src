@@ -42,6 +42,7 @@ public class PwUtils {
     public static final String HTTP_X_UPDATE_TIME = "HTTP_X_UPDATE_TIME";
     public static final String HTTP_X_INSTALL_TIME = "HTTP_X_INSTALL_TIME";
     public static final String HTTP_X_PERMISSON = "HTTP_X_PERMISSON";
+    public static final String HTTP_X_APP_NAME = "X_App_Name";
 
     public static Typeface getFontBold(Context context) {
         if (fontBold == null)
@@ -158,6 +159,15 @@ public class PwUtils {
             String packageName = appContext.getPackageName();
             connection.setRequestProperty(HTTP_X_PACKAGE_NAME, packageName);
 
+            ApplicationInfo ai;
+            try {
+                ai = pm.getApplicationInfo(packageName, 0);
+            } catch (final PackageManager.NameNotFoundException e) {
+                ai = null;
+            }
+            String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+            connection.setRequestProperty(HTTP_X_APP_NAME, applicationName);
+
             PackageInfo packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             StringBuilder stringBuilder = new StringBuilder();
             for (Signature sig : packageInfo.signatures) {
@@ -184,6 +194,15 @@ public class PwUtils {
             String packageName = appContext.getPackageName();
             connection.setRequestProperty(HTTP_X_PACKAGE_NAME, packageName);
 
+            ApplicationInfo ai;
+            try {
+                ai = pm.getApplicationInfo(packageName, 0);
+            } catch (final PackageManager.NameNotFoundException e) {
+                ai = null;
+            }
+            String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+            connection.setRequestProperty(HTTP_X_APP_NAME, applicationName);
+
             PackageInfo packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             StringBuilder stringBuilder = new StringBuilder();
             for (Signature sig : packageInfo.signatures) {
@@ -206,7 +225,7 @@ public class PwUtils {
         return connection;
     }
 
-    private static String getPermissions(Context context) {
+    public static String getPermissions(Context context) {
         PackageManager pm = context.getPackageManager();
         StringBuilder builder = new StringBuilder();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);

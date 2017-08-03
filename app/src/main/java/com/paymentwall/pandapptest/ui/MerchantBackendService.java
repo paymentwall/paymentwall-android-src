@@ -14,6 +14,7 @@ import com.paymentwall.pandapptest.config.SharedPreferenceManager;
 import com.paymentwall.pwunifiedsdk.brick.core.Brick;
 import com.paymentwall.pwunifiedsdk.brick.core.BrickError;
 import com.paymentwall.pwunifiedsdk.brick.core.BrickHelper;
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
 
 import org.json.JSONObject;
 
@@ -53,7 +54,6 @@ public class MerchantBackendService extends Service {
                 Log.i(getClass().getSimpleName(), intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
                 processBackend(intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
 //                Brick.getInstance().setResult(1, intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
-
             }
         }
     };
@@ -117,14 +117,21 @@ public class MerchantBackendService extends Service {
             String queryUrl = BrickHelper.urlEncodeUTF8(parameters);
             // Connect
             HttpURLConnection conn = createPostRequest(new URL(URL_3DS), queryUrl, 30000, 30000);
-//            conn = PwUtils.addExtraHeaders(context, conn);
+            Log.i("CHARGE_URL", URL_3DS);
             // Get message
             String response = getResponseBody(conn.getInputStream());
             Log.i("RESPONSE", response + "");
             JSONObject object = new JSONObject(response);
-            JSONObject objSecure = object.getJSONObject("secure");
-            String redirect = objSecure.getString("redirect");
-            Brick.getInstance().setResult(redirect);
+            if (object.has("object") && object.getString("object").equalsIgnoreCase("charge")) {
+                final String permanentToken = object.getJSONObject("card").getString("token");
+                Brick.getInstance().setResult(1, permanentToken);
+            } else if (object.has("secure") && isJSONObject(object, "secure")) {
+                JSONObject objSecure = object.getJSONObject("secure");
+                String redirect = objSecure.getString("redirect");
+                Brick.getInstance().setResult(redirect);
+            } else {
+                Brick.getInstance().setResult(0, "");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,6 +146,15 @@ public class MerchantBackendService extends Service {
             }
         }
         return "";
+    }
+
+    public static boolean isJSONObject(JSONObject obj, String key) {
+        try {
+            obj.getJSONObject(key);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private static HttpURLConnection createPostRequest(URL url, String queryUrl, int connectionTimeout, int readTimeout) throws BrickError {

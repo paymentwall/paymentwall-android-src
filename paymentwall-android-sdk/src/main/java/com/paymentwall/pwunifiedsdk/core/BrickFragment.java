@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -43,7 +42,7 @@ import com.paymentwall.pwunifiedsdk.brick.message.BrickRequest;
 import com.paymentwall.pwunifiedsdk.brick.ui.adapter.ExpireMonthAdapter;
 import com.paymentwall.pwunifiedsdk.brick.ui.views.MaskedEditText;
 import com.paymentwall.pwunifiedsdk.brick.utils.PaymentMethod;
-import com.paymentwall.pwunifiedsdk.ui.StoredCardEditText;
+import com.paymentwall.pwunifiedsdk.ui.CardEditText;
 import com.paymentwall.pwunifiedsdk.ui.WaveHelper;
 import com.paymentwall.pwunifiedsdk.util.Key;
 import com.paymentwall.pwunifiedsdk.util.MiscUtils;
@@ -86,8 +85,9 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     //Layout stored cards
     private LinearLayout llCardList;
     private EditText etNewCard;
-    private StoredCardEditText clickedCard;
+    private CardEditText clickedCard;
     private String permanentToken;
+    private String fingerprint;
 
     private WaveHelper helper;
 
@@ -208,6 +208,17 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     @Override
     public void onResume() {
         super.onResume();
+        Brick.getInstance().callBrickInit(request.getAppKey(), new Brick.FingerprintCallback() {
+            @Override
+            public void onSuccess(String f) {
+                fingerprint = f;
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     @Override
@@ -257,16 +268,33 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 while (iter.hasNext()) {
                     String key = iter.next();
                     String value = obj.getString(key);
+
                     View view = inflater.inflate(PwUtils.getLayoutId(self, "stored_card_layout"), null);
-                    StoredCardEditText etCard = (StoredCardEditText) view.findViewById(R.id.etStoredCard);
+                    final CardEditText etCard = (CardEditText) view.findViewById(R.id.etStoredCard);
+
                     etCard.setCardNumber(key);
                     etCard.setPermanentToken(value);
                     etCard.setText("xxxx xxxx xxxx " + key);
                     etCard.setOnClickListener(onClickStoredCard);
+
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) PwUtils.dpToPx(self, 64f));
                     params.setMargins(0, (int) PwUtils.dpToPx(self, 2f), 0, 0);
                     view.setLayoutParams(params);
-                    view.setOnLongClickListener(onLongClickStoredCard);
+
+                    etCard.setDrawableClickListener(new CardEditText.DrawableClickListener() {
+                        @Override
+                        public void onClick(DrawablePosition target) {
+                            if (target == DrawablePosition.RIGHT) {
+                                showDeleteCardConfirmation(etCard);
+                            }
+                        }
+                    });
+//                    view.setOnLongClickListener(onLongClickStoredCard);
+
+                    Drawable drawableLeft = getResources().getDrawable(R.drawable.ic_creditcard);
+                    Drawable drawableRight = getResources().getDrawable(R.drawable.ic_delete_card);
+                    etCard.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
+
                     llCardList.addView(view);
                 }
             } catch (Exception e) {
@@ -278,7 +306,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     private View.OnClickListener onClickStoredCard = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            clickedCard = (StoredCardEditText) v;
+            clickedCard = (CardEditText) v;
             showInputCvvDialog(clickedCard.getPermanentToken());
         }
     };
@@ -287,7 +315,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     private View.OnLongClickListener onLongClickStoredCard = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            showDeleteCardConfirmation((StoredCardEditText) v);
+            showDeleteCardConfirmation((CardEditText) v);
             return true;
         }
     };
@@ -378,6 +406,8 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
         tvCopyright = (TextView) v.findViewById(R.id.tvCopyRight);
         tvCopyright.setText(String.format(getString(R.string.secured_by_pw), new SimpleDateFormat("yyyy").format(new Date())));
+
+        v.findViewById(R.id.llAddress).setVisibility(getMainActivity().request.isFooterEnabled() ? View.VISIBLE : View.GONE);
 
 //        tvRedirecting.setText(String.format(getString(R.string.redirecting_to), PwUtils.getApplicationName(self)));
 
@@ -784,7 +814,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         }
     }
 
-    public void showDeleteCardConfirmation(final StoredCardEditText et) {
+    public void showDeleteCardConfirmation(final CardEditText et) {
         final Dialog dialog = new Dialog(self);
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -952,7 +982,6 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
         etCardNumber.clearFocus();
 
-//        Log.i("CARD_INFO", cardNumber + "-" + expMonth + "-" + expYear + "-" + cvv);
         // Create a brickcard object
         final BrickCard brickCard = new BrickCard(cardNumber, expMonth, expYear, cvv, email);
         // Check if the card data is possible or not
@@ -1018,6 +1047,9 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             Intent intent = new Intent();
             intent.setAction(getActivity().getPackageName() + Brick.BROADCAST_FILTER_MERCHANT);
             intent.putExtra(Brick.KEY_BRICK_TOKEN, token);
+            if (fingerprint != null) {
+                intent.putExtra(Brick.KEY_BRICK_FINGERPRINT, fingerprint);
+            }
             LocalBroadcastManager.getInstance(self).sendBroadcast(intent);
             handler.postDelayed(checkTimeoutTask, timeout);
         }

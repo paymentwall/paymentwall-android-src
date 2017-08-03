@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -42,7 +44,7 @@ public class PwHttpClient {
     public static final int TIMEOUT_CONNECT = 20000;
     private static String signatureURL = "https://api-trunk.s.stuffio.com/api/pw-plus-plus/paypal/signature";
 
-    public static void getSignature(Context context, final PsPaypal request, final Callback callback) {
+    public static void getSignature(final Context context, final PsPaypal request, final Callback callback) {
         Looper looper;
         if (context != null) {
             looper = context.getMainLooper();
@@ -83,6 +85,7 @@ public class PwHttpClient {
                     connection.setUseCaches(false);
                     connection.setRequestProperty(
                             "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    connection = PwUtils.addExtraHeaders(context, connection);
                     checkSSLCert(connection);
 
                     outputStream = connection.getOutputStream();

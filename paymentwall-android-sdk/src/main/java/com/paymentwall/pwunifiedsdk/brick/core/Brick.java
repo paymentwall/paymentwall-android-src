@@ -29,6 +29,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -45,11 +46,13 @@ public class Brick {
     private static final String POST_URL_TEST = "https://api.paymentwall.com/api/pro/v2/token";
     private static final String PW_GATEWAY_URL = "pwgateway.com";
     private static final String GENERATE_TOKEN_URL = "https://api.paymentwall.com/api/brick/token";
+    private static final String BRICK_JS_URL = "https://api.paymentwall.com/api/brick-init/save";
 
     public static final String BROADCAST_FILTER_SDK = ".brick.PAYMENT_SDK_BROADCAST_PERMISSION";
     public static final String BROADCAST_FILTER_MERCHANT = ".brick.PAYMENT_MERCHANT_BROADCAST_PERMISSION";
 
     public static final String KEY_BRICK_TOKEN = "KEY_BRICK_TOKEN";
+    public static final String KEY_BRICK_FINGERPRINT = "KEY_BRICK_FINGERPRINT";
     public static final String KEY_MERCHANT_SUCCESS = "KEY_MERCHANT_SUCCESS";
     public static final String KEY_PERMANENT_TOKEN = "KEY_PERMANENT_TOKEN";
     public static final String KEY_3DS_FORM = "KEY_3DS_FORM";
@@ -114,7 +117,6 @@ public class Brick {
             URL url = createUrl(publicKey);
             // Connect
             HttpURLConnection conn = createPostRequest(url, queryUrl);
-            conn = PwUtils.addExtraHeaders(context, conn);
             // Get message
             String response = getResponseBody(conn.getInputStream());
             Log.i("RESPONSE", response + "");
@@ -171,7 +173,6 @@ public class Brick {
                     String queryUrl = BrickHelper.urlEncodeUTF8(parameters);
                     // Connect
                     HttpURLConnection conn = createPostRequest(new URL(GENERATE_TOKEN_URL), queryUrl);
-//            conn = PwUtils.addExtraHeaders(context, conn);
                     // Get message
                     String response = getResponseBody(conn.getInputStream());
                     Log.i("RESPONSE", response + "");
@@ -179,6 +180,64 @@ public class Brick {
                         BrickToken token = BrickHelper.createTokenFromJson(response);
                         callback.onBrickSuccess(token);
                     } catch (Exception e) {
+                        throw e;
+                    }
+                } catch (Exception e) {
+
+                } finally {
+                    if (allowedToSetTTL) {
+                        if (originalDNSCacheTTL == null) {
+                            Security.setProperty("networkaddress.cache.ttl", "-1");
+                        } else {
+                            Security.setProperty("networkaddress.cache.ttl",
+                                    originalDNSCacheTTL);
+                        }
+                    }
+                }
+            }
+        });
+        createTokenThread.start();
+    }
+
+    public void callBrickInit(final String publicKey, final FingerprintCallback callback) {
+
+        Thread createTokenThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Prepare SSL
+                String originalDNSCacheTTL = null;
+                boolean allowedToSetTTL = true;
+                try {
+                    originalDNSCacheTTL = Security
+                            .getProperty("networkaddress.cache.ttl");
+                    Security.setProperty("networkaddress.cache.ttl", "0");
+                } catch (SecurityException se) {
+                    allowedToSetTTL = false;
+                }
+                try {
+                    // Create HTTP request
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("data[p_k]", publicKey);
+                    parameters.put("data[d_t]", System.currentTimeMillis()/1000 + "");
+                    parameters.put("data[b_i]", "android");
+                    parameters.put("data[d_i]", "android");
+                    parameters.put("data[j]", "android");
+                    parameters.put("data[w]", "android");
+
+                    String queryUrl = BrickHelper.urlEncodeUTF8(parameters);
+                    // Connect
+                    HttpURLConnection conn = createPostRequest(new URL(BRICK_JS_URL), queryUrl);
+                    // Get message
+                    String response = getResponseBody(conn.getInputStream());
+                    try {
+                        JSONObject obj = new JSONObject(response);
+                        if(obj.getInt("success") == 1){
+                            callback.onSuccess(obj.getString("fingerprint"));
+                        }else{
+                            callback.onError("");
+                        }
+                    } catch (Exception e) {
+                        callback.onError("");
                         throw e;
                     }
                 } catch (Exception e) {
@@ -250,6 +309,13 @@ public class Brick {
                 "application/x-www-form-urlencoded;charset=%s",
                 new Object[]{"UTF-8"}));
         conn = PwUtils.addExtraHeaders(context, conn);
+        for (Map.Entry<String, List<String>> entries : conn.getRequestProperties().entrySet()) {
+            String values = "";
+            for (String value : entries.getValue()) {
+                values += value + ",";
+            }
+            Log.d("Request", entries.getKey() + " - " + values);
+        }
         checkSSLCert(conn);
         OutputStream output = null;
         try {
@@ -387,5 +453,10 @@ public class Brick {
         void onBrickSuccess(BrickToken brickToken);
 
         void onBrickError(BrickError error);
+    }
+
+    public interface FingerprintCallback{
+        void onSuccess(String fingerprint);
+        void onError(String error);
     }
 }

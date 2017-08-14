@@ -34,6 +34,7 @@
         <item name="textSuccess">@color/text_loading</item>
         <item name="textFail">@color/text_payment_failed</item>
         <item name="textExtraMessage">@color/text_accepted_subtitle</item>
+        <item name="iconPwlocal">@drawable/local</item>
     </style>
 
     <style name="style_ps_name">
@@ -52,8 +53,9 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:scaleType">centerInside</item>
-        <item name="android:gravity">left</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:gravity">left|center_vertical</item>
     </style>
 
     <style name="cc_form_edittext">

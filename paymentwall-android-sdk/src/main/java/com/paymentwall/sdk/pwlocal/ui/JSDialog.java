@@ -1,16 +1,22 @@
 package com.paymentwall.sdk.pwlocal.ui;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +29,11 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.lang.reflect.Method;
+
+import static com.paymentwall.sdk.pwlocal.ui.PwLocalActivity.getGooglePlayLink;
 
 /**
  * Created by harvey on 4/25/17.
@@ -33,17 +42,29 @@ import java.lang.reflect.Method;
 public class JSDialog extends DialogFragment {
     public static final String KEY_RESULT_MSG = "key_result_msg";
     public static final String KEY_URL = "key_window_url";
+    public static final String SUCCESS_URL = "success_url";
+    String successfulUrl = null;
     WebView dialogWv;
     ImageView backBtn;
     ProgressWheel progressBar;
     FrameLayout fakeToolbar;
     LinearLayout outerContainer;
+    SuccessUrlListener successUrlListener;
 
     WebView.WebViewTransport transport;
 
-    public static JSDialog newInstance(Message resultMsg) {
+    public SuccessUrlListener getSuccessUrlListener() {
+        return successUrlListener;
+    }
+
+    public void setSuccessUrlListener(SuccessUrlListener successUrlListener) {
+        this.successUrlListener = successUrlListener;
+    }
+
+    public static JSDialog newInstance(Message resultMsg, String successfulUrl) {
         Bundle args = new Bundle();
         args.putParcelable(KEY_RESULT_MSG, resultMsg);
+        if(!TextUtils.isEmpty(successfulUrl)) args.putString(SUCCESS_URL, successfulUrl);
         JSDialog fragment = new JSDialog();
         fragment.setArguments(args);
         return fragment;
@@ -115,6 +136,9 @@ public class JSDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         initWebView();
         if (getArguments() == null) return;
+
+        successfulUrl = getArguments().getString(SUCCESS_URL);
+        
         if (getArguments().containsKey(KEY_RESULT_MSG)) {
             Message resultMsg = getArguments().getParcelable(KEY_RESULT_MSG);
             if (resultMsg == null) dismiss();
@@ -183,7 +207,33 @@ public class JSDialog extends DialogFragment {
         });
         dialogWv.setWebViewClient(new WebViewClient() {
             @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                if(isSuccessful(failingUrl)) {
+                    dismiss();
+                    if(successUrlListener != null) successUrlListener.onSuccessUrlLinkOpened(JSDialog.this);
+                } else {
+                    super.onReceivedError(view, errorCode, description, failingUrl);
+                }
+
+            }
+
+            @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+                if(getGooglePlayLink(url) != null) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(url));
+                        Activity host = (Activity) view.getContext();
+                        host.startActivity(intent);
+                        JSDialog.this.dismiss();
+                        return true;
+                    } catch (ActivityNotFoundException e) {
+                        // Google Play app is not installed, open the app store link
+                        Uri uri = Uri.parse(url);
+                        view.loadUrl("http://play.google.com/store/apps/" + uri.getHost() + "?" + uri.getQuery());
+                        return false;
+                    }
+                }
                 return false;
             }
 
@@ -213,5 +263,25 @@ public class JSDialog extends DialogFragment {
         } catch (Exception ex) {
 //            Log.i(LOGTAG, ex.toString());
         }
+    }
+
+    public boolean isSuccessful(String url) {
+        if (successfulUrl != null) {
+            Uri successUri = Uri.parse(successfulUrl);
+            Uri uri = Uri.parse(url);
+            if(successUri == null || uri == null) return false;
+
+            return (
+                    uri.getHost().equals(successUri.getHost()) &&
+                            uri.getScheme().equals(successUri.getScheme())
+            );
+        } else {
+            Uri uri = Uri.parse(url);
+            return (uri != null && "pwlocal".equals(uri.getScheme()) && "paymentsuccessful".equals(uri.getHost()));
+        }
+    }
+
+    public interface SuccessUrlListener {
+        void onSuccessUrlLinkOpened(JSDialog jsDialog);
     }
 }

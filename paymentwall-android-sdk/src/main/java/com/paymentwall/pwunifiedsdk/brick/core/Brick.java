@@ -46,7 +46,7 @@ public class Brick {
     private static final String POST_URL_TEST = "https://api.paymentwall.com/api/pro/v2/token";
     private static final String PW_GATEWAY_URL = "pwgateway.com";
     private static final String GENERATE_TOKEN_URL = "https://api.paymentwall.com/api/brick/token";
-    private static final String BRICK_JS_URL = "https://api.paymentwall.com/api/brick-init/save";
+    private static final String BRICK_JS_URL = "https://api.paymentwall.com/api/brick-init/save?key=%s";
 
     public static final String BROADCAST_FILTER_SDK = ".brick.PAYMENT_SDK_BROADCAST_PERMISSION";
     public static final String BROADCAST_FILTER_MERCHANT = ".brick.PAYMENT_MERCHANT_BROADCAST_PERMISSION";
@@ -226,7 +226,7 @@ public class Brick {
 
                     String queryUrl = BrickHelper.urlEncodeUTF8(parameters);
                     // Connect
-                    HttpURLConnection conn = createPostRequest(new URL(BRICK_JS_URL), queryUrl);
+                    HttpURLConnection conn = createPostRequest(new URL(String.format(BRICK_JS_URL, publicKey)), queryUrl);
                     // Get message
                     String response = getResponseBody(conn.getInputStream());
                     try {
@@ -290,6 +290,7 @@ public class Brick {
     }
 
     private HttpURLConnection createPostRequest(URL url, String queryUrl, int connectionTimeout, int readTimeout) throws BrickError {
+        Log.i("Brick URL", url+ "///" + queryUrl);
         HttpURLConnection conn;
         try {
             conn = (HttpURLConnection) url.openConnection();

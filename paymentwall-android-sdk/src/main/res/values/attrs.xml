@@ -34,6 +34,7 @@
         <attr name="textSuccess" format="color" />
         <attr name="textFail" format="color" />
         <attr name="textExtraMessage" format="color" />
+        <attr name="iconPwlocal" format="integer" />
 
     </declare-styleable>
 

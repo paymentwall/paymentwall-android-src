@@ -15,6 +15,9 @@ public class Constants {
 
     public static final String PW_PROJECT_KEY = "7e43822b844fd872abacf67a92fb826c"; // live
     public static final String PW_SECRET_KEY = "af022feeb89f61d036da526213634746";
+
+//    public static final String PW_PROJECT_KEY = "t_6b9ef0bb5019a5ec55e3535bc57fd9"; // Brick test
+//    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";
     public static final String USER_ID = "testuser2";
 
     public static final String ITEM_MANA_ID = "item1";

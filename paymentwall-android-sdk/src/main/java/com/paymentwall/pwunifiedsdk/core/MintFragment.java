@@ -442,57 +442,6 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
         antiloop = false;
     }
 
-//    private void displayError(String error, int errortoken) {
-//
-//        this.paymentError = error;
-//        llUnsuccessful.setVisibility(View.VISIBLE);
-//        isUnsuccessfulShowing = true;
-//        tvUnsuccessfulMessage.setText(error);
-//    }
-//
-//    private void hideError() {
-//        llUnsuccessful.setVisibility(View.GONE);
-//        isUnsuccessfulShowing = false;
-//    }
-//
-//    private void displayPaymentSucceeded(double changeAmount, String changeCurrency) {
-//        ivSuccessfulLoading.startAnimation(rotateAnim);
-//        llSuccessful.setVisibility(View.VISIBLE);
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                ivSuccessfulLoading.setAnimation(null);
-//                self.setResult(ResponseCode.SUCCESSFUL);
-//                self.finish();
-//            }
-//        }, 2000);
-//        isSuccessfulShowing = true;
-//    }
-//
-//    protected void displayPinError(String error) {
-//        // Display error text for 5 second and a icon as well
-//        errorToken = errorToken + 1;
-//        try {
-//            displayError(error, errorToken);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void showWaitLayout() {
-//        ivLoading.startAnimation(rotateAnim);
-//        hideKeyboard();
-//        isWaitLayoutShowing = true;
-//        llLoading.setVisibility(View.VISIBLE);
-//    }
-//
-//    public void hideWaitLayout() {
-//        ivLoading.setAnimation(null);
-//        isWaitLayoutShowing = false;
-//        llLoading.setVisibility(View.GONE);
-//    }
-
-
     @Override
     public void onMintError(int statusCode, String body, Throwable error) {
 
@@ -545,8 +494,6 @@ public class MintFragment extends BaseFragment implements PWHttpClient.MintCallb
                             + ")");
                 }
             }
-            hideErrorLayout();
-            displayPaymentSucceeded();
         }
     }
 

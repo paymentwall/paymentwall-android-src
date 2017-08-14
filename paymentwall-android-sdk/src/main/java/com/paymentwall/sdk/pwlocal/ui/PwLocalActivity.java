@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -46,10 +47,10 @@ import com.paymentwall.sdk.pwlocal.utils.ApiType;
 import com.paymentwall.sdk.pwlocal.utils.Const;
 import com.paymentwall.sdk.pwlocal.utils.Const.PW_URL;
 import com.paymentwall.sdk.pwlocal.utils.Key;
-import com.paymentwall.sdk.pwlocal.utils.PwLocalMiscUtils;
 import com.paymentwall.sdk.pwlocal.utils.PaymentMethod;
 import com.paymentwall.sdk.pwlocal.utils.PaymentStatusComplexCallback;
 import com.paymentwall.sdk.pwlocal.utils.PaymentStatusUtils;
+import com.paymentwall.sdk.pwlocal.utils.PwLocalMiscUtils;
 import com.paymentwall.sdk.pwlocal.utils.ResponseCode;
 
 import java.lang.reflect.Method;
@@ -69,6 +70,7 @@ import static com.paymentwall.pwunifiedsdk.util.PwUtils.HTTP_X_VERSION_NAME;
 
 public class PwLocalActivity extends FragmentActivity implements
 //        PwLocalJsInterface.Callback,
+        JSDialog.SuccessUrlListener,
         PaymentStatusComplexCallback {
     public static final String TAG_WEB_DIALOG = "WebDialog";
     public static final int REQUEST_CODE = 0x8087;
@@ -98,13 +100,13 @@ public class PwLocalActivity extends FragmentActivity implements
 
     @Override
     public void finish() {
-        if(fakeToolbar!=null) {
+        if (fakeToolbar != null) {
             fakeToolbar.removeAllViews();
         }
-        if(outerContainer!=null) {
+        if (outerContainer != null) {
             outerContainer.removeAllViews();
         }
-        if(rootWebView !=null) {
+        if (rootWebView != null) {
             rootWebView.removeAllViews();
             rootWebView.destroy();
         }
@@ -161,7 +163,8 @@ public class PwLocalActivity extends FragmentActivity implements
                 String query = customParameters.getUrlParam();
                 this.url = rootUrl + query;
                 if (rootWebView != null) {
-                    if(customParameters.getMobileDownloadLink() != null) extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, customParameters.getMobileDownloadLink());
+                    if (customParameters.getMobileDownloadLink() != null)
+                        extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, customParameters.getMobileDownloadLink());
                     rootWebView.loadUrl(url, extraHeaders);
                     addJsHandle();
                 }
@@ -216,7 +219,9 @@ public class PwLocalActivity extends FragmentActivity implements
 
                                 this.url = message.getUrl(rootUrl);
                                 if (rootWebView != null) {
-                                    if(message.getMobileDownloadLink() != null) extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, message.getMobileDownloadLink());
+                                    if (message.getMobileDownloadLink() != null)
+                                        extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, message.getMobileDownloadLink());
+
                                     rootWebView.loadUrl(url, extraHeaders);
                                     addJsHandle();
                                 }
@@ -242,7 +247,9 @@ public class PwLocalActivity extends FragmentActivity implements
                                 }
                                 this.url = message.getUrl(rootUrl);
                                 if (rootWebView != null) {
-                                    if(message.getMobileDownloadLink() != null) extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, message.getMobileDownloadLink());
+                                    if (message.getMobileDownloadLink() != null)
+                                        extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, message.getMobileDownloadLink());
+
                                     rootWebView.loadUrl(url, extraHeaders);
                                     addJsHandle();
                                 }
@@ -279,6 +286,11 @@ public class PwLocalActivity extends FragmentActivity implements
             rootWebView
                     .addJavascriptInterface(new PwLocalJsInterface(this), "Android");
         }*/
+    }
+
+    @Override
+    public void onSuccessUrlLinkOpened(JSDialog jsDialog) {
+        onPWLocalCallback();
     }
 
     //    @Override
@@ -501,28 +513,28 @@ public class PwLocalActivity extends FragmentActivity implements
         float dpFactor = getResources().getDisplayMetrics().densityDpi / 160f;
 
         backBtn = new ImageView(this);
-        FrameLayout.LayoutParams backBtnLP = new FrameLayout.LayoutParams((int) (40*dpFactor), (int) (40*dpFactor));
+        FrameLayout.LayoutParams backBtnLP = new FrameLayout.LayoutParams((int) (40 * dpFactor), (int) (40 * dpFactor));
         backBtnLP.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
         backBtn.setLayoutParams(backBtnLP);
         backBtn.setScaleType(ImageView.ScaleType.CENTER);
-        backBtn.setImageDrawable(ShapeUtils.getBackButtonDrawable(0xff000000, (int)(40 * dpFactor), (int)(40 * dpFactor)));
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+        backBtn.setImageDrawable(ShapeUtils.getBackButtonDrawable(0xff000000, (int) (40 * dpFactor), (int) (40 * dpFactor)));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             backBtn.setBackgroundDrawable(ShapeUtils.getButtonBackground(0xffffbb33, 0xffff8800));
         } else {
             backBtn.setBackground(ShapeUtils.getButtonBackground(0xffffbb33, 0xffff8800));
         }
 
-        LinearLayout.LayoutParams fakeToolbarLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (40*dpFactor));
+        LinearLayout.LayoutParams fakeToolbarLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (40 * dpFactor));
         fakeToolbar.setLayoutParams(fakeToolbarLP);
         fakeToolbar.setBackgroundColor(0xffffbb33);
 
-        FrameLayout.LayoutParams progressBarLP = new FrameLayout.LayoutParams((int) (40*dpFactor), (int) (40*dpFactor));
+        FrameLayout.LayoutParams progressBarLP = new FrameLayout.LayoutParams((int) (40 * dpFactor), (int) (40 * dpFactor));
         progressBarLP.rightMargin = (int) (16 * dpFactor);
         progressBarLP.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
         progressBar.setLayoutParams(progressBarLP);
         progressBar.setBarWidth((int) (2 * dpFactor));
         progressBar.setBarColor(0xff000000);
-        progressBar.setCircleRadius((int) (14*dpFactor));
+        progressBar.setCircleRadius((int) (14 * dpFactor));
         progressBar.setVisibility(View.GONE);
 
         fakeToolbar.addView(backBtn);
@@ -556,17 +568,21 @@ public class PwLocalActivity extends FragmentActivity implements
             rootWebView.getSettings().setBuiltInZoomControls(true);
             rootWebView.getSettings().setSupportMultipleWindows(true);
             rootWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                rootWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 WebView.setWebContentsDebuggingEnabled(false);
             }
             CookieManager.getInstance().setAcceptCookie(true);
             LinearLayout.LayoutParams wvLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             rootWebView.setLayoutParams(wvLP);
-            rootWebView.setWebChromeClient(new WebChromeClient(){
+            rootWebView.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-                    JSDialog webDialogFragment = JSDialog.newInstance(resultMsg);
+                    JSDialog webDialogFragment = JSDialog.newInstance(resultMsg, successfulUrl);
                     webDialogFragment.show(getSupportFragmentManager(), TAG_WEB_DIALOG);
+                    webDialogFragment.setSuccessUrlListener(PwLocalActivity.this);
                     return true;
                 }
             });
@@ -575,7 +591,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onLoadResource(final WebView view, String url) {
                     super.onLoadResource(view, url);
-//                    Log.i("PWLocal", "onLoadResource url = "+ url);
+                    Log.i("PWLocal", "onLoadResource url = " + url);
                     if (isSuccessful(url)) {
                         PwLocalActivity.this.onPWLocalCallback();
                     }
@@ -584,8 +600,9 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onReceivedError(WebView view, int errorCode,
                                             String description, String failingUrl) {
-//                    Log.i("PWLocal", "onReceivedError failingUrl = "+ failingUrl);
-                    if(isFpLink(failingUrl)) return;
+
+                    Log.i("PWLocal", "onReceivedError failingUrl = " + failingUrl);
+                    if (isFpLink(failingUrl)) return;
                     if (!isSuccessful(failingUrl)) {
                         // Handle the error
                         Toast.makeText(PwLocalActivity.this, "Please check your internet connection", Toast.LENGTH_LONG).show();
@@ -600,8 +617,8 @@ public class PwLocalActivity extends FragmentActivity implements
 
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    if(isFpLink(url)) return true;
-                    if(getGooglePlayLink(url) != null) {
+                    if (isFpLink(url)) return true;
+                    if (getGooglePlayLink(url) != null) {
                         try {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(url));
@@ -626,7 +643,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onPageStarted(WebView view, String url,
                                           Bitmap favicon) {
-//                    Log.i("PWLocal", "onPageStarted url = "+ url);
+                    Log.i("PWLocal", "onPageStarted url = " + url);
                     startLoading();
                     super.onPageStarted(view, url, favicon);
                 }
@@ -642,14 +659,14 @@ public class PwLocalActivity extends FragmentActivity implements
     }
 
     private void startLoading() {
-        if(progressBar != null) {
+        if (progressBar != null) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.spin();
         }
     }
 
     private void stopLoading() {
-        if(progressBar !=null) {
+        if (progressBar != null) {
             progressBar.stopSpinning();
             progressBar.setVisibility(View.GONE);
         }
@@ -709,9 +726,17 @@ public class PwLocalActivity extends FragmentActivity implements
 
     public boolean isSuccessful(String url) {
         if (successfulUrl != null) {
-            return PwLocalMiscUtils.urlEqual(url, successfulUrl);
+            Uri successUri = Uri.parse(successfulUrl);
+            Uri uri = Uri.parse(url);
+            if (successUri == null || uri == null) return false;
+
+            return (
+                    uri.getHost().equals(successUri.getHost()) &&
+                            uri.getScheme().equals(successUri.getScheme())
+            );
         } else {
-            return PwLocalMiscUtils.urlEqual(url, Const.DEFAULT_SUCCESS_URL);
+            Uri uri = Uri.parse(url);
+            return (uri != null && "pwlocal".equals(uri.getScheme()) && "paymentsuccessful".equals(uri.getHost()));
         }
     }
 
@@ -758,26 +783,6 @@ public class PwLocalActivity extends FragmentActivity implements
         return parameters;
     }
 
-    public static boolean isFpLink(String url) {
-        if(TextUtils.isEmpty(url)) return false;
-        Uri uri = Uri.parse(url);
-        return (uri != null && "fasterpay".equals(uri.getScheme()) && "pay".equals(uri.getHost()));
-    }
-
-    public static String getGooglePlayLink(String url) {
-        if(TextUtils.isEmpty(url)) return null;
-        if(url.startsWith("https://play.google.com/store/apps/")) {
-            Uri uri = Uri.parse(url);
-            String appPackageName = uri.getQueryParameter("id");
-            if(appPackageName != null) return "market://details?id="+appPackageName;
-            else return null;
-        } else {
-            Uri uri = Uri.parse(url);
-            if(uri != null && "market".equals(uri.getScheme())) return url;
-            else return null;
-        }
-    }
-
     public static Map<String, String> getAppParametersFull(Context context) {
         TreeMap<String, String> headers = new TreeMap<>();
         try {
@@ -813,5 +818,25 @@ public class PwLocalActivity extends FragmentActivity implements
         }
 
         return headers;
+    }
+
+    public static boolean isFpLink(String url) {
+        if (TextUtils.isEmpty(url)) return false;
+        Uri uri = Uri.parse(url);
+        return (uri != null && "fasterpay".equals(uri.getScheme()) && "pay".equals(uri.getHost()));
+    }
+
+    public static String getGooglePlayLink(String url) {
+        if (TextUtils.isEmpty(url)) return null;
+        if (url.startsWith("https://play.google.com/store/apps/")) {
+            Uri uri = Uri.parse(url);
+            String appPackageName = uri.getQueryParameter("id");
+            if (appPackageName != null) return "market://details?id=" + appPackageName;
+            else return null;
+        } else {
+            Uri uri = Uri.parse(url);
+            if (uri != null && "market".equals(uri.getScheme())) return url;
+            else return null;
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -78,24 +79,21 @@ public class MerchantBackendService extends Service {
     }
 
     private void processBackend(final String token) {
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                int backendResult = 1; //1 means your processing is successful, 0 is failed
-//                Intent intent = new Intent();
-//                intent.setAction(getPackageName() + Brick.BROADCAST_FILTER_SDK);
-//                intent.putExtra(Brick.KEY_MERCHANT_SUCCESS, backendResult);
-//                LocalBroadcastManager.getInstance(MerchantBackendService.this).sendBroadcast(intent);
-//            }
-//        }, waitingTime);
-        Thread createTokenThread = new Thread(new Runnable() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                charge(token, "andy@paymentwall.com");
+                int backendResult = 0; //1 means your processing is successful, 0 is failed
+                Brick.getInstance().setResult(backendResult, "Credit card is blocked");
             }
-        });
-        createTokenThread.start();
+        }, 2000);
+//        Thread createTokenThread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                charge(token, "andy@paymentwall.com");
+//            }
+//        });
+//        createTokenThread.start();
     }
 
     public static String charge(String token, String email) {

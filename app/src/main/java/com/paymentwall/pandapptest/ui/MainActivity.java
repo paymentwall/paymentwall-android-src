@@ -249,7 +249,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
         request.setPwSecretKey(Constants.PW_SECRET_KEY);
-        request.setAmount(good.getPrice());
+        request.setAmount(0.01);
         request.setCurrency("USD");
         request.setItemName(good.getName());
         request.setItemId(good.getId());
@@ -266,11 +266,12 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.addMint();
         request.addMobiamo();
 
-//        request.addPwLocal();
+//        request.skipSelection("cc");
+
+        request.addPwLocal();
         request.addPwlocalParams(Const.P.EMAIL, "fixed");
         request.addPwlocalParams(Const.P.WIDGET, "pw");
         request.addPwlocalParams(Const.P.EVALUATION, "1");
-
 
         // set params for Alipay domestic
 //        PsAlipay alipay = new PsAlipay();

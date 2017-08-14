@@ -42,7 +42,7 @@ public class PwUtils {
     public static final String HTTP_X_UPDATE_TIME = "HTTP_X_UPDATE_TIME";
     public static final String HTTP_X_INSTALL_TIME = "HTTP_X_INSTALL_TIME";
     public static final String HTTP_X_PERMISSON = "HTTP_X_PERMISSON";
-    public static final String HTTP_X_APP_NAME = "X_App_Name";
+    public static final String HTTP_X_APP_NAME = "X-App-Name";
 
     public static Typeface getFontBold(Context context) {
         if (fontBold == null)
@@ -134,8 +134,22 @@ public class PwUtils {
             return drawable;
         } catch (Exception e) {
             e.printStackTrace();
+
         }
         return null;
+    }
+
+    public static int getResouceIdFromAttribute(Context context, String attribute) {
+        try {
+            int attr = context.getResources().getIdentifier(attribute, "attr", context.getPackageName());
+            int[] attrs = new int[]{attr};
+            TypedArray ta = context.obtainStyledAttributes(attrs);
+            int base = ta.getResourceId(0, R.drawable.local);
+            return base;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public static int getColorFromAttribute(Context context, String attribute) {
@@ -255,7 +269,7 @@ public class PwUtils {
         return "";
     }
 
-    public static void setCustomAttributes(Context context, View v){
+    public static void setCustomAttributes(Context context, View v) {
         final GradientDrawable ovalDrawable = (GradientDrawable) context.getResources()
                 .getDrawable(R.drawable.bg_product_info_oval);
         ovalDrawable.setColor(PwUtils.getColorFromAttribute(context, "colorMain"));

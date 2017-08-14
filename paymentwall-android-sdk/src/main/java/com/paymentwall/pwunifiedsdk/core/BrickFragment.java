@@ -133,9 +133,9 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 if (intent.getExtras().containsKey(Brick.KEY_MERCHANT_SUCCESS)) {
                     int success = intent.getIntExtra(Brick.KEY_MERCHANT_SUCCESS, -1);
                     Log.i("BRICK_RECEIVER", success + "");
-                    if (isWaitLayoutShowing()) {
-                        hideWaitLayout();
-                    }
+//                    if (isWaitLayoutShowing()) {
+//                        hideWaitLayout();
+//                    }
                     handler.removeCallbacks(checkTimeoutTask);
                     if (success == 1) {
                         String permanentToken = intent.getStringExtra(Brick.KEY_PERMANENT_TOKEN);
@@ -146,9 +146,14 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                             displayPaymentSucceeded();
                         }
                     } else {
+                        String error = intent.getStringExtra(Brick.KEY_PERMANENT_TOKEN);
                         isBrickError = true;
-                        getMainActivity().paymentError = getString(R.string.payment_error);
-                        showErrorLayout(null);
+                        if (error != null && !error.equals("")) {
+                            getMainActivity().paymentError = error;
+                        } else {
+                            getMainActivity().paymentError = getString(R.string.payment_error);
+                        }
+                        showErrorLayout(getMainActivity().paymentError);
                     }
                 } else if (intent.getExtras().containsKey(Brick.KEY_3DS_FORM)) {
                     String form3ds = intent.getStringExtra(Brick.KEY_3DS_FORM);

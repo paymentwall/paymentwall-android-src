@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +40,6 @@ import com.paymentwall.sdk.pwlocal.ui.PwLocalActivity;
 import com.paymentwall.sdk.pwlocal.utils.ApiType;
 
 import java.io.File;
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -199,26 +196,40 @@ public class LocalPsFragment extends BaseFragment {
 
     private void bindContainer() {
         ArrayList<ExternalPs> list = request.getExternalPsList();
-        for (ExternalPs ps : list) {
-            if (ps.getId().equalsIgnoreCase("pwlocal"))
+        if (list.size() == 1) {
+            ExternalPs ps = list.get(0);
+            if (ps.getId().equalsIgnoreCase("pwlocal")) {
                 ps.setDisplayName(getString(R.string.title_pwlocal));
-
-            View view = inflater.inflate(PwUtils.getLayoutId(self, "ext_ps_layout"), null);
-            ExtPsLayout llPs = (ExtPsLayout) view.findViewById(R.id.llPs);
-            llPs.setPsId(ps.getId());
-            llPs.setParams(ps.getParams());
-            llPs.setOnClickListener(onClickPsLayout);
-            ImageView ivPs = (ImageView) view.findViewById(R.id.ivPs);
-            ivPs.setImageResource(ps.getIconResId());
-            TextView tvPs = (TextView) view.findViewById(R.id.tvPs);
-            tvPs.setText(ps.getDisplayName());
-            PwUtils.setFontRegular(self, new TextView[]{tvPs});
-            llContainer.addView(view);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) PwUtils.dpToPx(self, 64f));
-            if (list.indexOf(ps) > 0) {
-                params.setMargins(0, (int) PwUtils.dpToPx(self, 2f), 0, 0);
+                ps.setIconResId(PwUtils.getResouceIdFromAttribute(self, "iconPwlocal"));
             }
-            view.setLayoutParams(params);
+            clickedPs = new ExtPsLayout(self);
+            ((ExtPsLayout) clickedPs).setPsId(ps.getId());
+            ((ExtPsLayout) clickedPs).setParams(ps.getParams());
+            pay(ps.getId(), ps.getParams());
+        } else {
+            for (ExternalPs ps : list) {
+                if (ps.getId().equalsIgnoreCase("pwlocal")) {
+                    ps.setDisplayName(getString(R.string.title_pwlocal));
+                    ps.setIconResId(PwUtils.getResouceIdFromAttribute(self, "iconPwlocal"));
+                }
+
+                View view = inflater.inflate(PwUtils.getLayoutId(self, "ext_ps_layout"), null);
+                ExtPsLayout llPs = (ExtPsLayout) view.findViewById(R.id.llPs);
+                llPs.setPsId(ps.getId());
+                llPs.setParams(ps.getParams());
+                llPs.setOnClickListener(onClickPsLayout);
+                ImageView ivPs = (ImageView) view.findViewById(R.id.ivPs);
+                ivPs.setImageResource(ps.getIconResId());
+                TextView tvPs = (TextView) view.findViewById(R.id.tvPs);
+                tvPs.setText(ps.getDisplayName());
+                PwUtils.setFontRegular(self, new TextView[]{tvPs});
+                llContainer.addView(view);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) PwUtils.dpToPx(self, 64f));
+                if (list.indexOf(ps) > 0) {
+                    params.setMargins(0, (int) PwUtils.dpToPx(self, 2f), 0, 0);
+                }
+                view.setLayoutParams(params);
+            }
         }
     }
 

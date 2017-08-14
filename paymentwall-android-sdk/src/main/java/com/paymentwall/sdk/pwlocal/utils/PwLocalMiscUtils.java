@@ -226,7 +226,13 @@ public class PwLocalMiscUtils {
 
     public static boolean urlEqual(String url, String successfulUrl) {
         if (url == null || successfulUrl == null) throw new NullPointerException("Invalid URL");
-        if (successfulUrl.toLowerCase().equals(url.toLowerCase())) return true;
+        Uri uri1 = Uri.parse(url);
+        Uri uri2 = Uri.parse(successfulUrl);
+        if(uri1 == null || uri2 == null) return false;
+        return (uri1.getScheme().equalsIgnoreCase(uri2.getScheme()) && uri2.getHost().equalsIgnoreCase(uri2.getHost()));
+
+
+        /*if (successfulUrl.toLowerCase().equals(url.toLowerCase())) return true;
         Uri successfulUri = Uri.parse(successfulUrl.toLowerCase());
         Uri uri = Uri.parse(url.toLowerCase());
         String uriP = uri.getPath();
@@ -241,7 +247,7 @@ public class PwLocalMiscUtils {
                                 || uri.getQuery().equals(successfulUri.getQuery())
                 )
                         && ((uriP == null && sP == null) || uriP.equals(sP))
-        );
+        );*/
     }
 
     public static float get1Px(Context context) {

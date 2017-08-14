@@ -43,6 +43,7 @@
         <item name="textSuccess">@color/main_textcolor</item>
         <item name="textFail">@color/main_textcolor</item>
         <item name="textExtraMessage">@color/main_textcolor</item>
+        <item name="iconPwlocal">@drawable/item_mana</item>
     </style>
 
 

@@ -14,6 +14,7 @@ import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
+import com.paymentwall.sdk.pwlocal.utils.ApiType;
 import com.paymentwall.sdk.pwlocal.utils.Const;
 
 import java.io.File;
@@ -29,7 +30,6 @@ import java.util.Map;
  */
 public class UnifiedRequest implements Parcelable {
 
-    private static final long serialVersionUID = -2852504747591386429L;
     private String pwProjectKey, pwSecretKey;
     private boolean brickEnabled, mobiamoEnabled, mintEnabled, pwlocalEnabled;
     private String itemName;
@@ -44,7 +44,8 @@ public class UnifiedRequest implements Parcelable {
     private String itemContentProvider;
     private int timeout;
     private boolean footerEnabled;
-    //    private boolean nativeDialog;
+    private boolean selectionSkipped;
+    private String psId;
     private boolean testMode;
     private BrickRequest brickRequest;
     private MobiamoPayment mobiamoRequest;
@@ -101,13 +102,11 @@ public class UnifiedRequest implements Parcelable {
         brickRequest.setAmount(getAmount());
         brickRequest.setCurrency(getCurrency());
         brickRequest.setAppKey(getPwProjectKey());
-//        brickRequest.setAppKey("t_6b9ef0bb5019a5ec55e3535bc57fd9");
         brickRequest.setName(getItemName());
         brickRequest.setItemResID(getItemResID());
         brickRequest.setItemUrl(getItemUrl());
         brickRequest.setItemFile(getItemFile());
         brickRequest.setItemContentProvider(getItemContentProvider());
-//        brickRequest.setNativeDialog(isNativeDialog());
         brickRequest.setTimeout(30000);
     }
 
@@ -152,6 +151,7 @@ public class UnifiedRequest implements Parcelable {
     }
 
     public void addPwLocal() {
+        if(isSelectionSkipped()) return;
         this.pwlocalEnabled = true;
         ExternalPs pwLocal = new ExternalPs("pwlocal", "", R.drawable.others, null);
         this.externalPsList.add(0, pwLocal);
@@ -160,10 +160,12 @@ public class UnifiedRequest implements Parcelable {
         pwlocalRequest.put(Const.P.UID, getUserId());
         pwlocalRequest.put(Const.P.AG_EXTERNAL_ID, getItemId());
         pwlocalRequest.put(Const.P.AG_NAME, getItemName());
+        pwlocalRequest.put(Const.P.AG_TYPE, "fixed");
         pwlocalRequest.put(Const.P.CURRENCYCODE, getCurrency());
         pwlocalRequest.put(Const.P.AMOUNT, getAmount() + "");
         pwlocalRequest.setSecretKey(getPwSecretKey());
         pwlocalRequest.setSignVersion(getSignVersion());
+
     }
 
     public ArrayList<ExternalPs> getExternalPsList() {
@@ -259,14 +261,6 @@ public class UnifiedRequest implements Parcelable {
         this.timeout = timeout;
     }
 
-//    public boolean isNativeDialog() {
-//        return nativeDialog;
-//    }
-//
-//    public void setNativeDialog(boolean nativeDialog) {
-//        this.nativeDialog = nativeDialog;
-//    }
-
     public String getUserId() {
         return userId;
     }
@@ -322,6 +316,21 @@ public class UnifiedRequest implements Parcelable {
         this.footerEnabled = true;
     }
 
+    public boolean isSelectionSkipped() {
+        return selectionSkipped;
+    }
+
+    public void skipSelection(String psId) {
+        addPwLocal();
+        this.pwlocalRequest.put(Const.P.PS, psId);
+        this.selectionSkipped = true;
+        this.psId = psId;
+    }
+
+    public String getPsId() {
+        return psId;
+    }
+
     public Map<String, String> getBundle() {
         return bundle;
     }
@@ -343,9 +352,10 @@ public class UnifiedRequest implements Parcelable {
 
 
     public void addPwlocalParams(String key, String value) {
-        if (this.pwlocalRequest != null) {
-            this.pwlocalRequest.put(key, value);
+        if (this.pwlocalRequest == null) {
+            this.pwlocalRequest = new CustomRequest();
         }
+        this.pwlocalRequest.put(key, value);
     }
 
     public void add(ExternalPs... externalPss) {
@@ -410,6 +420,8 @@ public class UnifiedRequest implements Parcelable {
         dest.writeString(this.itemContentProvider);
         dest.writeInt(this.timeout);
         dest.writeByte(this.footerEnabled ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.selectionSkipped ? (byte) 1 : (byte) 0);
+        dest.writeString(this.psId);
         dest.writeByte(this.testMode ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.brickRequest, flags);
         dest.writeSerializable(this.mobiamoRequest);
@@ -457,6 +469,8 @@ public class UnifiedRequest implements Parcelable {
         this.itemContentProvider = in.readString();
         this.timeout = in.readInt();
         this.footerEnabled = in.readByte() != 0;
+        this.selectionSkipped = in.readByte() != 0;
+        this.psId = in.readString();
         this.testMode = in.readByte() != 0;
         this.brickRequest = in.readParcelable(BrickRequest.class.getClassLoader());
         this.mobiamoRequest = (MobiamoPayment) in.readSerializable();

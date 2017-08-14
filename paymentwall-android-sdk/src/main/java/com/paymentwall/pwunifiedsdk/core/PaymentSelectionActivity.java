@@ -5,14 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Html;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,10 +27,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,16 +41,17 @@ import com.paymentwall.pwunifiedsdk.util.Key;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
+import com.paymentwall.sdk.pwlocal.message.CustomRequest;
+import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
+import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
 import com.paymentwall.sdk.pwlocal.ui.PwLocalActivity;
+import com.paymentwall.sdk.pwlocal.utils.ApiType;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.StringReader;
 import java.util.Stack;
 
 /**
@@ -69,12 +61,7 @@ import java.util.Stack;
 public class PaymentSelectionActivity extends FragmentActivity {
 
     public static final int REQUEST_CODE = 0x2505;
-    private boolean isPwLocalEnabled, isBrickEnabled, isMobiamoEnabled, isMintEnabled;
-    private int countRequest;
     public UnifiedRequest request;
-
-    private Button btnAliPay, btnWechat, btnUnionPay;
-
     private ImageView ivBack, ivHelp;
     private TextView tvActionBarTitle;
 
@@ -155,22 +142,23 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 finish();
                 return;
             }
-            isBrickEnabled = request.isBrickEnabled();
-            if (isBrickEnabled) countRequest++;
-            isMobiamoEnabled = request.isMobiamoEnabled();
-            if (isMobiamoEnabled) countRequest++;
-            isMintEnabled = request.isMintEnabled();
-            if (isMintEnabled) countRequest++;
 
             SharedPreferenceManager.getInstance(this).setUIStyle("");
             if (request.getUiStyle() != null)
                 SharedPreferenceManager.getInstance(this).setUIStyle(request.getUiStyle());
+
+            if(request.isSelectionSkipped()){
+                if(request.getPwlocalRequest() == null)
+                    throw new RuntimeException("You must set PwlocalRequest in UnifiedRequest object");
+                if(request.getPsId() == null)
+                    throw new RuntimeException("You must provide id for specific payment system");
+                payWithPwLocal();
+            }else{
+                int resID = PwUtils.getLayoutId(this, "activity_payment_selection");
+                setContentView(resID);
+                initUI();
+            }
         }
-
-        int resID = PwUtils.getLayoutId(this, "activity_payment_selection");
-        setContentView(resID);
-
-        initUI();
     }
 
     private void initUI() {
@@ -192,7 +180,17 @@ public class PaymentSelectionActivity extends FragmentActivity {
         tvActionBarTitle = (TextView) findViewById(R.id.tvActionBarTitle);
         PwUtils.setFontBold(this, new TextView[]{tvActionBarTitle});
 
-        replaceContentFragment(MainPsFragment.getInstance(), bundle);
+        if(!request.isBrickEnabled() && !request.isMintEnabled() && !request.isMobiamoEnabled()){
+            if(request.isPwlocalEnabled() || request.getExternalPsList().size() > 0){
+                replaceContentFragment(LocalPsFragment.getInstance(), bundle);
+            }
+            else{
+                setResult(ResponseCode.CANCEL);
+                finish();
+            }
+        }else {
+            replaceContentFragment(MainPsFragment.getInstance(), bundle);
+        }
 
         webView = (WebView) findViewById(R.id.webView);
         waveView = (WaveView) findViewById(R.id.waveView);
@@ -222,9 +220,47 @@ public class PaymentSelectionActivity extends FragmentActivity {
         }
     }
 
+    private void payWithPwLocal() {
+
+        if (request.getPwlocalRequest() != null) {
+            Intent intent = new Intent(this, PwLocalActivity.class);
+
+            if (request.getPwlocalRequest() instanceof LocalDefaultRequest) {
+                intent.putExtra(com.paymentwall.sdk.pwlocal.utils.Key.PAYMENT_TYPE, com.paymentwall.sdk.pwlocal.utils.PaymentMethod.PW_LOCAL_DEFAULT);
+                intent.putExtra(com.paymentwall.sdk.pwlocal.utils.Key.PWLOCAL_REQUEST_MESSAGE, request.getPwlocalRequest());
+            } else if (request.getPwlocalRequest() instanceof LocalFlexibleRequest) {
+                intent.putExtra(com.paymentwall.sdk.pwlocal.utils.Key.PAYMENT_TYPE, com.paymentwall.sdk.pwlocal.utils.PaymentMethod.PW_LOCAL_FLEXIBLE);
+                intent.putExtra(com.paymentwall.sdk.pwlocal.utils.Key.PWLOCAL_REQUEST_MESSAGE, request.getPwlocalRequest());
+            } else if (request.getPwlocalRequest() instanceof CustomRequest) {
+                intent.putExtra(com.paymentwall.sdk.pwlocal.utils.Key.CUSTOM_REQUEST_TYPE, ApiType.DIGITAL_GOODS);
+                intent.putExtra(com.paymentwall.sdk.pwlocal.utils.Key.CUSTOM_REQUEST_MAP, request.getPwlocalRequest());
+            }
+            startActivityForResult(intent, PwLocalActivity.REQUEST_CODE);
+        } else {
+            throw new RuntimeException("You must set pwLocalRequest value in unifiedRequest object");
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) return;
+        if (requestCode == PwLocalActivity.REQUEST_CODE) {
+            if (resultCode == ResponseCode.ERROR) {
+                setResult(ResponseCode.ERROR, data);
+                finish();
+            } else if (resultCode == ResponseCode.FAILED) {
+                setResult(ResponseCode.FAILED, data);
+                finish();
+            } else if (resultCode == ResponseCode.CANCEL) {
+                setResult(ResponseCode.CANCEL, data);
+                finish();
+            } else if (resultCode == ResponseCode.SUCCESSFUL) {
+                setResult(ResponseCode.SUCCESSFUL, data);
+                finish();
+            }
+            return;
+        }
         if (requestCode == BrickFragment.RC_SCAN_CARD && BrickFragment.getInstance() != null) {
             BrickFragment.getInstance().onActivityResult(requestCode, resultCode, data);
             return;
@@ -255,6 +291,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
     }
 
     public void hideWaitLayout() {
+        Log.i("HIDE WAIT", "");
         isWaitLayoutShowing = false;
         waveHelper.finish(new WaveHelper.IWaveView() {
             @Override
@@ -285,6 +322,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 }
             });
         } else {
+            Log.i("SHOW ERROR", error);
             llDialog.setVisibility(View.VISIBLE);
             isUnsuccessfulShowing = true;
             waveView.setVisibility(View.GONE);
@@ -302,6 +340,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
     }
 
     public void hideErrorLayout() {
+        Log.i("HIDE ERROR", "");
         llDialog.setVisibility(View.GONE);
         isUnsuccessfulShowing = false;
     }
@@ -465,10 +504,9 @@ public class PaymentSelectionActivity extends FragmentActivity {
     public void onBackPressed() {
         if (mStackFragments.size() > 0 && !(mStackFragments.get(mStackFragments.size() - 1) instanceof BaseFragment)) {
             backFragment(null);
-        }else if(webView.getVisibility() == View.VISIBLE){
+        } else if (webView.getVisibility() == View.VISIBLE) {
             webView.setVisibility(View.GONE);
-        }
-        else
+        } else
             LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent().setAction(getPackageName() + Brick.FILTER_BACK_PRESS_FRAGMENT));
 
     }
@@ -581,7 +619,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
         webView.loadUrl(url);
     }
 
-    public void hide3dsWebview(){
+    public void hide3dsWebview() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -600,10 +638,10 @@ public class PaymentSelectionActivity extends FragmentActivity {
             Document doc = Jsoup.parse(html);
             Element body = doc.select("body").first();
             Log.i("BODY", body.text());
-            if(body.text().equalsIgnoreCase("")) return;
+            if (body.text().equalsIgnoreCase("")) return;
 
             JSONObject obj = new JSONObject(body.text());
-            if(obj.has("object") && obj.getString("object").equalsIgnoreCase("charge")){
+            if (obj.has("object") && obj.getString("object").equalsIgnoreCase("charge")) {
                 final String permanentToken = obj.getJSONObject("card").getString("token");
                 runOnUiThread(new Runnable() {
                     @Override
@@ -613,7 +651,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 });
                 return;
             }
-            if(obj.has("type") && obj.getString("type").equalsIgnoreCase("error")){
+            if (obj.has("type") && obj.getString("type").equalsIgnoreCase("error")) {
                 final String error = obj.getString("error");
                 runOnUiThread(new Runnable() {
                     @Override
@@ -623,12 +661,6 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 });
                 return;
             }
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    BrickFragment.getInstance().onChargeSuccess("lfkjdsalfjalsfjlsjfalsfjs");
-//                }
-//            });
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.paymentwall.alipayadapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;

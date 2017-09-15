@@ -29,7 +29,6 @@ import com.paymentwall.pwunifiedsdk.object.ExternalPs;
 import com.paymentwall.pwunifiedsdk.util.Key;
 import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
-import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.utils.Const;
 import com.paymentwall.unionpayadapter.PsUnionpay;
 import com.paymentwall.wechatadapter.PsWechat;
@@ -249,7 +248,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
         request.setPwSecretKey(Constants.PW_SECRET_KEY);
-        request.setAmount(0.01);
+        request.setAmount(good.getPrice());
         request.setCurrency("USD");
         request.setItemName(good.getName());
         request.setItemId(good.getId());
@@ -286,6 +285,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         alipayInternaltional.setItbPay("30m");
         alipayInternaltional.setForexBiz("FP");
         alipayInternaltional.setAppenv("system=android^version=3.0.1.2");
+
 //        alipayInternaltional.setPwSign(genPwSignature());
 
         PsUnionpay unionpay = new PsUnionpay();
@@ -308,7 +308,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
         PsMyCard myCard = new PsMyCard();
 
-        request.addCustomParam("date_timeStamp", System.currentTimeMillis() / 1000 + "");
+//        request.addCustomParam("date_timeStamp", System.currentTimeMillis() / 1000 + "");
 
 //        ExternalPs alipayPs = new ExternalPs("alipay", "Alipay Domestic", R.drawable.ps_logo_alipay, alipay);
         ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay", R.drawable.ps_logo_alipay, alipayInternaltional);
@@ -319,12 +319,12 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
         ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
         ExternalPs myCardPs = new ExternalPs("myCard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt, myCardPs);
+        request.add(alipayPsInt, wechatPs);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Key.REQUEST_MESSAGE, request);
-        intent.putExtras(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable(Key.REQUEST_MESSAGE, request);
+        intent.putExtra(Key.REQUEST_MESSAGE, request);
         startActivityForResult(intent, PaymentSelectionActivity.REQUEST_CODE);
 
         Log.d(TAG, request.toString());
@@ -332,6 +332,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
     private String genPwSignature() {
         TreeMap<String, String> parametersMap = new TreeMap<String, String>();
+
         parametersMap.put("uid", Constants.USER_ID);
         parametersMap.put("key", Constants.PW_PROJECT_KEY);
         parametersMap.put("ag_name", good.getName());

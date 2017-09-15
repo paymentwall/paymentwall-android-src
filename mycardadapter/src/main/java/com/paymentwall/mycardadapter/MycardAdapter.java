@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by nguyen.anh on 5/15/2017.
  */
 
-public class MyCardAdapter {
+public class MycardAdapter {
 
     private PsMyCard psMyCard;
     private Method mthSuccess, mthError, mthCancel, mthShowWait, mthHideWait, mthReplaceFragment;
@@ -22,7 +22,7 @@ public class MyCardAdapter {
     private Context context;
     private Object psActivity;
 
-    public MyCardAdapter(Fragment localPsFragment) {
+    public MycardAdapter(Fragment localPsFragment) {
         try {
             this.fragment = localPsFragment;
             Class<?> BaseFragment = Class.forName("com.paymentwall.pwunifiedsdk.core.BaseFragment");

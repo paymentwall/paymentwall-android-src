@@ -37,6 +37,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class PwHttpClient {
 
+
     public static final String URL_INIT_TRANSACTION = "https://api.paymentwall.com/api/direct-payment";
     public static final String URL_PROCESS_TRANSACTION = "https://api.paymentwall.com/api/direct-payment/%s";
 

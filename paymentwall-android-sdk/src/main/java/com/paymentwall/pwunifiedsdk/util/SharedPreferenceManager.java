@@ -70,7 +70,7 @@ public class SharedPreferenceManager {
         }
     }
 
-    public boolean addCard(String cardNumber, String permanentToken) {
+    public boolean addCard(String cardNumber, String permanentToken, String email) {
         JSONObject obj = null;
         String cards = getStringValue(STORED_CARDS);
         try {
@@ -80,7 +80,7 @@ public class SharedPreferenceManager {
                 obj = new JSONObject(cards);
             }
             String last4Numbers = cardNumber.substring(cardNumber.length() - 4, cardNumber.length());
-            obj.put(last4Numbers, permanentToken);
+            obj.put(last4Numbers, permanentToken + "###" + email);
             putStringValue(STORED_CARDS, obj.toString());
         } catch (Exception e) {
             e.printStackTrace();

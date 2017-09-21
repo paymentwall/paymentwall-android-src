@@ -8,17 +8,14 @@ import com.paypal.android.sdk.payments.PaymentActivity;
  */
 public class Constants {
 
-//        public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // staging
+//        public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // Dzung's staging
 //    public static final String PW_SECRET_KEY = "99438d36884f255f8853d6e04223128b";
 
-//    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // live
+//    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // Fan's key live
 //    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";
 
-    public static final String PW_PROJECT_KEY = "7e43822b844fd872abacf67a92fb826c"; // live
+    public static final String PW_PROJECT_KEY = "7e43822b844fd872abacf67a92fb826c"; // Fan's key live
     public static final String PW_SECRET_KEY = "af022feeb89f61d036da526213634746";
-
-//    public static final String PW_PROJECT_KEY = "e8f5a586024fd963e3a132760557f35d"; // live
-//    public static final String PW_SECRET_KEY = "9c7d69a4bef5e4cb30a8d1bad0fb66b1";
 
 //    public static final String PW_PROJECT_KEY = "t_6b9ef0bb5019a5ec55e3535bc57fd9"; // Brick test
 //    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";

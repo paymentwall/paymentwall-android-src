@@ -14,7 +14,7 @@ import java.util.TreeMap;
  * Created by nguyen.anh on 5/15/2017.
  */
 
-public class PsMyCard implements Parcelable {
+public class PsMycard implements Parcelable {
 
     private String pwSign;
     private Map<String, String> bundle;
@@ -113,12 +113,12 @@ public class PsMyCard implements Parcelable {
         }
     }
 
-    public PsMyCard() {
+    public PsMycard() {
         this.customParams = new HashMap<>();
         this.bundle = new HashMap<>();
     }
 
-    protected PsMyCard(Parcel in) {
+    protected PsMycard(Parcel in) {
         this.pwSign = in.readString();
         int bundleSize = in.readInt();
         this.bundle = new HashMap<String, String>(bundleSize);
@@ -136,15 +136,15 @@ public class PsMyCard implements Parcelable {
         }
     }
 
-    public static final Creator<PsMyCard> CREATOR = new Creator<PsMyCard>() {
+    public static final Creator<PsMycard> CREATOR = new Creator<PsMycard>() {
         @Override
-        public PsMyCard createFromParcel(Parcel source) {
-            return new PsMyCard(source);
+        public PsMycard createFromParcel(Parcel source) {
+            return new PsMycard(source);
         }
 
         @Override
-        public PsMyCard[] newArray(int size) {
-            return new PsMyCard[size];
+        public PsMycard[] newArray(int size) {
+            return new PsMycard[size];
         }
     };
 }

@@ -17,7 +17,7 @@ import com.paymentwall.alipayadapter.PsAlipay;
 import com.paymentwall.baiduadapter.PsBaidu;
 import com.paymentwall.dokuadapter.PsDoku;
 import com.paymentwall.moladapter.PsMol;
-import com.paymentwall.mycardadapter.PsMyCard;
+import com.paymentwall.mycardadapter.PsMycard;
 import com.paymentwall.pandapptest.R;
 import com.paymentwall.pandapptest.config.Constants;
 import com.paymentwall.pandapptest.config.SharedPreferenceManager;
@@ -306,7 +306,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
         PsDoku doku = new PsDoku();
 
-        PsMyCard myCard = new PsMyCard();
+        PsMycard myCard = new PsMycard();
 
 //        request.addCustomParam("date_timeStamp", System.currentTimeMillis() / 1000 + "");
 
@@ -318,8 +318,8 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         ExternalPs paypalPs = new ExternalPs("paypal", "Paypal", R.drawable.ps_logo_paypal, paypal);
         ExternalPs baiduPs = new ExternalPs("baidu", "Baidu Ewallet", R.drawable.ps_logo_baidu, baidu);
         ExternalPs dokuPs = new ExternalPs("doku", "Doku", R.drawable.ps_logo_doku, doku);
-        ExternalPs myCardPs = new ExternalPs("myCard", "MyCard", R.drawable.ps_logo_mycard, myCard);
-        request.add(alipayPsInt, wechatPs);
+        ExternalPs myCardPs = new ExternalPs("mycard", "MyCard", R.drawable.ps_logo_mycard, myCard);
+        request.add(alipayPsInt, wechatPs, unionpayPs, myCardPs, baiduPs);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
 //        Bundle bundle = new Bundle();

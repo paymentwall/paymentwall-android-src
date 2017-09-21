@@ -72,6 +72,9 @@ dependencies {
     //    }
     compile project(':mycardadapter')
     //    compile project(':card.io-release')
+    compile project(':card.io')
+    compile files('libs/walletsdk_v5.8.1.19_20160607_1941_obfuscated.jar')
+    compile files('libs/sapi-core-6.15.7.jar')
 }
 
 task copyNativeLibs(type: Copy) {

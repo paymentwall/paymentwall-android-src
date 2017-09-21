@@ -165,6 +165,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 if (rootWebView != null) {
                     if (customParameters.getMobileDownloadLink() != null)
                         extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, customParameters.getMobileDownloadLink());
+                    Log.i("PWLOCAL_URL", url);
                     rootWebView.loadUrl(url, extraHeaders);
                     addJsHandle();
                 }
@@ -816,7 +817,6 @@ public class PwLocalActivity extends FragmentActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return headers;
     }
 

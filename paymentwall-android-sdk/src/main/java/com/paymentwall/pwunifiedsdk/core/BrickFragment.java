@@ -78,7 +78,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
     private MaskedEditText etCardNumber;
     private EditText etCvv, etExpirationDate;
     private EditText etEmail, etNameOnCard;
-    private static String cardNumber, cvv, expDate, email, nameOnCard;
+    private static String mCardNumber, mCvv, mExpDate, mEmail, mNameOnCard;
     private LinearLayout llScanCard;
     private static int monthSelection = -1;
 
@@ -193,11 +193,11 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
         Brick.getInstance().setContext(self);
 
-        cardNumber = null;
-        cvv = null;
-        expDate = null;
-        email = null;
-        nameOnCard = null;
+        mCardNumber = null;
+        mCvv = null;
+        mExpDate = null;
+        mEmail = null;
+        mNameOnCard = null;
 
         monthSelection = -1;
         currentYear = -1;
@@ -273,12 +273,14 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                 while (iter.hasNext()) {
                     String key = iter.next();
                     String value = obj.getString(key);
+                    String[] values = value.split("###");
 
                     View view = inflater.inflate(PwUtils.getLayoutId(self, "stored_card_layout"), null);
                     final CardEditText etCard = (CardEditText) view.findViewById(R.id.etStoredCard);
 
                     etCard.setCardNumber(key);
-                    etCard.setPermanentToken(value);
+                    etCard.setPermanentToken(values[0]);
+                    etCard.setEmail(values[1]);
                     etCard.setText("xxxx xxxx xxxx " + key);
                     etCard.setOnClickListener(onClickStoredCard);
 
@@ -312,6 +314,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         @Override
         public void onClick(View v) {
             clickedCard = (CardEditText) v;
+            mEmail = clickedCard.getEmail();
             showInputCvvDialog(clickedCard.getPermanentToken());
         }
     };
@@ -508,24 +511,24 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             }
         });
 
-        if (cardNumber != null) {
-            etCardNumber.setText(cardNumber);
+        if (mCardNumber != null) {
+            etCardNumber.setText(mCardNumber);
         }
 
-        if (cvv != null) {
-            etCvv.setText(cvv);
+        if (mCvv != null) {
+            etCvv.setText(mCvv);
         }
 
-        if (expDate != null) {
-            etExpirationDate.setText(expDate);
+        if (mExpDate != null) {
+            etExpirationDate.setText(mExpDate);
         }
 
-        if (email != null) {
-            etEmail.setText(email);
+        if (mEmail != null) {
+            etEmail.setText(mEmail);
         }
 
-        if (nameOnCard != null) {
-            etNameOnCard.setText(nameOnCard);
+        if (mNameOnCard != null) {
+            etNameOnCard.setText(mNameOnCard);
         }
 
         if (isDatePickerShowing) {
@@ -613,7 +616,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     etCardNumber.setCompoundDrawables((Drawable) etCardNumber.getTag(), null, null, null);
                 }
                 validateBrickCardInfo(false);
-                cardNumber = etCardNumber.getText().toString();
+                mCardNumber = etCardNumber.getText().toString();
             }
         });
 
@@ -637,7 +640,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     etExpirationDate.setBackgroundDrawable(PwUtils.getDrawableFromAttribute(self, "bgInputForm"));
                     etExpirationDate.setHint("");
                 }
-                expDate = etCvv.getText().toString();
+                mExpDate = etCvv.getText().toString();
                 validateBrickCardInfo(false);
             }
 
@@ -662,7 +665,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     etCvv.setHint("");
                     etCvv.setCompoundDrawables((Drawable) etCvv.getTag(), null, null, null);
                 }
-                cvv = etCvv.getText().toString();
+                mCvv = etCvv.getText().toString();
                 validateBrickCardInfo(false);
             }
         });
@@ -686,7 +689,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     etEmail.setHint("");
                     etEmail.setCompoundDrawables((Drawable) etEmail.getTag(), null, null, null);
                 }
-                email = etEmail.getText().toString();
+                mEmail = etEmail.getText().toString();
                 validateBrickCardInfo(false);
             }
         });
@@ -710,7 +713,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
                     etNameOnCard.setHint(getString(R.string.name_on_card));
                     etNameOnCard.setCompoundDrawables((Drawable) etNameOnCard.getTag(), null, null, null);
                 }
-                nameOnCard = etNameOnCard.getText().toString();
+                mNameOnCard = etNameOnCard.getText().toString();
                 validateBrickCardInfo(false);
             }
         });
@@ -940,7 +943,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
         }
         hide3dsWebview();
         handler.removeCallbacks(checkTimeoutTask);
-        if (SharedPreferenceManager.getInstance(self).isCardExisting(cardNumber)) {
+        if (SharedPreferenceManager.getInstance(self).isCardExisting(mCardNumber)) {
             statusCode = ResponseCode.SUCCESSFUL;
             displayPaymentSucceeded();
         } else {
@@ -960,7 +963,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
 
     public void onStoreCardConfirm(boolean agree) {
         if (agree) {
-            SharedPreferenceManager.getInstance(self).addCard(cardNumber, permanentToken);
+            SharedPreferenceManager.getInstance(self).addCard(mCardNumber, permanentToken, mEmail);
             Toast.makeText(self, getString(R.string.store_card_success), Toast.LENGTH_SHORT).show();
         }
         statusCode = ResponseCode.SUCCESSFUL;
@@ -1052,6 +1055,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             Intent intent = new Intent();
             intent.setAction(getActivity().getPackageName() + Brick.BROADCAST_FILTER_MERCHANT);
             intent.putExtra(Brick.KEY_BRICK_TOKEN, token);
+            intent.putExtra(Brick.KEY_BRICK_EMAIL, mEmail);
             if (fingerprint != null) {
                 intent.putExtra(Brick.KEY_BRICK_FINGERPRINT, fingerprint);
             }

@@ -13,7 +13,9 @@
       <module fileurl="file://$PROJECT_DIR$/gameui/gameui.iml" filepath="$PROJECT_DIR$/gameui/gameui.iml" />
       <module fileurl="file://$PROJECT_DIR$/moladapter/moladapter.iml" filepath="$PROJECT_DIR$/moladapter/moladapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/mycardadapter/mycardadapter.iml" filepath="$PROJECT_DIR$/mycardadapter/mycardadapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/paymentwall-android-sdk.iml" filepath="$PROJECT_DIR$/paymentwall-android-sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/paymentwall-android-sdk/paymentwall-android-sdk.iml" filepath="$PROJECT_DIR$/paymentwall-android-sdk/paymentwall-android-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/paymentwall-android-sdk/paymentwall-android-sdk-paymentwall-android-sdk.iml" filepath="$PROJECT_DIR$/paymentwall-android-sdk/paymentwall-android-sdk-paymentwall-android-sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/paypaladapter/paypaladapter.iml" filepath="$PROJECT_DIR$/paypaladapter/paypaladapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/sdkocov2-release/sdkocov2-release.iml" filepath="$PROJECT_DIR$/sdkocov2-release/sdkocov2-release.iml" />
       <module fileurl="file://$PROJECT_DIR$/unionpayadapter/unionpayadapter.iml" filepath="$PROJECT_DIR$/unionpayadapter/unionpayadapter.iml" />

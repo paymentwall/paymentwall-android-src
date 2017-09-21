@@ -52,6 +52,7 @@ public class Brick {
     public static final String BROADCAST_FILTER_MERCHANT = ".brick.PAYMENT_MERCHANT_BROADCAST_PERMISSION";
 
     public static final String KEY_BRICK_TOKEN = "KEY_BRICK_TOKEN";
+    public static final String KEY_BRICK_EMAIL = "KEY_BRICK_EMAIL";
     public static final String KEY_BRICK_FINGERPRINT = "KEY_BRICK_FINGERPRINT";
     public static final String KEY_MERCHANT_SUCCESS = "KEY_MERCHANT_SUCCESS";
     public static final String KEY_PERMANENT_TOKEN = "KEY_PERMANENT_TOKEN";

@@ -221,7 +221,6 @@ public class PaymentSelectionActivity extends FragmentActivity {
     }
 
     private void payWithPwLocal() {
-
         if (request.getPwlocalRequest() != null) {
             Intent intent = new Intent(this, PwLocalActivity.class);
 
@@ -239,7 +238,6 @@ public class PaymentSelectionActivity extends FragmentActivity {
         } else {
             throw new RuntimeException("You must set pwLocalRequest value in unifiedRequest object");
         }
-
     }
 
     @Override
@@ -392,6 +390,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
                         }
                     }, 2000);
                     isSuccessfulShowing = true;
+
                 }
             });
         } else {

@@ -26,6 +26,7 @@ public class CardEditText extends EditText {
 
     private String cardNumber;
     private String permanentToken;
+    private String email;
 
     public CardEditText(Context context) {
         super(context);
@@ -67,6 +68,14 @@ public class CardEditText extends EditText {
 
     public void setPermanentToken(String permanentToken) {
         this.permanentToken = permanentToken;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

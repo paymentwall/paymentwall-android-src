@@ -53,7 +53,7 @@ public class MerchantBackendService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase(getPackageName() + Brick.BROADCAST_FILTER_MERCHANT)) {
                 Log.i(getClass().getSimpleName(), intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
-                processBackend(intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
+                processBackend(intent.getStringExtra(Brick.KEY_BRICK_TOKEN), intent.getStringExtra(Brick.KEY_BRICK_EMAIL));
 //                Brick.getInstance().setResult(1, intent.getStringExtra(Brick.KEY_BRICK_TOKEN));
             }
         }
@@ -78,12 +78,13 @@ public class MerchantBackendService extends Service {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
-    private void processBackend(final String token) {
+    private void processBackend(final String token, final String email) {
+        Log.i("token-email", token + " - " + email);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                int backendResult = 0; //1 means your processing is successful, 0 is failed
+                int backendResult = 1; //1 means your processing is successful, 0 is failed
                 Brick.getInstance().setResult(backendResult, "Credit card is blocked");
             }
         }, 2000);

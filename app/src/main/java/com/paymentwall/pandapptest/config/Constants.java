@@ -8,22 +8,24 @@ import com.paypal.android.sdk.payments.PaymentActivity;
  */
 public class Constants {
 
-//        public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // staging
+//        public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // Dzung's staging
 //    public static final String PW_SECRET_KEY = "99438d36884f255f8853d6e04223128b";
-//    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // live
+
+//    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // Fan's key live
 //    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";
 
-    public static final String PW_PROJECT_KEY = "7e43822b844fd872abacf67a92fb826c"; // live
+    public static final String PW_PROJECT_KEY = "7e43822b844fd872abacf67a92fb826c"; // Fan's key live
     public static final String PW_SECRET_KEY = "af022feeb89f61d036da526213634746";
 
 //    public static final String PW_PROJECT_KEY = "t_6b9ef0bb5019a5ec55e3535bc57fd9"; // Brick test
 //    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";
+
+
     public static final String USER_ID = "testuser2";
 
     public static final String ITEM_MANA_ID = "item1";
     public static final String ITEM_SHIELD_ID = "item2";
     public static final String ITEM_GEM_ID = "item3";
-
 
     public static final class ALIPAY {
         public static final String PARTNER_ID = "2088611221573217";
@@ -31,9 +33,6 @@ public class Constants {
         public static final String SELLER_ID = "overseas_test1@alipay.com";
         public static final String APP_ID = "2016090701861811"; // domestic
 //        public static final String APP_ID = "external";// international
-
-
-//        public static final String PRIVATE_KEY = "MIICAdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAPsV+ZV13nvRwVfcbvoVq26CZiUY0W3D1vaQWIE+8kMzTJ5fnZJaoC2NUGLNp/rM3OJvVr3F63Lt2cDEQuJ1AmZSPfPiXBvePk9Gf6XHkV4DIAlZEFKbn4ncDOE6gelK2ABO8RdP8BSd2uB2fkB1+LjmShQHwjMnMZmaT7kNpusjAgMBAAECgYAF3ZaOCknfRKAqqEijaPwvQbaXKURDNy7/ZZHbuxe3wCwLCxrIP3u8dK+rDzjcYArM82LoXgZJEgtjOHKDjc43f93eb9LWJOBIVdyFPICwCPLf3wir+59KP0M6P64jzxdnslW3uMTKKE+V1KHsWS4wppoWQl2w3PbYt8Pc1kgFUQJBAP4j/On467GZbkMZw0MQhcXRuXeaYIC/TjVkEE7kkJiuC+mSh8LpJGU6L4/cE9dg8dmPJTcmndeBokNC8cISRdsCQQD87EPwUMzmLUmpzAjOFr43Il2becns2OXHhUgoP0rHXSgbj2B7uAbx8MLsXB24a6l8+P3JwqwcEVYL4AhQ9IZZAkBKrNZvBZZz7AqLKvHGLf+wvcxKiZEbo5rec1WbaOvYASQ88LJ1oj3whKVfFyK5YaIO9FHSH8W3gj7klrIk/WuLAkAd7qgrrKRTKVDqc2cnXLGuPLbvS36GNTUcY72iZbsn1PKGMHWurpzDzUaESnKJ/NPWInGGiy9rMvIH/b9+NTIhAkEAkPOjmfa1WGxAR7lo2UXlkdO1F7JMyc9HgeB8GoZbJ1wNX9bHuugUtfR1hPvUIwPe+8e11rSp82lB7yczjeUl9w==";
 
         //money@paymentwall.com
 //        public static final String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMykgaF6cS3zn8KG\n" +

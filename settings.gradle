@@ -1,1 +1,1 @@
-include ':alipayadapter', ':unionpayadapter', ':paymentwall-android-sdk', ':app', ':moladapter', ':wechatadapter', ':baiduadapter', ':baiduWalletRefactorLib', ':paypaladapter', ':dokuadapter', ':sdkocov2-release', ':PayPalAndroidSDK-2.15.3', ':mycardadapter', ':gameui', ':card.io'
+include ':alipayadapter', ':unionpayadapter', ':paymentwall-android-sdk', ':app', ':moladapter', ':wechatadapter', ':baiduadapter', ':baiduWalletRefactorLib', ':paypaladapter', ':dokuadapter', ':sdkocov2-release', ':mycardadapter', ':gameui', ':card.io'

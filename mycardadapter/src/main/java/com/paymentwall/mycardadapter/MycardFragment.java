@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by nguyen.anh on 5/16/2017.
  */
 
-public class MyCardFragment extends Fragment {
+public class MycardFragment extends Fragment {
 
     private EditText etCardId, etCardPassword;
     private Button btnProceed;
@@ -35,11 +35,11 @@ public class MyCardFragment extends Fragment {
 
     private Method mthSuccess, mthError, mthCancel, mthShowWait, mthHideWait;
 
-    public static MyCardFragment instance;
+    public static MycardFragment instance;
 
-    public static MyCardFragment getInstance() {
+    public static MycardFragment getInstance() {
         if (instance == null) {
-            instance = new MyCardFragment();
+            instance = new MycardFragment();
         }
         return instance;
     }

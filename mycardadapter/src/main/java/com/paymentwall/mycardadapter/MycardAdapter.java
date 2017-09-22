@@ -47,9 +47,9 @@ public class MycardAdapter {
         psMyCard.setBundle(bundle);
         psMyCard.setCustomParams(customParams);
         Bundle b = new Bundle();
-        b.putParcelable(MyCardFragment.MYCARD_OBJECT, psMyCard);
+        b.putParcelable(MycardFragment.MYCARD_OBJECT, psMyCard);
         try {
-            mthReplaceFragment.invoke(psActivity, MyCardFragment.getInstance(), b);
+            mthReplaceFragment.invoke(psActivity, MycardFragment.getInstance(), b);
         } catch (Exception e) {
             e.printStackTrace();
         }

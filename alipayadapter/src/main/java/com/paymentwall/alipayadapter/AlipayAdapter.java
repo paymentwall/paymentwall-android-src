@@ -80,6 +80,8 @@ public class AlipayAdapter {
                     try {
                         JSONObject rootObj = new JSONObject(responseBody);
                         if (rootObj.has("data")) {
+
+
                             JSONObject dataObject = rootObj.getJSONObject("data");
                             if (dataObject.has("service")) {
                                 psAlipay.setService(dataObject.getString("service"));
@@ -149,9 +151,10 @@ public class AlipayAdapter {
                             if (dataObject.has("version")) {
                                 psAlipay.setVersion(dataObject.getString("version"));
                             }
+                            // Domestic Alipay
                             if (dataObject.has("biz_content")) {
-
                                 JSONObject bizObj = dataObject.getJSONObject("biz_content");
+
                                 if (bizObj.has("product_code")) {
                                     psAlipay.setProductCode(bizObj.getString("product_code"));
                                 }

@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PandaPPTestv1.1.iml" filepath="$PROJECT_DIR$/PandaPPTestv1.1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PayPalAndroidSDK-2.15.3/PayPalAndroidSDK-2.15.3.iml" filepath="$PROJECT_DIR$/PayPalAndroidSDK-2.15.3/PayPalAndroidSDK-2.15.3.iml" />
       <module fileurl="file://$PROJECT_DIR$/alipayadapter/alipayadapter.iml" filepath="$PROJECT_DIR$/alipayadapter/alipayadapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/baiduWalletRefactorLib/baiduWalletRefactorLib.iml" filepath="$PROJECT_DIR$/baiduWalletRefactorLib/baiduWalletRefactorLib.iml" />

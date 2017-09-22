@@ -25,6 +25,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
-    compile project(':PayPalAndroidSDK-2.15.3')
+    compile 'com.paypal.sdk:paypal-android-sdk:2.15.3'
+//    compile project(':PayPalAndroidSDK-2.15.3')
     compile project(':paymentwall-android-sdk')
 }

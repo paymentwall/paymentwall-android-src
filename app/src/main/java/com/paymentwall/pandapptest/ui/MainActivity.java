@@ -285,7 +285,6 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         alipayInternaltional.setItbPay("30m");
         alipayInternaltional.setForexBiz("FP");
         alipayInternaltional.setAppenv("system=android^version=3.0.1.2");
-
 //        alipayInternaltional.setPwSign(genPwSignature());
 
         PsUnionpay unionpay = new PsUnionpay();

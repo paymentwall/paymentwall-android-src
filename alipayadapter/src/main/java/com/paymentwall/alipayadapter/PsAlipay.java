@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -14,7 +15,6 @@ import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +26,36 @@ import java.util.TreeMap;
  */
 
 public class PsAlipay implements Parcelable {
+    private static class B {
 
-    private String partnerId;
+    }
+
+    private static class Z {
+        public static final String SERVICE = "service";
+        public static final String PARTNER = "partner";
+        public static final String _INPUT_CHARSET = "_input_charset";
+        public static final String CHARSET = "charset";
+        public static final String SIGN_TYPE = "sign_type";
+        public static final String NOTIFY_URL = "notify_url";
+        public static final String OUT_TRADE_NO = "out_trade_no";
+        public static final String SUBJECT = "subject";
+        public static final String PAYMENT_TYPE = "payment_type";
+        public static final String SELLER_ID = "seller_id";
+        public static final String TOTAL_FEE = "total_fee";
+        public static final String BODY = "body";
+        public static final String CURRENCY = "currency";
+        public static final String IT_B_PAY = "it_b_pay";
+        public static final String FOREX_BIZ = "forex_biz";
+        public static final String APP_ID = "app_id";
+        public static final String METHOD = "method";
+        public static final String APPENV = "appenv";
+        public static final String SIGN = "sign";
+        public static final String TIMESTAMP = "timestamp";
+        public static final String VERSION = "version";
+        public static final String BIZ_CONTENT = "biz_content";
+    }
+
+    /*private String partnerId;
     private String sellerId;
     private String service;
     private String outTradeNo;
@@ -49,114 +77,159 @@ public class PsAlipay implements Parcelable {
     private String version;
     private String method;
     private String productCode;
+    private String pwSign;*/
     private String pwSign;
+    private Map<String, String> alipayParams = new TreeMap<>();
     private Map<String, String> params;
     private Map<String, String> customParams;
+    private String privateKey;
 
+    public Map<String, String> getAlipayParams() {
+        return alipayParams;
+    }
+
+    public void setAlipayParams(Map<String, String> alipayParams) {
+        this.alipayParams = alipayParams;
+    }
+
+    public void put(String key, String value) {
+        alipayParams.put(key, value);
+    }
+
+    public String get(String key) {
+        return alipayParams.get(key);
+    }
 
     public String getPartnerId() {
-        return partnerId;
+        return alipayParams.get(Z.PARTNER);
     }
 
     public void setPartnerId(String partnerId) {
-        this.partnerId = partnerId;
+        if (partnerId == null) alipayParams.remove(Z.PARTNER);
+        else alipayParams.put(Z.PARTNER, partnerId);
     }
 
     public String getSellerId() {
-        return sellerId;
+        return alipayParams.get(Z.SELLER_ID);
     }
 
     public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
+        if (sellerId == null) alipayParams.remove(Z.SELLER_ID);
+        else alipayParams.put(Z.SELLER_ID, sellerId);
     }
 
     public String getService() {
-        return service;
+        return alipayParams.get(Z.SERVICE);
     }
 
     public void setService(String service) {
-        this.service = service;
+        if (service == null) alipayParams.remove(Z.SERVICE);
+        else alipayParams.put(Z.SERVICE, service);
     }
 
     public String getOutTradeNo() {
-        return outTradeNo;
+        return alipayParams.get(Z.OUT_TRADE_NO);
     }
 
     public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
+        if (outTradeNo == null) alipayParams.remove(Z.OUT_TRADE_NO);
+        else alipayParams.put(Z.OUT_TRADE_NO, outTradeNo);
     }
 
     public String getInputCharset() {
-        return inputCharset;
+        return alipayParams.get(Z._INPUT_CHARSET);
     }
 
     public void setInputCharset(String inputCharset) {
-        this.inputCharset = inputCharset;
+        if (inputCharset == null) alipayParams.remove(Z._INPUT_CHARSET);
+        else alipayParams.put(Z._INPUT_CHARSET, inputCharset);
+    }
+
+    public String getCharset() {
+        return alipayParams.get(Z.CHARSET);
+    }
+
+    public void setCharset(String charset) {
+        if (charset == null) alipayParams.remove(Z.CHARSET);
+        else alipayParams.put(Z.CHARSET, charset);
     }
 
     public String getCurrencyCode() {
-        return currencyCode;
+        return alipayParams.get(Z.CURRENCY);
     }
 
     public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
+        if (currencyCode == null) alipayParams.remove(Z.CURRENCY);
+        else alipayParams.put(Z.CURRENCY, currencyCode);
     }
 
     public String getSignType() {
-        return signType;
+        return alipayParams.get(Z.SIGN_TYPE);
     }
 
     public void setSignType(String signType) {
-        this.signType = signType;
+        if (signType == null) alipayParams.remove(Z.SIGN_TYPE);
+        else alipayParams.put(Z.SIGN_TYPE, signType);
     }
 
     public String getNotifyUrl() {
-        return notifyUrl;
+        return alipayParams.get(Z.NOTIFY_URL);
     }
 
     public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
+        if (notifyUrl == null) alipayParams.remove(Z.NOTIFY_URL);
+        else {
+            notifyUrl = notifyUrl.replace("\\/", "/");
+            alipayParams.put(Z.NOTIFY_URL, notifyUrl);
+        }
     }
 
     public String getSubject() {
-        return subject;
+        return alipayParams.get(Z.SUBJECT);
     }
 
     public void setSubject(String subject) {
-        this.subject = subject;
+        if (subject == null) alipayParams.remove(Z.SUBJECT);
+        else alipayParams.put(Z.SUBJECT, subject);
     }
 
     public String getPaymentType() {
-        return paymentType;
+        return alipayParams.get(Z.PAYMENT_TYPE);
     }
 
     public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+        if (paymentType == null) alipayParams.remove(Z.PAYMENT_TYPE);
+        else alipayParams.put(Z.PAYMENT_TYPE, paymentType);
     }
 
     public String getTotalFee() {
-        return totalFee;
+        return alipayParams.get(Z.TOTAL_FEE);
     }
 
     public void setTotalFee(String totalFee) {
-        this.totalFee = totalFee;
+        if (totalFee == null) alipayParams.remove(Z.TOTAL_FEE);
+        else alipayParams.put(Z.TOTAL_FEE, totalFee);
     }
 
     public String getBody() {
-        return body;
+        return alipayParams.get(Z.BODY);
     }
 
     public void setBody(String body) {
-        this.body = body;
+        if (body == null) alipayParams.remove(Z.BODY);
+        else alipayParams.put(Z.BODY, body);
     }
 
-
     public String getSignature() {
-        return signature;
+        return alipayParams.get(Z.SIGN);
     }
 
     public void setSignature(String signature) {
-        this.signature = signature;
+        if (signature == null) alipayParams.remove(Z.SIGN);
+        else {
+            signature = signature.replace("\\/", "/");
+            alipayParams.put(Z.SIGN, signature);
+        }
     }
 
     public String getPrivateKey() {
@@ -168,68 +241,77 @@ public class PsAlipay implements Parcelable {
     }
 
     public String getItbPay() {
-        return itbPay;
+        return alipayParams.get(Z.IT_B_PAY);
     }
 
     public void setItbPay(String itbPay) {
-        this.itbPay = itbPay;
+        if (itbPay == null) alipayParams.remove(Z.IT_B_PAY);
+        else alipayParams.put(Z.IT_B_PAY, itbPay);
     }
 
     public String getForexBiz() {
-        return forexBiz;
+        return alipayParams.get(Z.FOREX_BIZ);
     }
 
     public void setForexBiz(String forexBiz) {
-        this.forexBiz = forexBiz;
+        if (forexBiz == null) alipayParams.remove(Z.FOREX_BIZ);
+        else alipayParams.put(Z.FOREX_BIZ, forexBiz);
     }
 
     public String getAppId() {
-        return appId;
+        return alipayParams.get(Z.APP_ID);
     }
 
     public void setAppId(String appId) {
-        this.appId = appId;
+        if (appId == null) alipayParams.remove(Z.APP_ID);
+        else alipayParams.put(Z.APP_ID, appId);
     }
 
     public String getAppenv() {
-        return appenv;
+        return alipayParams.get(Z.APPENV);
     }
 
     public void setAppenv(String appenv) {
-        this.appenv = appenv;
-    }
-
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
+        if (appenv == null) alipayParams.remove(Z.APPENV);
+        else alipayParams.put(Z.APPENV, appenv);
     }
 
     public String getMethod() {
-        return method;
+        return alipayParams.get(Z.METHOD);
     }
 
     public void setMethod(String method) {
-        this.method = method;
+        if (method == null) alipayParams.remove(Z.METHOD);
+        else alipayParams.put(Z.METHOD, method);
     }
 
-    public String getProductCode() {
-        return productCode;
+    public String getTimeStamp() {
+        return alipayParams.get(Z.TIMESTAMP);
     }
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
+    public void setTimeStamp(String timeStamp) {
+        if (timeStamp == null) alipayParams.remove(Z.TIMESTAMP);
+        else alipayParams.put(Z.TIMESTAMP, timeStamp);
     }
+
+    public String getVersion() {
+        return alipayParams.get(Z.VERSION);
+    }
+
+    public void setVersion(String version) {
+        if (version == null) alipayParams.remove(Z.VERSION);
+        else alipayParams.put(Z.VERSION, version);
+    }
+
+    public String getBizContentObj() {
+        return alipayParams.get(Z.BIZ_CONTENT);
+    }
+
+    public void setBizContentObj(String bizContentObj) {
+        if (bizContentObj == null) alipayParams.remove(Z.BIZ_CONTENT);
+        else alipayParams.put(Z.BIZ_CONTENT, bizContentObj);
+    }
+
 
     public Map<String, String> getParams() {
         return params;
@@ -345,21 +427,81 @@ public class PsAlipay implements Parcelable {
     }
 
     public static String buildAlipayParam(Map<String, String> map) {
+        boolean isDomestic = false;
+        if(map.containsKey(Z.BIZ_CONTENT)) {
+            isDomestic = true;
+        }
         List<String> keys = new ArrayList<>(map.keySet());
-
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < keys.size() - 1; i++) {
-            String key = keys.get(i);
-            String value = map.get(key);
-            sb.append(buildKeyValue(key, value, true));
-            sb.append("&");
+        if(isDomestic) {
+            try {
+                String sign = "";
+                for (int i = 0; i < keys.size(); i++) {
+                    String key = keys.get(i);
+                    if (key.equalsIgnoreCase(Z.SIGN)) {
+                        sign = map.get(key);
+                    } else {
+//                    sb.append(buildKeyValue(key, value, true));
+                        sb.append(key);
+                        sb.append("=");
+                        sb.append(URLEncoder.encode(map.get(key), "UTF-8"));
+                        sb.append("&");
+                    }
+                }
+                sb.append(Z.SIGN);
+                sb.append("=");
+                sb.append(URLEncoder.encode(sign, "UTF-8"));
+                return sb.toString();
+            } catch (UnsupportedEncodingException e) {
+                return null;
+            }
+            /*String tailKey = keys.get(keys.size() - 1);
+            String tailValue = map.get(tailKey);
+            sb.append(buildKeyValue(tailKey, tailValue, true));*/
+        } else {
+            String sign = "";
+            String signType = "";
+            for (int i = 0; i < keys.size(); i++) {
+                String key = keys.get(i);
+                if(key.equalsIgnoreCase(Z.SIGN)) {
+                    sign = map.get(key);
+                } else if(key.equalsIgnoreCase(Z.SIGN_TYPE)) {
+                    signType = map.get(key);
+                } else {
+                    /*String value = "\""+map.get(key)+"\"";
+                    sb.append(buildKeyValue(key, value, true));
+                    sb.append("&");*/
+                    try {
+                        sb.append(key);
+                        sb.append("=");
+                        sb.append("\"");
+                        sb.append(map.get(key));
+                        sb.append("\"");
+                        sb.append("&");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            try {
+                sb.append(Z.SIGN);
+                sb.append("=");
+                sb.append("\"");
+                sb.append(URLEncoder.encode(sign, "UTF-8"));
+                sb.append("\"&");
+                sb.append(Z.SIGN_TYPE);
+                sb.append("=");
+                sb.append("\"");
+                sb.append(signType);
+                sb.append("\"");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return sb.toString();
         }
 
-        String tailKey = keys.get(keys.size() - 1);
-        String tailValue = map.get(tailKey);
-        sb.append(buildKeyValue(tailKey, tailValue, true));
 
-        return sb.toString();
     }
 
     public static String getSign(Map<String, String> map, String rsaKey) {
@@ -470,30 +612,33 @@ public class PsAlipay implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.partnerId);
-        dest.writeString(this.sellerId);
-        dest.writeString(this.service);
-        dest.writeString(this.outTradeNo);
-        dest.writeString(this.inputCharset);
-        dest.writeString(this.currencyCode);
-        dest.writeString(this.signType);
-        dest.writeString(this.notifyUrl);
-        dest.writeString(this.subject);
-        dest.writeString(this.paymentType);
-        dest.writeString(this.totalFee);
-        dest.writeString(this.body);
-        dest.writeString(this.signature);
-        dest.writeString(this.itbPay);
-        dest.writeString(this.forexBiz);
-        dest.writeString(this.appId);
-        dest.writeString(this.appenv);
+//        dest.writeString(this.partnerId);
+//        dest.writeString(this.sellerId);
+//        dest.writeString(this.service);
+//        dest.writeString(this.outTradeNo);
+//        dest.writeString(this.inputCharset);
+//        dest.writeString(this.currencyCode);
+//        dest.writeString(this.signType);
+//        dest.writeString(this.notifyUrl);
+//        dest.writeString(this.subject);
+//        dest.writeString(this.paymentType);
+//        dest.writeString(this.totalFee);
+//        dest.writeString(this.body);
+//        dest.writeString(this.signature);
+//        dest.writeString(this.itbPay);
+//        dest.writeString(this.forexBiz);
+//        dest.writeString(this.appId);
+//        dest.writeString(this.appenv);
+//        dest.writeString(this.timeStamp);
+//        dest.writeString(this.version);
+//        dest.writeString(this.method);
         dest.writeString(this.privateKey);
-        dest.writeString(this.timeStamp);
-        dest.writeString(this.version);
-        dest.writeString(this.method);
-        dest.writeString(this.productCode);
         dest.writeString(this.pwSign);
-
+        dest.writeInt(this.alipayParams.size());
+        for (Map.Entry<String, String> entry : this.alipayParams.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
 //        dest.writeInt(this.params.size());
 //        for (Map.Entry<String, String> entry : this.params.entrySet()) {
 //            dest.writeString(entry.getKey());
@@ -507,7 +652,7 @@ public class PsAlipay implements Parcelable {
     }
 
     protected PsAlipay(Parcel in) {
-        this.partnerId = in.readString();
+        /*this.partnerId = in.readString();
         this.sellerId = in.readString();
         this.service = in.readString();
         this.outTradeNo = in.readString();
@@ -524,15 +669,19 @@ public class PsAlipay implements Parcelable {
         this.forexBiz = in.readString();
         this.appId = in.readString();
         this.appenv = in.readString();
-        this.privateKey = in.readString();
         this.timeStamp = in.readString();
         this.version = in.readString();
-        this.method = in.readString();
-        this.productCode = in.readString();
+        this.method = in.readString();*/
+        this.privateKey = in.readString();
         this.pwSign = in.readString();
 
-//        int paramsSize = in.readInt();
-
+        int paramsSize = in.readInt();
+        this.alipayParams = new TreeMap<String, String>();
+        for (int i = 0; i < paramsSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.alipayParams.put(key, value);
+        }
 //        this.params = new HashMap<String, String>(paramsSize);
 //        for (int i = 0; i < paramsSize; i++) {
 //            String key = in.readString();

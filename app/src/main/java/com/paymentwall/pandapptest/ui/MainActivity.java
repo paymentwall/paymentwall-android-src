@@ -34,7 +34,11 @@ import com.paymentwall.unionpayadapter.PsUnionpay;
 import com.paymentwall.wechatadapter.PsWechat;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Currency;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -98,6 +102,8 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         initUi();
 
     }
+
+
 
     @Override
     protected void onResume() {
@@ -244,6 +250,26 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
     }
 
     public void displayGoods() {
+        UnifiedRequest request = new UnifiedRequest();
+        request.setPwProjectKey(Constants.PW_PROJECT_KEY);
+        request.setPwSecretKey(Constants.PW_SECRET_KEY);
+        request.setAmount(good.getPrice());
+        request.setCurrency("USD");
+        request.setItemName(good.getName());
+        request.setItemId(good.getId());
+        request.setUserId(Constants.USER_ID);
+        request.setSignVersion(3);
+        request.setItemResID(good.getImage());
+        request.setTimeout(30000);
+        request.enableFooter();
+        request.setTestMode(true);
+        request.addBrick();
+        Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
+        intent.putExtra(Key.REQUEST_MESSAGE, request);
+        startActivityForResult(intent, PaymentSelectionActivity.REQUEST_CODE);
+    }
+
+    public void displayGoods2() {
 
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
@@ -273,10 +299,9 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.addPwlocalParams(Const.P.EVALUATION, "1");
 
         // set params for Alipay domestic
-//        PsAlipay alipay = new PsAlipay();
-//        alipay.setAppId(Constants.ALIPAY.APP_ID);
-//        alipay.setPaymentType("1");
-//        alipay.setPwSign(genPwSignature());
+        /*PsAlipay alipayInternaltional = new PsAlipay();
+        alipayInternaltional.setAppId(Constants.ALIPAY.APP_ID);*/
+//        alipayInternaltional.setPaymentType("1");
 
         //Alipay international
         PsAlipay alipayInternaltional = new PsAlipay();

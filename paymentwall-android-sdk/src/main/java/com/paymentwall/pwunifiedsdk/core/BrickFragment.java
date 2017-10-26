@@ -710,7 +710,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
                     etNameOnCard.setBackgroundDrawable(PwUtils.getDrawableFromAttribute(self, "bgInputForm"));
-                    etNameOnCard.setHint(getString(R.string.name_on_card));
+                    etNameOnCard.setHint(getString(R.string.brick_hint_cardholder));
                     etNameOnCard.setCompoundDrawables((Drawable) etNameOnCard.getTag(), null, null, null);
                 }
                 mNameOnCard = etNameOnCard.getText().toString();
@@ -811,7 +811,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 dialog.dismiss();
-                BrickFragment.getInstance().onStoreCardConfirm(true);
+                BrickFragment.getInstance().onStoreCardConfirm(false);
             }
         });
 
@@ -1056,6 +1056,7 @@ public class BrickFragment extends BaseFragment implements Brick.Callback {
             intent.setAction(getActivity().getPackageName() + Brick.BROADCAST_FILTER_MERCHANT);
             intent.putExtra(Brick.KEY_BRICK_TOKEN, token);
             intent.putExtra(Brick.KEY_BRICK_EMAIL, mEmail);
+            intent.putExtra(Brick.KEY_BRICK_CARDHOLDER, mNameOnCard);
             if (fingerprint != null) {
                 intent.putExtra(Brick.KEY_BRICK_FINGERPRINT, fingerprint);
             }

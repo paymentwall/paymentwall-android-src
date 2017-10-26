@@ -549,8 +549,9 @@ public class MobiamoPayment extends PWSDKRequest {
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setReadTimeout(15 * 1000);
                 urlConnection.setConnectTimeout(10 * 1000);
-                urlConnection.connect();
                 urlConnection = PwUtils.addExtraHeaders(context, urlConnection);
+                urlConnection.connect();
+
 
                 Log.d(TAG, "Response Code: " + urlConnection.getResponseCode());
                 if (urlConnection.getResponseCode() > 0) {

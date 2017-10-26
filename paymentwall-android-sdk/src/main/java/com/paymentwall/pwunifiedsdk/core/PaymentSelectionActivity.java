@@ -153,7 +153,9 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 if(request.getPsId() == null)
                     throw new RuntimeException("You must provide id for specific payment system");
                 payWithPwLocal();
-            }else{
+            }
+
+            else{
                 int resID = PwUtils.getLayoutId(this, "activity_payment_selection");
                 setContentView(resID);
                 initUI();
@@ -188,7 +190,13 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 setResult(ResponseCode.CANCEL);
                 finish();
             }
-        }else {
+        } else if(request.isBrickEnabled()
+                && !request.isMintEnabled()
+                && !request.isMobiamoEnabled()
+                && !request.isPwlocalEnabled()
+                && (request.getExternalPsList() == null || request.getExternalPsList().isEmpty())) {
+            payWithBrick();
+        } else {
             replaceContentFragment(MainPsFragment.getInstance(), bundle);
         }
 
@@ -217,6 +225,18 @@ public class PaymentSelectionActivity extends FragmentActivity {
         }
         if (isSuccessfulShowing) {
             displayPaymentSucceeded();
+        }
+    }
+
+    private void payWithBrick() {
+        if (isSuccessfulShowing) {
+            replaceContentFragment(BrickFragment.getInstance(), bundle);
+        }
+        if (request.getBrickRequest().validate()) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(Key.PAYMENT_TYPE, com.paymentwall.pwunifiedsdk.brick.utils.PaymentMethod.BRICK);
+            bundle.putParcelable(Key.REQUEST_MESSAGE, request.getBrickRequest());
+            replaceContentFragment(BrickFragment.getInstance(), bundle);
         }
     }
 

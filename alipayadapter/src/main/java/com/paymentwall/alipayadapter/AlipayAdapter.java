@@ -11,14 +11,15 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -80,95 +81,16 @@ public class AlipayAdapter {
                     try {
                         JSONObject rootObj = new JSONObject(responseBody);
                         if (rootObj.has("data")) {
-
-
                             JSONObject dataObject = rootObj.getJSONObject("data");
-                            if (dataObject.has("service")) {
-                                psAlipay.setService(dataObject.getString("service"));
-                            }
-                            if (dataObject.has("partner")) {
-                                psAlipay.setPartnerId(dataObject.getString("partner"));
-                            }
-                            if (dataObject.has("_input_charset")) {
-                                psAlipay.setInputCharset(dataObject.getString("_input_charset"));
-                            }
-                            if (dataObject.has("charset")) {
-                                psAlipay.setInputCharset(dataObject.getString("charset"));
-                            }
-                            if (dataObject.has("sign_type")) {
-                                psAlipay.setSignType(dataObject.getString("sign_type"));
-                            }
-                            if (dataObject.has("notify_url")) {
-                                String notifyUrl = (dataObject.getString("notify_url"));
-                                notifyUrl = notifyUrl.replace("\\/", "/");
-                                psAlipay.setNotifyUrl(notifyUrl);
-                            }
-                            if (dataObject.has("out_trade_no")) {
-                                psAlipay.setOutTradeNo(dataObject.getString("out_trade_no"));
-                            }
-                            if (dataObject.has("subject")) {
-                                psAlipay.setSubject(dataObject.getString("subject"));
-                            }
-                            if (dataObject.has("payment_type")) {
-                                psAlipay.setPaymentType(dataObject.getString("payment_type"));
-                            }
-                            if (dataObject.has("seller_id")) {
-                                psAlipay.setSellerId(dataObject.getString("seller_id"));
-                            }
-                            if (dataObject.has("total_fee")) {
-                                psAlipay.setTotalFee(dataObject.getString("total_fee") + "");
-                            }
-                            if (dataObject.has("body")) {
-                                psAlipay.setBody(dataObject.getString("body"));
-                            }
-                            if (dataObject.has("currency")) {
-//                                psAlipay.getBundle().put("CURRENCY", dataObject.getString("currency"));
-                                psAlipay.setCurrencyCode(dataObject.getString("currency"));
-                            }
-                            if (dataObject.has("it_b_pay")) {
-                                psAlipay.setItbPay(dataObject.getString("it_b_pay"));
-                            }
-                            if (dataObject.has("forex_biz")) {
-                                psAlipay.setForexBiz(dataObject.getString("forex_biz"));
-                            }
-                            if (dataObject.has("app_id")) {
-                                psAlipay.setAppId(dataObject.getString("app_id"));
-                            }
-                            if (dataObject.has("method")) {
-                                psAlipay.setMethod(dataObject.getString("method"));
-                            }
-                            if (dataObject.has("appenv")) {
-                                psAlipay.setAppenv(dataObject.getString("appenv"));
-                            }
-                            if (dataObject.has("sign")) {
-                                String sign = (dataObject.getString("sign"));
-                                sign = sign.replace("\\/", "/");
-                                psAlipay.setSignature(sign);
-                            }
-                            if (dataObject.has("timestamp")) {
-                                psAlipay.setTimeStamp(dataObject.getString("timestamp"));
-                            }
-                            if (dataObject.has("version")) {
-                                psAlipay.setVersion(dataObject.getString("version"));
-                            }
-                            // Domestic Alipay
-                            if (dataObject.has("biz_content")) {
-                                JSONObject bizObj = dataObject.getJSONObject("biz_content");
-
-                                if (bizObj.has("product_code")) {
-                                    psAlipay.setProductCode(bizObj.getString("product_code"));
-                                }
-                                if (bizObj.has("total_amount")) {
-                                    psAlipay.setTotalFee(bizObj.getString("total_amount"));
-                                }
-                                if (bizObj.has("subject")) {
-                                    psAlipay.setSubject(bizObj.getString("subject"));
-                                }
-                                if (bizObj.has("body")) {
-                                    psAlipay.setBody(bizObj.getString("body"));
-                                }
-                                if (bizObj.has("out_trade_no")) {
-                                    psAlipay.setOutTradeNo(bizObj.getString("out_trade_no"));
+                            Iterator<String> keyIterator = dataObject.keys();
+                            while (keyIterator.hasNext()) {
+                                String key = keyIterator.next();
+                                if(!dataObject.isNull(key)) {
+                                    JSONObject tempObject = dataObject.optJSONObject(key);
+                                    JSONArray tempArray = dataObject.optJSONArray(key);
+                                    if(tempObject == null && tempArray == null) {
+                                        psAlipay.put(key, dataObject.optString(key));
+                                    }
                                 }
                             }
 
@@ -217,6 +139,7 @@ public class AlipayAdapter {
 
                     Method payMethod = Paytask.getMethod("payV2", String.class, boolean.class);
                     Map<String, String> result = (Map<String, String>) payMethod.invoke(alipay, orderInfo, true);
+                    Log.i("AliAdapter","send to alipay orderInfo = "+orderInfo);
 //                    Log.i("RESULT", result);
 //                    String result = alipay.pay(orderInfo, true);
                     Message msg = new Message();
@@ -234,89 +157,13 @@ public class AlipayAdapter {
     }
 
     private String getAlipayOrderInfo(PsAlipay psAlipay) {
-
-        String signature = "";
         String orderInfo = "";
-
-        Map<String, String> map = new HashMap<>();
-
-        // domestic account;
-        if (psAlipay.getMethod() != null && psAlipay.getMethod().equalsIgnoreCase(DOMESTIC_METHOD)) {
-
-            map.put("app_id", psAlipay.getAppId());
-            map.put("charset", psAlipay.getInputCharset());
-            map.put("method", psAlipay.getMethod());
-            map.put("sign_type", psAlipay.getSignType());
-            map.put("timestamp", psAlipay.getTimeStamp());
-            map.put("version", psAlipay.getVersion());
-            map.put("notify_url", psAlipay.getNotifyUrl());
-            map.put("biz_content", "{\"product_code\":\"" + psAlipay.getProductCode() + "\",\"total_amount\":\"" + psAlipay.getTotalFee() + "\",\"subject\":\"" + psAlipay.getSubject() + "\",\"body\":\"" + psAlipay.getBody() + "\",\"out_trade_no\":\"" + psAlipay.getOutTradeNo() + "\"}");
-            String orderParam = PsAlipay.buildAlipayParam(map);
-            String sign = psAlipay.getSignature();
-//            String sign = PsAlipay.getSign(map, psAlipay.getPrivateKey());
-            Log.i("BE_SIGN", psAlipay.getSignature());
-//            Log.i("MOBILE_SIGN", PsAlipay.getSign(map, psAlipay.getPrivateKey()));
-            Log.i("ORDER_PARAM", orderParam);
-
-            try {
-                sign = URLEncoder.encode(sign, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            orderInfo = orderParam + "&sign=" + sign;
-            Log.i("ORDER_INFO", orderInfo);
-            return orderInfo;
+        orderInfo = PsAlipay.buildAlipayParam(psAlipay.getAlipayParams());
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Map.Entry<String, String> entry : psAlipay.getAlipayParams().entrySet()) {
+            stringBuilder.append(entry.getKey()+"="+entry.getValue()+"&");
         }
-
-        // cross-border account
-        else {
-            map.put("service", psAlipay.getService());
-            map.put("partner", psAlipay.getPartnerId());
-            map.put("seller_id", psAlipay.getSellerId());
-            map.put("out_trade_no", psAlipay.getOutTradeNo());
-            map.put("_input_charset", psAlipay.getInputCharset());
-            map.put("notify_url", psAlipay.getNotifyUrl());
-            map.put("subject", psAlipay.getSubject());
-            map.put("payment_type", psAlipay.getPaymentType());
-            map.put("total_fee", psAlipay.getTotalFee() + "");
-            map.put("body", psAlipay.getBody());
-
-            if (psAlipay.getItbPay() != null) {
-                map.put("it_b_pay", psAlipay.getItbPay());
-            }
-            if (psAlipay.getForexBiz() != null) {
-                map.put("forex_biz", psAlipay.getForexBiz());
-            }
-            if (psAlipay.getAppId() != null) {
-                map.put("app_id", psAlipay.getAppId());
-            }
-            if (psAlipay.getAppenv() != null) {
-                map.put("appenv", psAlipay.getAppenv());
-            }
-            if (psAlipay.getCurrencyCode() != null) {
-                map.put("currency", psAlipay.getCurrencyCode());
-            }
-            orderInfo = PsAlipay.printInternationalMap(PsAlipay.sortMap(map));
-            Log.i("SIGN_STRING", orderInfo);
-            if (psAlipay.getSignType().equalsIgnoreCase("rsa")) {
-//                signature = PsAlipay.signRsa(orderInfo, psAlipay.getPrivateKey());
-//                Log.i("SIGNATURE_MOBILE", signature);
-                Log.i("SIGNATURE_BE", psAlipay.getSignature());
-            } else if (psAlipay.getSignType().equalsIgnoreCase("md5")) {
-//            signature = PsAlipay.md5(order);
-            }
-            try {
-                signature = psAlipay.getSignature();
-                signature = URLEncoder.encode(signature, "UTF-8");
-                psAlipay.setSignature(signature);
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-            orderInfo += "&sign=\"" + psAlipay.getSignature() + "\"" + "&sign_type=\"" + psAlipay.getSignType() + "\"";
-            Log.i("ORDER_INFO", orderInfo);
-        }
+        Log.i("AliAdapter", "orderInfo = "+orderInfo);
         return orderInfo;
     }
 

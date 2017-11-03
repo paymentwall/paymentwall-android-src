@@ -193,8 +193,7 @@ public class PwHttpClient {
 
                     outputStream = connection.getOutputStream();
                     outputStream.write(information.getBytes());
-                    Log.v("information:", information);
-
+                    Log.v("information:","wechat info"+ information);
                     outputStream.flush();
                     outputStream.close();
 

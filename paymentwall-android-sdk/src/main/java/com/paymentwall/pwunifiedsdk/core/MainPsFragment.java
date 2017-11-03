@@ -222,7 +222,14 @@ public class MainPsFragment extends BaseFragment {
 
 
     private void init() {
-
+        /*if(request != null &&
+                request.isBrickEnabled()
+                && !request.isMintEnabled()
+                && !request.isMobiamoEnabled()
+                && !request.isPwlocalEnabled()
+                && (request.getExternalPsList() == null || request.getExternalPsList().isEmpty()) ) {
+            payWithBrick();
+        }*/
     }
 
     private void payWithMint() {

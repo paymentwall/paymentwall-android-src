@@ -1,16 +1,10 @@
+apply plugin: 'com.android.application'
 buildscript {
     repositories {
         jcenter()
         google()
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
 
 android {
@@ -44,6 +38,7 @@ android {
 }
 
 dependencies {
+    testCompile 'junit:junit:4.12'
     //    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:multidex:1.0.2'
@@ -57,7 +52,7 @@ dependencies {
     compile project(':moladapter')
     compile files('libs/MOLPoints_SDK_V1.2.0.jar')
     compile project(':wechatadapter')
-    compile files('libs/libammsdk.jar')
+//    compile files('libs/libammsdk.jar')
     compile files('libs/UPPayAssistEx.jar')
     compile files('libs/UPPayPluginExPro.jar')
     compile project(':baiduWalletRefactorLib')

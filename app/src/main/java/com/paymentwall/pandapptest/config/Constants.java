@@ -11,8 +11,8 @@ public class Constants {
 //    public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // Dzung's staging
 //    public static final String PW_SECRET_KEY = "99438d36884f255f8853d6e04223128b";
 
-//    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // Fan's key live
-//    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";
+    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // Fan's key live
+    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";
 
 //    public static final String PW_PROJECT_KEY = "7e43822b844fd872abacf67a92fb826c"; // Fan's key live
 //    public static final String PW_SECRET_KEY = "af022feeb89f61d036da526213634746";
@@ -24,8 +24,8 @@ public class Constants {
     // Project: PW-hoahieu-test01
 //    public static final String PW_PROJECT_KEY = "b97c478b610bf64d4225789e6c36adb0";
 //    public static final String PW_PROJECT_KEY = "a53d2762a0a61325eb0f2d4a9a1d5579";
-    public static final String PW_PROJECT_KEY = "t_300a2754a7aad336611e24eac4f5e4";
-    public static final String PW_SECRET_KEY = "e0cb4095e0d21b272920cc7da2d27b17";
+//    public static final String PW_PROJECT_KEY = "t_300a2754a7aad336611e24eac4f5e4";
+//    public static final String PW_SECRET_KEY = "e0cb4095e0d21b272920cc7da2d27b17";
 
     public static final String USER_ID = "testuser2";
 

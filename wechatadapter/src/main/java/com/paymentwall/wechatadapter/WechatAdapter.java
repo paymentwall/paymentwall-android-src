@@ -6,6 +6,11 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.paymentwall.pwunifiedsdk.core.BaseFragment;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -69,21 +74,15 @@ public class WechatAdapter {
                     try {
                         JSONObject rootObj = new JSONObject(responseBody);
                         if (rootObj.has("data")) {
+
                             JSONObject dataObject = rootObj.getJSONObject("data");
                             psWechat.setAppId(dataObject.getString("appid"));
                             psWechat.setMerchantId(dataObject.getString("partnerid"));
                             psWechat.setNonceStr(dataObject.getString("noncestr"));
                             psWechat.setPrepayId(dataObject.getString("prepayid"));
-//                            psWechat.setOutTradeNo(dataObject.getString("out_trade_no"));
-//                            psWechat.setTotalFee(dataObject.getString("total_fee"));
-//                            psWechat.setNotifyUrl(dataObject.getString("notify_url"));
-//                            psWechat.setTradeType(dataObject.getString("trade_type"));
-//                            psWechat.setBody(dataObject.getString("body"));
-//                            psWechat.setCreateIp(IpAddress.getIPAddress(true));
                             psWechat.setPackageValue(dataObject.getString("package"));
-                            psWechat.setTimeStamp(dataObject.getInt("timestamp") + "");
+                            psWechat.setTimeStamp(dataObject.getLong("timestamp") + "");
                             psWechat.setSignature(dataObject.getString("sign"));
-//                            getPrepaidId();
                             processPayment(context, psWechat);
                         }
                     } catch (Exception e) {
@@ -176,46 +175,26 @@ public class WechatAdapter {
             }
         });
     }
-
     private void processPayment(Context context, PsWechat psWechat) {
-        Log.i("WECHAT", "processPayment");
         try {
-            Class<?> WXAPIFactory = Class.forName("com.tencent.mm.sdk.openapi.WXAPIFactory");
-            Method mthCreateWXAPI = WXAPIFactory.getMethod("createWXAPI", Context.class, String.class);
-            api = mthCreateWXAPI.invoke(null, context, psWechat.getPrepayId());
-            Class<?> IWXAPI = Class.forName("com.tencent.mm.sdk.openapi.IWXAPI");
-            Method mthRegisterApp = IWXAPI.getMethod("registerApp", String.class);
-            mthRegisterApp.invoke(api, psWechat.getAppId());
 
-            Class<?> PayReq = Class.forName("com.tencent.mm.sdk.modelpay.PayReq");
-            Object objPayReq = PayReq.newInstance();
-            setPayReqProperty(objPayReq, "appId", psWechat.getAppId());
-            setPayReqProperty(objPayReq, "partnerId", psWechat.getMerchantId());
-            setPayReqProperty(objPayReq, "prepayId", psWechat.getPrepayId());
-            setPayReqProperty(objPayReq, "packageValue", psWechat.getPackageValue());
-            setPayReqProperty(objPayReq, "nonceStr", psWechat.getNonceStr());
-            setPayReqProperty(objPayReq, "timeStamp", psWechat.getTimeStamp());
-            setPayReqProperty(objPayReq, "sign", psWechat.getSignature());
-
-            Class<?> BaseReq = Class.forName("com.tencent.mm.sdk.modelbase.BaseReq");
-            Method mthSendReq = IWXAPI.getMethod("sendReq", BaseReq);
-            mthSendReq.invoke(api, objPayReq);
+            IWXAPI api = WXAPIFactory.createWXAPI(context, psWechat.getAppId());
+            api.registerApp(psWechat.getAppId());
+            PayReq payReq = new PayReq();
+            payReq.appId = psWechat.getAppId();
+            payReq.partnerId = psWechat.getMerchantId();
+            payReq.prepayId = psWechat.getPrepayId();
+            payReq.packageValue = psWechat.getPackageValue();
+            payReq.nonceStr = psWechat.getNonceStr();
+            payReq.timeStamp = psWechat.getTimeStamp();
+            payReq.sign = psWechat.getSignature();
+            api.sendReq(payReq);
 
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 
-    private void setPayReqProperty(Object payReq, String fieldName, String value) {
-        try {
-            Class<?> PayReq = Class.forName("com.tencent.mm.sdk.modelpay.PayReq");
-            Field field = PayReq.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(payReq, value);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void onNewIntent(Intent intent) {
         try {

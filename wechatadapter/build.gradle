@@ -26,4 +26,6 @@ dependencies {
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
     testCompile 'junit:junit:4.12'
     compile project(':paymentwall-android-sdk')
+//    compile files('libs/wechat-sdk-android-with-mta-1.0.2.jar')
+    compile files('libs/libammsdk.jar')
 }

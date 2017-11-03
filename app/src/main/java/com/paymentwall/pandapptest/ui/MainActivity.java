@@ -249,7 +249,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         itemDoneButton.setOnClickListener(this);
     }
 
-    public void displayGoods() {
+    public void displayGoods2() {
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
         request.setPwSecretKey(Constants.PW_SECRET_KEY);
@@ -269,7 +269,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         startActivityForResult(intent, PaymentSelectionActivity.REQUEST_CODE);
     }
 
-    public void displayGoods2() {
+    public void displayGoods() {
 
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);

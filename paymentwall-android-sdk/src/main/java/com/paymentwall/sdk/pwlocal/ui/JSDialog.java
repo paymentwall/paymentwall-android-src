@@ -199,6 +199,7 @@ public class JSDialog extends DialogFragment {
             WebView.setWebContentsDebuggingEnabled(false);
         }
         CookieManager.getInstance().setAcceptCookie(true);
+        compatSetAccept3rdPartyCookie(dialogWv, true);
         dialogWv.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onCloseWindow(WebView window) {
@@ -283,5 +284,11 @@ public class JSDialog extends DialogFragment {
 
     public interface SuccessUrlListener {
         void onSuccessUrlLinkOpened(JSDialog jsDialog);
+    }
+
+    private void compatSetAccept3rdPartyCookie(WebView webView, boolean accept) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, accept);
+        }
     }
 }

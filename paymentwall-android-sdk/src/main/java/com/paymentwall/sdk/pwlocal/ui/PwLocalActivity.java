@@ -165,7 +165,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 if (rootWebView != null) {
                     if (customParameters.getMobileDownloadLink() != null)
                         extraHeaders.put(Const.P.HISTORY_MOBILE_DOWNLOAD_LINK, customParameters.getMobileDownloadLink());
-                    Log.i("PWLOCAL_URL", url);
+//                    Log.i("PWLOCAL_URL", url);
                     rootWebView.loadUrl(url, extraHeaders);
                     addJsHandle();
                 }
@@ -576,6 +576,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 WebView.setWebContentsDebuggingEnabled(false);
             }
             CookieManager.getInstance().setAcceptCookie(true);
+            compatSetAccept3rdPartyCookie(rootWebView, true);
             LinearLayout.LayoutParams wvLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             rootWebView.setLayoutParams(wvLP);
             rootWebView.setWebChromeClient(new WebChromeClient() {
@@ -592,7 +593,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onLoadResource(final WebView view, String url) {
                     super.onLoadResource(view, url);
-                    Log.i("PWLocal", "onLoadResource url = " + url);
+//                    Log.i("PWLocal", "onLoadResource url = " + url);
                     if (isSuccessful(url)) {
                         PwLocalActivity.this.onPWLocalCallback();
                     }
@@ -602,7 +603,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 public void onReceivedError(WebView view, int errorCode,
                                             String description, String failingUrl) {
 
-                    Log.i("PWLocal", "onReceivedError failingUrl = " + failingUrl);
+//                    Log.i("PWLocal", "onReceivedError failingUrl = " + failingUrl);
                     if (isFpLink(failingUrl)) return;
                     if (!isSuccessful(failingUrl)) {
                         // Handle the error
@@ -644,7 +645,7 @@ public class PwLocalActivity extends FragmentActivity implements
                 @Override
                 public void onPageStarted(WebView view, String url,
                                           Bitmap favicon) {
-                    Log.i("PWLocal", "onPageStarted url = " + url);
+//                    Log.i("PWLocal", "onPageStarted url = " + url);
                     startLoading();
                     super.onPageStarted(view, url, favicon);
                 }
@@ -837,6 +838,12 @@ public class PwLocalActivity extends FragmentActivity implements
             Uri uri = Uri.parse(url);
             if (uri != null && "market".equals(uri.getScheme())) return url;
             else return null;
+        }
+    }
+
+    private void compatSetAccept3rdPartyCookie(WebView webView, boolean accept) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, accept);
         }
     }
 }

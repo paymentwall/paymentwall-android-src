@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.SmsManager;
 import android.text.Html;
@@ -43,6 +46,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.paymentwall.pwunifiedsdk.BuildConfig;
 import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.mobiamo.utils.Const;
 import com.paymentwall.pwunifiedsdk.mobiamo.utils.ResponseKey;
@@ -54,7 +58,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MobiamoDialogActivity extends Activity {
-
+    public static MobiamoResponse PUBLIC_MOBIAMO_RESPONSE = null;
     public static final int MOBIAMO_REQUEST_CODE = 0x112;
 
     private static final String DELIVERED_SMS_ACTION = "com.paymentwall.mobianosdk.DELIVERED_SMS_ACTION";
@@ -231,7 +235,7 @@ public class MobiamoDialogActivity extends Activity {
                 Log.i("On_receive", _intent.getAction());
                 if (_intent.getAction().equalsIgnoreCase(MobiamoBroadcastReceiver.SMS_SENT_ACTION)) {
                     dismissDialog();
-                    MobiamoResponse response = (MobiamoResponse) _intent.getSerializableExtra("response");
+                    MobiamoResponse response = (MobiamoResponse) _intent.getParcelableExtra("response");
                     if (response.getSendSms()) {
                         if (TRANSACTION_STATUS_COMPLETED.equalsIgnoreCase(response
                                 .getStatus()))
@@ -671,12 +675,18 @@ public class MobiamoDialogActivity extends Activity {
     }
 
     private void sendSMS(final MobiamoResponse response) {
+        Log.i("Mobiamo", "sendSMS 001 response = "+response);
         Intent sentIntent = new Intent(MobiamoBroadcastReceiver.SEND_SMS_ACTION);
         sentIntent.setClass(this, MobiamoBroadcastReceiver.class);
         // sentIntent.putExtra("request", request);
-        sentIntent.putExtra("response", response);
+
+        PUBLIC_MOBIAMO_RESPONSE = response;
 //        sentIntent.putExtra("listener", listener);
-        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, sentIntent,
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(
+                getApplicationContext(),
+                0,
+                sentIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Create the deliveryIntent parameter
@@ -769,11 +779,13 @@ public class MobiamoDialogActivity extends Activity {
             return view;
         }
     }
-
     void createDialog() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             prgDialog = new ProgressDialog(MobiamoDialogActivity.this,
-                    ProgressDialog.THEME_HOLO_LIGHT);
+                    android.R.style.Theme_Material_Light_Dialog);
+        }  else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            prgDialog = new ProgressDialog(MobiamoDialogActivity.this,
+                    android.R.style.Theme_Material_Light_Dialog);
         } else {
             prgDialog = new ProgressDialog(MobiamoDialogActivity.this);
         }

@@ -191,7 +191,7 @@ public class RequestManagerRetriever implements Handler.Callback {
       // TODO(b/27524013): Factor out this Glide.get() call.
       Glide glide = Glide.get(context);
       requestManager =
-          new RequestManager(glide, current.getLifecycle(), current.getRequestManagerTreeNode());
+          new RequestManager(glide, current.getGlideLifecycle(), current.getRequestManagerTreeNode());
       current.setRequestManager(requestManager);
     }
     return requestManager;
@@ -221,7 +221,7 @@ public class RequestManagerRetriever implements Handler.Callback {
       // TODO(b/27524013): Factor out this Glide.get() call.
       Glide glide = Glide.get(context);
       requestManager =
-          new RequestManager(glide, current.getLifecycle(), current.getRequestManagerTreeNode());
+          new RequestManager(glide, current.getGlideLifecycle(), current.getRequestManagerTreeNode());
       current.setRequestManager(requestManager);
     }
     return requestManager;

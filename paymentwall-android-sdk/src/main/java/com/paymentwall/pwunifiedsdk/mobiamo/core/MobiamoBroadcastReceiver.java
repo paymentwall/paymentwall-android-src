@@ -4,15 +4,20 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
+
 public class MobiamoBroadcastReceiver extends BroadcastReceiver {
+
     private static final String TAG = "MobiamoReceiver";
     public static final String SEND_SMS_ACTION = "com.paymentwall.mobiamosdk.SEND_SMS_ACTION";
     public static final String SMS_SENT_ACTION = "com.paymentwall.mobiamosdk.SMS_SENT_ACTION";
@@ -23,23 +28,26 @@ public class MobiamoBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
 
-        Log.e(TAG, "Action: " + action);
+        SmartLog.e(TAG, "Action: " + action);
 
         if (action.equals(SEND_SMS_ACTION)) {
 
 			final MobiamoPayment request = new MobiamoPayment();
-			Log.d(TAG, "onReceive: " + getResultCode());
-			final MobiamoResponse response = (MobiamoResponse) intent
-					.getSerializableExtra("response");
+			SmartLog.d(TAG, "onReceive: " + getResultCode());
 
-			Bundle b = intent.getExtras();
+            final MobiamoResponse response = MobiamoDialogActivity.PUBLIC_MOBIAMO_RESPONSE;
+
+			if(response == null) {
+                SmartLog.e(TAG, "MobiamoResponse null");
+                return;
+            }
 
 			String transactionId = response.getTransactionId();
 			if ("".equals(transactionId) || " ".equals(transactionId)
 					|| transactionId == null) {
-				Toast.makeText(context, "Can not get transaction ID",
+				Toast.makeText(context,  "Can not get transaction ID",
 						Toast.LENGTH_SHORT).show();
-				Log.e(TAG, "Can not get transaction ID");
+				SmartLog.e(TAG, "Can not get transaction ID");
 				return;
 			}
 
@@ -85,7 +93,7 @@ public class MobiamoBroadcastReceiver extends BroadcastReceiver {
 							.getString(Message.ERROR_MSG_NOT_SEND));
 
 				}
-				i.putExtra("response", response);
+				i.putExtra("response", (Parcelable) response);
 				LocalBroadcastManager.getInstance(context).sendBroadcast(i);
 			}else{
 				handler.postDelayed(new Runnable() {
@@ -94,15 +102,17 @@ public class MobiamoBroadcastReceiver extends BroadcastReceiver {
 						request.getPaymentStatus(context, response, new MobiamoPayment.IPayment() {
 							@Override
 							public void onSuccess(MobiamoResponse response1) {
+							    SmartLog.i("Mobiamo", "MobiamoBroadcastReceiver getPaymentStatus onSuccess");
 								Intent i1 = new Intent(SMS_SENT_ACTION);
-								i1.putExtra("response", response1);
+								i1.putExtra("response", (Parcelable) response1);
 								LocalBroadcastManager.getInstance(context).sendBroadcast(i1);
 							}
 
 							@Override
 							public void onError(MobiamoResponse response1) {
+                                SmartLog.i("Mobiamo", "MobiamoBroadcastReceiver getPaymentStatus onError");
 								Intent i2 = new Intent(SMS_SENT_ACTION);
-								i2.putExtra("response", response1);
+								i2.putExtra("response", (Parcelable) response1);
 								LocalBroadcastManager.getInstance(context).sendBroadcast(i2);
 							}
 						});

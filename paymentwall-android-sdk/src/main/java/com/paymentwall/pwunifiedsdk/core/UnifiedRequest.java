@@ -1,27 +1,20 @@
 package com.paymentwall.pwunifiedsdk.core;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.brick.message.BrickRequest;
 import com.paymentwall.pwunifiedsdk.mint.message.MintRequest;
 import com.paymentwall.pwunifiedsdk.mobiamo.core.MobiamoPayment;
 import com.paymentwall.pwunifiedsdk.object.ExternalPs;
-import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
-import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
-import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
-import com.paymentwall.sdk.pwlocal.utils.ApiType;
 import com.paymentwall.sdk.pwlocal.utils.Const;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 //import com.paymentwall.sdk.pwlocal.utils.MiscUtils;
 
@@ -69,8 +62,8 @@ public class UnifiedRequest implements Parcelable {
 
     public UnifiedRequest() {
         this.externalPsList = new ArrayList<>();
-        this.bundle = new HashMap<>();
-        this.customParams = new HashMap<>();
+        this.bundle = new TreeMap<>();
+        this.customParams = new TreeMap<>();
         bundle.put(KEY_TEST_MODE, false + "");
     }
 
@@ -163,8 +156,10 @@ public class UnifiedRequest implements Parcelable {
         pwlocalRequest.put(Const.P.AG_TYPE, "fixed");
         pwlocalRequest.put(Const.P.CURRENCYCODE, getCurrency());
         pwlocalRequest.put(Const.P.AMOUNT, getAmount() + "");
+        if(customParams != null) pwlocalRequest.putAll(customParams);
         pwlocalRequest.setSecretKey(getPwSecretKey());
         pwlocalRequest.setSignVersion(getSignVersion());
+
 
     }
 
@@ -345,9 +340,10 @@ public class UnifiedRequest implements Parcelable {
 
     public void addCustomParam(String key, String value) {
         if (customParams == null) {
-            customParams = new LinkedHashMap<>();
+            customParams = new TreeMap<>();
         }
         customParams.put(key, value);
+        if(pwlocalRequest != null) pwlocalRequest.put(key, value);
     }
 
 
@@ -478,14 +474,14 @@ public class UnifiedRequest implements Parcelable {
         this.externalPsList = new ArrayList<ExternalPs>();
         in.readList(this.externalPsList, ExternalPs.class.getClassLoader());
         int bundleSize = in.readInt();
-        this.bundle = new HashMap<String, String>(bundleSize);
+        this.bundle = new TreeMap<String, String>();
         for (int i = 0; i < bundleSize; i++) {
             String key = in.readString();
             String value = in.readString();
             this.bundle.put(key, value);
         }
         int customParamsSize = in.readInt();
-        this.customParams = new HashMap<String, String>(customParamsSize);
+        this.customParams = new TreeMap<String, String>();
         for (int i = 0; i < customParamsSize; i++) {
             String key = in.readString();
             String value = in.readString();

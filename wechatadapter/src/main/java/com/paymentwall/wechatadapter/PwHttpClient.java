@@ -37,7 +37,8 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class PwHttpClient {
 
-    public static final String BASE_URL_STAGING = "https://api-trunk.s.stuffio.com/api/";
+//    public static final String BASE_URL_STAGING = "https://api-trunk.s.stuffio.com/api/";
+    public static final String BASE_URL_STAGING = "http://trunk.wallapi.bamboo.stuffio.com/api/";
     public static final String BASE_URL_LIVE = "https://api.paymentwall.com/api/";
     public static final String GET_SIGNATURE_URL = "pw-plus-plus/wechatpayments/signature";
     public static final int TIMEOUT_READ = 10000;
@@ -73,7 +74,7 @@ public class PwHttpClient {
                 try {
                     URL url = new URL((request.isTestMode() ? BASE_URL_STAGING : BASE_URL_LIVE) + GET_SIGNATURE_URL);
                     Log.i("URL_WECHAT", url.toString());
-                    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     String query = getQuery(request.getWallApiParameterMap());
                     connection.setFixedLengthStreamingMode(query.length());

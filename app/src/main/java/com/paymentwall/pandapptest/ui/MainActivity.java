@@ -29,6 +29,7 @@ import com.paymentwall.pwunifiedsdk.object.ExternalPs;
 import com.paymentwall.pwunifiedsdk.util.Key;
 import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
+import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.utils.Const;
 import com.paymentwall.unionpayadapter.PsUnionpay;
 import com.paymentwall.wechatadapter.PsWechat;
@@ -249,6 +250,52 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         itemDoneButton.setOnClickListener(this);
     }
 
+    public void displayGoods5() {
+        UnifiedRequest request = new UnifiedRequest();
+        request.setPwProjectKey(Constants.PW_PROJECT_KEY);
+        request.setPwSecretKey(Constants.PW_SECRET_KEY);
+
+        request.setAmount(1.0);
+        request.setCurrency("USD");
+        request.setItemName("item name");
+        request.setItemId("item_id");
+        request.setUserId("test_user_id");
+        request.setItemResID(R.drawable.item_gem);
+        request.setTimeout(30000);
+        request.setSignVersion(3);
+        request.addPwLocal();
+        request.addPwlocalParams(Const.P.EMAIL, "test@example.com");
+        request.addPwlocalParams(Const.P.WIDGET, "m2_1");
+        request.addPwlocalParams(Const.P.SIGN, "12323");
+        Log.i(TAG, "customRequest.getParameters().entrySet()");
+        CustomRequest customRequest = (CustomRequest) request.getPwlocalRequest();
+        for(Map.Entry<String, String> entry: customRequest.getParameters().entrySet()) {
+            Log.i(TAG,entry.getKey()+":"+entry.getValue());
+        }
+
+
+        Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
+        intent.putExtra(com.paymentwall.sdk.pwlocal.utils.Key.REQUEST_MESSAGE, request);
+        startActivityForResult(intent, PaymentSelectionActivity.REQUEST_CODE);
+    }
+
+    public void displayGoods4() {
+        UnifiedRequest request = new UnifiedRequest();
+        request.setPwProjectKey("203de89ddab1a631e1dd40c241d64829");
+
+        request.setUserId(Constants.USER_ID);
+        request.setItemResID(good.getImage());
+        request.setTimeout(30000);
+        request.enableFooter();
+        request.setTestMode(true);
+        request.addPwLocal();
+        request.addPwlocalParams(Const.P.WIDGET, "m2_1");
+        request.addPwlocalParams(Const.P.EMAIL, "test@example.com");
+        Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
+        intent.putExtra(Key.REQUEST_MESSAGE, request);
+        startActivityForResult(intent, PaymentSelectionActivity.REQUEST_CODE);
+    }
+
     public void displayGoods2() {
         UnifiedRequest request = new UnifiedRequest();
         request.setPwProjectKey(Constants.PW_PROJECT_KEY);
@@ -281,9 +328,8 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.setUserId(Constants.USER_ID);
         request.setSignVersion(3);
         request.setItemResID(good.getImage());
-        request.setTimeout(30000);
+        request.setTimeout(60000);
         request.enableFooter();
-
         request.setTestMode(false);
 //        request.setUiStyle("game");
 //
@@ -292,24 +338,30 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.addMobiamo();
 
 //        request.skipSelection("cc");
-
+        request.addCustomParam("history[registration_date]", "12312312312312312312312312312312312312312312312");
+        request.addCustomParam("testId","test0123123");
         request.addPwLocal();
-        request.addPwlocalParams(Const.P.EMAIL, "fixed");
-        request.addPwlocalParams(Const.P.WIDGET, "pw");
-        request.addPwlocalParams(Const.P.EVALUATION, "1");
+        request.addPwlocalParams(Const.P.AG_TYPE, "fixed");
+        request.addPwlocalParams(Const.P.EMAIL, "email@example.com");
+        request.addPwlocalParams(Const.P.WIDGET, "m2_1");
 
-        // set params for Alipay domestic
+
+
+        request.addCustomParam("rengreng","abc");
+//        request.addPwlocalParams(Const.P.EVALUATION, "1");
+        // set params for Alipay domestic'
         /*PsAlipay alipayInternaltional = new PsAlipay();
         alipayInternaltional.setAppId(Constants.ALIPAY.APP_ID);*/
 //        alipayInternaltional.setPaymentType("1");
 
         //Alipay international
-        PsAlipay alipayInternaltional = new PsAlipay();
-        alipayInternaltional.setAppId("external");
-        alipayInternaltional.setPaymentType("1");
-        alipayInternaltional.setItbPay("30m");
-        alipayInternaltional.setForexBiz("FP");
-        alipayInternaltional.setAppenv("system=android^version=3.0.1.2");
+        PsAlipay alipay = new PsAlipay();
+        alipay.setAppId("external");
+
+        alipay.setPaymentType("1");
+        alipay.setItbPay("30m");
+        alipay.setForexBiz("FP");
+        alipay.setAppenv("system=android^version=3.0.1.2");
 //        alipayInternaltional.setPwSign(genPwSignature());
 
         PsUnionpay unionpay = new PsUnionpay();
@@ -320,7 +372,6 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 
         PsWechat wechat = new PsWechat();
         wechat.setTradeType("APP");
-
         PsBaidu baidu = new PsBaidu();
 
         PsPaypal paypal = new PsPaypal();
@@ -335,7 +386,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
 //        request.addCustomParam("date_timeStamp", System.currentTimeMillis() / 1000 + "");
 
 //        ExternalPs alipayPs = new ExternalPs("alipay", "Alipay Domestic", R.drawable.ps_logo_alipay, alipay);
-        ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay", R.drawable.ps_logo_alipay, alipayInternaltional);
+        ExternalPs alipayPsInt = new ExternalPs("alipay", "Alipay", R.drawable.ps_logo_alipay, alipay);
         ExternalPs unionpayPs = new ExternalPs("unionpay", "Unionpay", R.drawable.ps_logo_unionpay, unionpay);
         ExternalPs molPs = new ExternalPs("mol", "MolPoints", R.drawable.ps_mol_logo, mol);
         ExternalPs wechatPs = new ExternalPs("wechat", "Wechatpay", R.drawable.ps_logo_wechat_pay, wechat);

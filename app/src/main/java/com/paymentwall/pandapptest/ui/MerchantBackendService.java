@@ -84,8 +84,8 @@ public class MerchantBackendService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                int backendResult = 1; //1 means your processing is successful, 0 is failed
-                Brick.getInstance().setResult(backendResult, "Credit card is blocked");
+                int backendResult = 0; //1 means your processing is successful, 0 is failed
+                Brick.getInstance().setResult(backendResult, "Blah blah blah");
             }
         }, 2000);
 //        Thread createTokenThread = new Thread(new Runnable() {

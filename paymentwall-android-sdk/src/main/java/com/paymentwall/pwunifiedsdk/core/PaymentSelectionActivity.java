@@ -451,8 +451,13 @@ public class PaymentSelectionActivity extends FragmentActivity {
                 validateStack(fragment);
             }
             pushFragmentonStack(fragment);
-
-            fragment.setArguments(arguments);
+            if(fragment.getArguments() != null && arguments != null) {
+                fragment.getArguments().putAll(arguments);
+            } else if(fragment.getArguments() != null && arguments == null) {
+                fragment.getArguments().clear();
+            } else {
+                fragment.setArguments(arguments);
+            }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
                 if (forward)

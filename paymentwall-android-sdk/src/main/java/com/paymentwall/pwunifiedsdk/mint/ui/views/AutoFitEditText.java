@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -19,14 +20,11 @@ import android.widget.EditText;
 public class AutoFitEditText extends EditText {
     private interface SizeTester {
         /**
-         *
-         * @param suggestedSize
-         *            Size of text to be tested
-         * @param availableSpace
-         *            available space in which text must fit
+         * @param suggestedSize  Size of text to be tested
+         * @param availableSpace available space in which text must fit
          * @return an integer < 0 if after applying {@code suggestedSize} to
-         *         text, it takes less space than {@code availableSpace}, > 0
-         *         otherwise
+         * text, it takes less space than {@code availableSpace}, > 0
+         * otherwise
          */
         public int onTestSize(int suggestedSize, RectF availableSpace);
     }
@@ -86,7 +84,7 @@ public class AutoFitEditText extends EditText {
         mInitiallized = true;
     }
 
-    private void setFont(Context context){
+    private void setFont(Context context) {
         Typeface face = Typeface.createFromAsset(context.getAssets(),
                 "fonts/ProximaNova-Regular.otf");
         this.setTypeface(face);
@@ -176,8 +174,8 @@ public class AutoFitEditText extends EditText {
     private void reAdjust() {
         try {
             adjustTextSize(getText().toString());
-        }catch(ClassCastException e){
-            e.printStackTrace();
+        } catch (ClassCastException e) {
+//            e.printStackTrace();
         }
     }
 
@@ -207,8 +205,13 @@ public class AutoFitEditText extends EditText {
 //            boolean singleline = getMaxLines() == 1;
             int maxLine = 1;
             boolean singleline = true;
-            
-            
+
+            if (Build.VERSION.SDK_INT >= 16) {
+                maxLine = getMaxLines();
+                singleline = maxLine == 1;
+            } else {
+                singleline = true;
+            }
             //HieuLH todo
             /*if(Build.VERSION.SDK_INT >= 16)
             {
@@ -217,7 +220,7 @@ public class AutoFitEditText extends EditText {
             } else {
             	
             }*/
-            
+
             if (singleline) {
                 mTextRect.bottom = mPaint.getFontSpacing();
                 mTextRect.right = mPaint.measureText(text);
@@ -257,8 +260,7 @@ public class AutoFitEditText extends EditText {
      * size against getText().length() Be careful though while enabling it as 0
      * takes more space than 1 on some fonts and so on.
      *
-     * @param enable
-     *            enable font size caching
+     * @param enable enable font size caching
      */
     public void enableSizeCache(boolean enable) {
         mEnableSizeCache = enable;
@@ -323,7 +325,7 @@ public class AutoFitEditText extends EditText {
             reAdjust();
         }
     }
-    
+
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         return new MintInputConnection(super.onCreateInputConnection(outAttrs),
@@ -340,21 +342,21 @@ public class AutoFitEditText extends EditText {
         public boolean sendKeyEvent(KeyEvent event) {
             if (event.getAction() == KeyEvent.ACTION_DOWN
                     && event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
-            	
+
             }
             return super.sendKeyEvent(event);
         }
-        
+
         @Override
         public boolean deleteSurroundingText(int beforeLength, int afterLength) {
-        	// magic: in latest Android, deleteSurroundingText(1, 0) will be called for backspace
-        	 if (beforeLength == 1 && afterLength == 0) {
-                 // backspace
-                 return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
-                     && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
-             }
+            // magic: in latest Android, deleteSurroundingText(1, 0) will be called for backspace
+            if (beforeLength == 1 && afterLength == 0) {
+                // backspace
+                return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
+                        && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
+            }
 
-             return super.deleteSurroundingText(beforeLength, afterLength);
+            return super.deleteSurroundingText(beforeLength, afterLength);
         }
     }
 }

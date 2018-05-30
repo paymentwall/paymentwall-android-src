@@ -267,6 +267,7 @@ public class JSDialog extends DialogFragment {
     }
 
     public boolean isSuccessful(String url) {
+//        Log.i("pwsdk","jsdialog url = "+url);
         if (successfulUrl != null) {
             Uri successUri = Uri.parse(successfulUrl);
             Uri uri = Uri.parse(url);

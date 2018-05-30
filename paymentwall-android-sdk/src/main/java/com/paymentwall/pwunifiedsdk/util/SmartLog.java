@@ -19,46 +19,27 @@ import com.paymentwall.pwunifiedsdk.BuildConfig;
  * @author nguyen.anh
  */
 public final class SmartLog {
-
+    private static boolean DEBUG = false;
     private static String TAG = "PaymentwallSdk";
 
     private SmartLog() {
     }
+    public static void i(String msg) {i(TAG, msg);}
 
-    /**
-     * Call SmartLog.d
-     *
-     * @param msg
-     */
-    public static void d(String msg) {
-        if (isDebugMode())
-            Log.d(TAG, msg);
+    public static void i(String tag, String msg) {if(DEBUG) Log.i(tag, msg);}
 
-    }
+    public static void e(String msg) {e(TAG, msg);}
 
-    /**
-     * Call SmartLog.e
-     *
-     * @param msg
-     */
-    public static void e(String msg) {
-        if (isDebugMode())
-            Log.e(TAG, msg);
+    public static void e(String tag, String msg) {if(DEBUG) Log.e(tag, msg);}
 
-    }
+    public static void d(String msg) {d(TAG, msg);}
 
+    public static void d(String tag, String msg) {if(DEBUG) Log.d(tag, msg);}
 
-    /**
-     * Call SmartLog.i
-     *
-     * @param msg
-     */
-    public static void i(String msg) {
-        if (isDebugMode())
-            Log.i(TAG, msg);
+    public static void w(String msg) {w(TAG, msg);}
 
-    }
-
+    public static void w(String tag, String msg) {if(DEBUG) Log.w(tag, msg);}
+    
     public static void longString(String TAG, String str) {
         if (str.length() > 4000) {
             Log.i(TAG, str.substring(0, 4000));
@@ -66,10 +47,4 @@ public final class SmartLog {
         } else
             Log.i(TAG, str);
     }
-
-    public static boolean isDebugMode() {
-//        return BuildConfig.DEBUG;
-        return true;
-    }
-
 }

@@ -8,11 +8,27 @@ import com.paypal.android.sdk.payments.PaymentActivity;
  */
 public class Constants {
 
+//    public static final String PW_PROJECT_KEY = "b08e8ed730d5514ad12a909fbe4b7f00"; // andrea staging key
+//    public static final String PW_SECRET_KEY = "50f67e249ebe4a1988306e0662331c94";
+//
+    public static final String PW_PROJECT_KEY = "19fceb073e3083cac1391a9ecfa83fcd"; // thiduc staging key
+    public static final String PW_SECRET_KEY = "1c4ce0ee12050c3c99413e023d08f262";
+//
+//    public static final String PW_PROJECT_KEY = "dea07cfb5300badc9b002009facad651"; // Kyle's key
+//    public static final String PW_SECRET_KEY = "dec31fb340f14b63b42f458431e12d12";
+
 //    public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // Dzung's staging
 //    public static final String PW_SECRET_KEY = "99438d36884f255f8853d6e04223128b";
 
-    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // Fan's key live
-    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";
+//    public static final String PW_PROJECT_KEY = "f29e7441a54debd44f903a2b7c40b15d"; // Fan's key live
+//    public static final String PW_SECRET_KEY = "d283a4f7768976b2f1511e56ee3e1700";//
+
+//    public static final String PW_PROJECT_KEY = "93d32cd515a8f5e685733c01531b1d08"; // Lingling's key live
+//    public static final String PW_SECRET_KEY = "b4b42f78dad26308c211b26bfab54890";//
+
+
+//    public static final String PW_PROJECT_KEY = "cbee577a28b679ac2dbc0d1b8dc53a2f"; // Jeo live merchant key
+//    public static final String PW_SECRET_KEY = "2657003a91a083ac626ae42da89e1c60";
 
 //    public static final String PW_PROJECT_KEY = "7e43822b844fd872abacf67a92fb826c"; // Fan's key live
 //    public static final String PW_SECRET_KEY = "af022feeb89f61d036da526213634746";
@@ -23,11 +39,13 @@ public class Constants {
     // Account: hoahieu@paymentwall.com
     // Project: PW-hoahieu-test01
 //    public static final String PW_PROJECT_KEY = "b97c478b610bf64d4225789e6c36adb0";
+//    public static final String PW_SECRET_KEY = "e0cb4095e0d21b272920cc7da2d27b17";
+
 //    public static final String PW_PROJECT_KEY = "a53d2762a0a61325eb0f2d4a9a1d5579";
 //    public static final String PW_PROJECT_KEY = "t_300a2754a7aad336611e24eac4f5e4";
 //    public static final String PW_SECRET_KEY = "e0cb4095e0d21b272920cc7da2d27b17";
 
-    public static final String USER_ID = "testuser2";
+    public static final String USER_ID = "12311111001233123";
 
     public static final String ITEM_MANA_ID = "item1";
     public static final String ITEM_SHIELD_ID = "item2";
@@ -58,7 +76,20 @@ public class Constants {
 
         //fan.liu@paymentwall.com
         public static final String PRIVATE_KEY = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAMqNdR7fkl9psQYd\n" +
-                "VaSkxDJVKdCCSBxFrq6zZsFBUWzbnKeWIF+yLjgdWpsIdLbhI9MTfnTriyvjQCMs\n" +
+                "VaSkxDJVKdCCSBxFrq6zZsFBUWzbnKeWIF+yLjgdWpsIdLbhI9MTfnTpTMzYF5Es74AMKQcCQQDWgUVZ1JtY9A5ZWkj9\\n\" +\n" +
+                "//                \"vqWjju5zy8Ebd7XXFfq4Qzd6CMlS+zg4yU5HCMllDgiN0IhlQzHzr5DGDxcABtxt\\n\" +\n" +
+                "//                \"9s2FAkEAkfh/n8mDymx7wsh7a7kM1wunjF2pSRXEqfkUA0fCG/e84058r2rSykKi\\n\" +\n" +
+                "//                \"8fkd1j71ucFrJ8tn7Z7SJyDWXI/oDQJBALHI5t/zVOY/MX1hVUnqL4MGPiB/aggI\\n\" +\n" +
+                "//                \"ChDAyNLb8ykUCzjZutlmD5jUcYduQCy5/7JeJRKiGs3tR9Tf2ubRPbkCQEDsuddA\\n\" +\n" +
+                "//                \"xzgXVzN5WBxchyZmq/zddsMHr7RtuutON1YiXZSWdSJkf1DIBmSExEVJKhOBpOtG\\n\" +\n" +
+                "//                \"bQxLqHnusk2rpNg=\";\n" +
+                "\n" +
+                "        //fan.liu@paymentwall.com\n" +
+                "        public static final String PRIVATE_KEY = \"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAMqNdR7fkl9psQYd\\n\" +\n" +
+                "                \"VaSkxDJVKdCCSBxFrq6zZsFBUWzbnKeWIF+yLjgdWpsIdLbhI9MTfnTriyvjQCMs\\n\" +\n" +
+                "                \"8I77AmslKjecO4vJ0WSWGi9iymEoUluxt0r/5Ki+cu59pklPSqr2MsAqfUPN3mQh\\n\" +\n" +
+                "                \"Y+aJPWCVptzwt6jeopbKZaygcycPAgMBAAECgYBIdeSBP+/oLDJFAreBp+P8MZU8\\n\" +\n" +
+                "                \"326WlqMQImPPHOPZMpNPLJi2Q1LfhjjEn3jJd69OMnoZr63griyvjQCMs\n" +
                 "8I77AmslKjecO4vJ0WSWGi9iymEoUluxt0r/5Ki+cu59pklPSqr2MsAqfUPN3mQh\n" +
                 "Y+aJPWCVptzwt6jeopbKZaygcycPAgMBAAECgYBIdeSBP+/oLDJFAreBp+P8MZU8\n" +
                 "326WlqMQImPPHOPZMpNPLJi2Q1LfhjjEn3jJd69OMnoZr63g7HIkY05HiCprsRVz\n" +

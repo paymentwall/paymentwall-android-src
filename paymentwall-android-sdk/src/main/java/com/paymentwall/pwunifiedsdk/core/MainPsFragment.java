@@ -35,6 +35,7 @@ import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 import com.paymentwall.sdk.pwlocal.ui.PwLocalActivity;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -304,7 +305,7 @@ public class MainPsFragment extends BaseFragment {
                 if (data != null) {
                     MobiamoResponse response = (MobiamoResponse) data.getSerializableExtra(Const.KEY.RESPONSE_MESSAGE);
                     if (response != null && response.isCompleted()) {
-                        intent.putExtra(Const.KEY.RESPONSE_MESSAGE, response);
+                        intent.putExtra(Const.KEY.RESPONSE_MESSAGE, (Serializable) response);
                         self.setResult(ResponseCode.SUCCESSFUL, intent);
                         self.finish();
                     }

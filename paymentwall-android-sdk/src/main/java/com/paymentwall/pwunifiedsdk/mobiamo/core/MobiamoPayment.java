@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.paymentwall.pwunifiedsdk.mobiamo.payment.PWSDKRequest;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -234,8 +235,8 @@ public class MobiamoPayment extends PWSDKRequest {
                 }
                 if (locale != null) {
                     mCurrency = java.util.Currency.getInstance(locale)
-                            .getCurrencyCode().toLowerCase(Locale.US);
-                    Log.d(TAG, "Currency: " + mCurrency);
+                            .getCurrencyCode().toUpperCase(Locale.US);
+                    SmartLog.d(TAG, "Currency: " + mCurrency);
 
                     if (mCurrency.equalsIgnoreCase("LTL")) {
                         mCurrency = "EUR";
@@ -277,12 +278,12 @@ public class MobiamoPayment extends PWSDKRequest {
                 String requestUrl = MobiamoHelper.buildRequestUrl(parameters,
                         POST_API);
 
-                Log.d(TAG, "requestUrl = " + requestUrl);
+                SmartLog.d(TAG, "requestUrl = " + requestUrl);
 
                 try {
                     responseText = createPostByHttpURLConnection(context, requestUrl);
 
-                    Log.d(TAG, "POST:response = " + responseText);
+                    SmartLog.d(TAG, "POST:response = " + responseText);
 
                     // Parse json string returned
                     JSONObject jo = new JSONObject(responseText);
@@ -364,8 +365,8 @@ public class MobiamoPayment extends PWSDKRequest {
                 mMCC = simOperator.substring(0, 3);
                 mMNC = simOperator.substring(3);
 
-                Log.i("SIM_MCC", mMCC);
-                Log.i("SIM_MNC", mMNC);
+                SmartLog.i("SIM_MCC", mMCC);
+                SmartLog.i("SIM_MNC", mMNC);
 
             }
 //				else {
@@ -410,7 +411,7 @@ public class MobiamoPayment extends PWSDKRequest {
                     return mResult;
                 }
 
-                Log.d(TAG, "GET:response = " + result);
+                SmartLog.d(TAG, "GET:response = " + result);
                 JSONArray array = new JSONArray(result);
                 for (int n = 0; n < array.length(); n++) {
                     JSONObject object = array.getJSONObject(n);
@@ -479,7 +480,7 @@ public class MobiamoPayment extends PWSDKRequest {
         for (int retry = 0; retry <= RETRIES_TIME && !isConnected; retry++) {
             try {
                 if (retry > 0) {
-                    Log.w(TAG, "Retry connect: " + retry + "/" + RETRIES_TIME);
+                    SmartLog.w(TAG, "Retry connect: " + retry + "/" + RETRIES_TIME);
                     Thread.sleep(RETRY_DELAY_MS);
                 }
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
@@ -506,7 +507,7 @@ public class MobiamoPayment extends PWSDKRequest {
                 os.close();
                 urlConnection.connect();
 
-                Log.d(TAG, "Response Code: " + urlConnection.getResponseCode());
+                SmartLog.d(TAG, "Response Code: " + urlConnection.getResponseCode());
                 if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                     isConnected = true;
                     response = convertInputStreamToString(urlConnection
@@ -533,7 +534,7 @@ public class MobiamoPayment extends PWSDKRequest {
         for (int retry = 0; retry <= RETRIES_TIME && !isConnected; retry++) {
             try {
                 if (retry > 0) {
-                    Log.w(TAG, "retry connect: " + retry + "/" + RETRIES_TIME);
+                    SmartLog.w(TAG, "retry connect: " + retry + "/" + RETRIES_TIME);
                     Thread.sleep(RETRY_DELAY_MS);
 
                 }
@@ -543,7 +544,7 @@ public class MobiamoPayment extends PWSDKRequest {
                 }
 
                 url = new URL(requestUrl);
-                Log.d(TAG, "GET request: " + requestUrl);
+                SmartLog.d(TAG, "GET request: " + requestUrl);
                 urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
                 urlConnection.setRequestMethod("GET");
@@ -553,7 +554,7 @@ public class MobiamoPayment extends PWSDKRequest {
                 urlConnection.connect();
 
 
-                Log.d(TAG, "Response Code: " + urlConnection.getResponseCode());
+                SmartLog.d(TAG, "Response Code: " + urlConnection.getResponseCode());
                 if (urlConnection.getResponseCode() > 0) {
                     isConnected = true;
                     response = convertInputStreamToString(urlConnection
@@ -635,7 +636,7 @@ public class MobiamoPayment extends PWSDKRequest {
             try {
 
                 responseText = createGetByHttpURLConnection(context, requestUrl);
-                Log.d(TAG, "Get response: " + responseText);
+                SmartLog.d(TAG, "Get response: " + responseText);
 
                 JSONObject jo = new JSONObject(responseText);
                 String success = jo.getString(RESPONSE_SUCCESS);

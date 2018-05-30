@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.paymentwall.pwunifiedsdk.R;
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class PricepointAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        Log.i(getClass().getSimpleName(), i + "--" + arrPricepoint.get(i) == null?"NULL":arrPricepoint.get(i));
+        SmartLog.i(getClass().getSimpleName(), i + "--" + arrPricepoint.get(i) == null?"NULL":arrPricepoint.get(i));
 
         if(i == selectedPosition){
             holder.tvPricepoint.setBackgroundResource(R.drawable.btn_price_point_pressed);

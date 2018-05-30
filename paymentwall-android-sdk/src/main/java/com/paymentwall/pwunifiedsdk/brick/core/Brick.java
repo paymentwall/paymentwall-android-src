@@ -121,7 +121,7 @@ public class Brick {
             HttpURLConnection conn = createPostRequest(url, queryUrl);
             // Get message
             String response = getResponseBody(conn.getInputStream());
-            Log.i("RESPONSE", response + "");
+            //SmartLog.i("RESPONSE", response + "");
             try {
                 BrickToken token = BrickHelper.createTokenFromJson(response);
                 return token;
@@ -152,7 +152,7 @@ public class Brick {
 
     public void generateTokenFromPermanentToken(final String publicKey, final String permanentToken, final String cvv, final Callback callback) {
 
-        SmartLog.i("Gen token: " + permanentToken + " - " + cvv);
+        //SmartLog.i("Gen token: " + permanentToken + " - " + cvv);
         Thread createTokenThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -177,7 +177,7 @@ public class Brick {
                     HttpURLConnection conn = createPostRequest(new URL(GENERATE_TOKEN_URL), queryUrl);
                     // Get message
                     String response = getResponseBody(conn.getInputStream());
-                    Log.i("RESPONSE", response + "");
+                    //SmartLog.i("RESPONSE", response + "");
                     try {
                         BrickToken token = BrickHelper.createTokenFromJson(response);
                         callback.onBrickSuccess(token);
@@ -220,7 +220,7 @@ public class Brick {
                     // Create HTTP request
                     Map<String, String> parameters = new HashMap<>();
                     parameters.put("data[p_k]", publicKey);
-                    parameters.put("data[d_t]", System.currentTimeMillis()/1000 + "");
+                    parameters.put("data[d_t]", System.currentTimeMillis() / 1000 + "");
                     parameters.put("data[b_i]", "android");
                     parameters.put("data[d_i]", "android");
                     parameters.put("data[j]", "android");
@@ -233,9 +233,9 @@ public class Brick {
                     String response = getResponseBody(conn.getInputStream());
                     try {
                         JSONObject obj = new JSONObject(response);
-                        if(obj.getInt("success") == 1){
+                        if (obj.getInt("success") == 1) {
                             callback.onSuccess(obj.getString("fingerprint"));
-                        }else{
+                        } else {
                             callback.onError("");
                         }
                     } catch (Exception e) {
@@ -292,7 +292,7 @@ public class Brick {
     }
 
     private HttpURLConnection createPostRequest(URL url, String queryUrl, int connectionTimeout, int readTimeout) throws BrickError {
-        Log.i("Brick URL", url+ "///" + queryUrl);
+        //SmartLog.i("Brick URL", url + "///" + queryUrl);
         HttpURLConnection conn;
         try {
             conn = (HttpURLConnection) url.openConnection();
@@ -317,7 +317,7 @@ public class Brick {
             for (String value : entries.getValue()) {
                 values += value + ",";
             }
-            Log.d("Request", entries.getKey() + " - " + values);
+            SmartLog.d("Request", entries.getKey() + " - " + values);
         }
         checkSSLCert(conn);
         OutputStream output = null;
@@ -458,8 +458,9 @@ public class Brick {
         void onBrickError(BrickError error);
     }
 
-    public interface FingerprintCallback{
+    public interface FingerprintCallback {
         void onSuccess(String fingerprint);
+
         void onError(String error);
     }
 }

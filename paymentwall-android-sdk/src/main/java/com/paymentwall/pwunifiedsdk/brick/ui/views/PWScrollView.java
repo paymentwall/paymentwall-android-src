@@ -7,6 +7,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ScrollView;
 
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
+
 public class PWScrollView extends ScrollView {
     private static String TAG = "PWScrollView";
 
@@ -44,7 +46,7 @@ public class PWScrollView extends ScrollView {
         int widthAfter = MeasureSpec.getSize(widthMeasureSpec);
         int heightBefore = getHeight();
         int widthBefore = getWidth();
-        Log.d(TAG, "ah=" + heightAfter + " aw=" + widthAfter + " bh=" + heightBefore + " bw=" + widthBefore + " mh=" + maxHeight);
+        SmartLog.d(TAG, "ah=" + heightAfter + " aw=" + widthAfter + " bh=" + heightBefore + " bw=" + widthBefore + " mh=" + maxHeight);
 //        maxHeight = Math.max(heightBefore, heightAfter);
         if (widthBefore == widthAfter) {
             maxHeight = Math.max(heightBefore, heightAfter);
@@ -52,13 +54,13 @@ public class PWScrollView extends ScrollView {
             maxHeight = 0;
         }
         if (heightAfter < (maxHeight * 2 / 3) && maxHeight > 0 && heightAfter < heightBefore) {
-            Log.d(TAG, "keyboard is showing");
+            SmartLog.d(TAG, "keyboard is showing");
             // Do it
             top = this.getTop();
             bottom = this.getBottom();
             left = this.getLeft();
             right = this.getRight();
-            Log.d(TAG, "top=" + top + " bottom=" + bottom + " left=" + left + " right=" + right);
+            SmartLog.d(TAG, "top=" + top + " bottom=" + bottom + " left=" + left + " right=" + right);
             needToScrollToCenter = true;
         } else {
             needToScrollToCenter = false;

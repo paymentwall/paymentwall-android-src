@@ -1,9 +1,13 @@
 package com.paymentwall.pwunifiedsdk.mobiamo.core;
 
 
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.paymentwall.pwunifiedsdk.mobiamo.payment.PWSDKResponse;
 
-public class MobiamoResponse extends PWSDKResponse {
+public class MobiamoResponse extends PWSDKResponse implements Parcelable {
     private static final long serialVersionUID = -5431404693006176298L;
     public static final String STATUS_COMPLETED = "completed";
     private int messageStatus;
@@ -150,4 +154,104 @@ public class MobiamoResponse extends PWSDKResponse {
             return false;
         }
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.messageStatus);
+        dest.writeString(this.transactionId);
+        dest.writeString(this.shortcode);
+        dest.writeString(this.keyword);
+        dest.writeString(this.regulatoryText);
+        dest.writeString(this.sign);
+        dest.writeInt(this.success);
+        dest.writeString(this.status);
+        dest.writeFloat(this.amount);
+        dest.writeString(this.currencyCode);
+        dest.writeString(this.message);
+        dest.writeString(this.price);
+        dest.writeString(this.productId);
+        dest.writeString(this.productName);
+        dest.writeByte(this.isSendSms ? (byte) 1 : (byte) 0);
+    }
+
+    public MobiamoResponse() {
+    }
+
+    protected MobiamoResponse(Parcel in) {
+        this.messageStatus = in.readInt();
+        this.transactionId = in.readString();
+        this.shortcode = in.readString();
+        this.keyword = in.readString();
+        this.regulatoryText = in.readString();
+        this.sign = in.readString();
+        this.success = in.readInt();
+        this.status = in.readString();
+        this.amount = in.readFloat();
+        this.currencyCode = in.readString();
+        this.message = in.readString();
+        this.price = in.readString();
+        this.productId = in.readString();
+        this.productName = in.readString();
+        this.isSendSms = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<MobiamoResponse> CREATOR = new Parcelable.Creator<MobiamoResponse>() {
+        @Override
+        public MobiamoResponse createFromParcel(Parcel source) {
+            return new MobiamoResponse(source);
+        }
+
+        @Override
+        public MobiamoResponse[] newArray(int size) {
+            return new MobiamoResponse[size];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return "MobiamoResponse{" +
+                "messageStatus=" + messageStatus +
+                ", transactionId='" + transactionId + '\'' +
+                ", shortcode='" + shortcode + '\'' +
+                ", keyword='" + keyword + '\'' +
+                ", regulatoryText='" + regulatoryText + '\'' +
+                ", sign='" + sign + '\'' +
+                ", success=" + success +
+                ", status='" + status + '\'' +
+                ", amount=" + amount +
+                ", currencyCode='" + currencyCode + '\'' +
+                ", message='" + message + '\'' +
+                ", price='" + price + '\'' +
+                ", productId='" + productId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", isSendSms=" + isSendSms +
+                '}';
+    }
+
+    public Uri toUri() {
+        Uri.Builder uriBuilder = new Uri.Builder().scheme("mobiamo")
+                .appendQueryParameter("transaction_id",transactionId)
+                .appendQueryParameter("shortcode",shortcode)
+                .appendQueryParameter("keyword",keyword)
+                ;
+        return uriBuilder.build();
+    }
+
+    public static MobiamoResponse fromUri(Uri uri) {
+        if(uri == null) throw new NullPointerException("Cannot create MobiamoResponse from null Uri");
+        if(uri.getScheme().equals("mobiamo")) return null;
+
+        MobiamoResponse mobiamoResponse = new MobiamoResponse();
+        mobiamoResponse.setTransactionId(uri.getQueryParameter("transaction_id"));
+        mobiamoResponse.setShortcode(uri.getQueryParameter("shortcode"));
+        mobiamoResponse.setKeyword(uri.getQueryParameter("keyword"));
+        return mobiamoResponse;
+    }
+
 }

@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.paymentwall.pwunifiedsdk.R;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
@@ -607,7 +608,7 @@ public class PwLocalActivity extends FragmentActivity implements
                     if (isFpLink(failingUrl)) return;
                     if (!isSuccessful(failingUrl)) {
                         // Handle the error
-                        Toast.makeText(PwLocalActivity.this, "Please check your internet connection", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PwLocalActivity.this, getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent();
                         intent.putExtra(Key.SDK_ERROR_MESSAGE, "CONNECTION ERROR");
                         errorRespond(intent);
@@ -676,7 +677,7 @@ public class PwLocalActivity extends FragmentActivity implements
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (rootWebView != null) {
+        if (rootWebView != null && outerContainer != null) {
             outerContainer.removeView(rootWebView);
         }
         super.onConfigurationChanged(newConfig);
@@ -727,6 +728,7 @@ public class PwLocalActivity extends FragmentActivity implements
     }
 
     public boolean isSuccessful(String url) {
+//        Log.i("pwsdk","url = "+url);
         if (successfulUrl != null) {
             Uri successUri = Uri.parse(successfulUrl);
             Uri uri = Uri.parse(url);

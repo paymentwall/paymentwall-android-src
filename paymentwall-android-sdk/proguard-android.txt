@@ -175,3 +175,8 @@
     <methods>;
 }
 
+-keep class com.paymentwall.** {
+    <fields>;
+    <methods>;
+}
+

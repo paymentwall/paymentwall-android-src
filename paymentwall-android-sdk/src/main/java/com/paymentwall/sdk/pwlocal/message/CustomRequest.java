@@ -125,7 +125,7 @@ public class CustomRequest implements Parcelable {
         this.autoSigned = in.readByte() != 0;
         this.mobileDownloadLink = in.readString();
         int parametersSize = in.readInt();
-        this.parameters = new HashMap<String, String>(parametersSize);
+        this.parameters = new TreeMap<String, String>();
         for (int i = 0; i < parametersSize; i++) {
             String key = in.readString();
             String value = in.readString();

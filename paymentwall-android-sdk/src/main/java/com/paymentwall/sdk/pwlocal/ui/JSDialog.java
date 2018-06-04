@@ -1,11 +1,9 @@
 package com.paymentwall.sdk.pwlocal.ui;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -16,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +26,14 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import java.lang.reflect.Method;
-
-import static com.paymentwall.sdk.pwlocal.ui.PwLocalActivity.getGooglePlayLink;
+import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 
 /**
  * Created by harvey on 4/25/17.
  */
 
-public class JSDialog extends DialogFragment {
+public class JSDialog extends DialogFragment implements  PwLocalWebViewClient.WebViewCallBack {
     public static final String KEY_RESULT_MSG = "key_result_msg";
     public static final String KEY_URL = "key_window_url";
     public static final String SUCCESS_URL = "success_url";
@@ -195,6 +189,7 @@ public class JSDialog extends DialogFragment {
         dialogWv.getSettings().setBuiltInZoomControls(true);
         dialogWv.getSettings().setSupportMultipleWindows(true);
         dialogWv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        MiscUtils.removeJsInterface(dialogWv);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(false);
         }
@@ -206,10 +201,13 @@ public class JSDialog extends DialogFragment {
                 dismiss();
             }
         });
-        dialogWv.setWebViewClient(new WebViewClient() {
+        PwLocalWebViewClient pwLocalWebViewClient = new PwLocalWebViewClient();
+        pwLocalWebViewClient.setWebViewCallBack(this);
+        dialogWv.setWebViewClient(pwLocalWebViewClient);
+        /*dialogWv.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                if(isSuccessful(failingUrl)) {
+                if(MiscUtils.isSuccessfulUrl(failingUrl, successfulUrl)) {
                     dismiss();
                     if(successUrlListener != null) successUrlListener.onSuccessUrlLinkOpened(JSDialog.this);
                 } else {
@@ -249,38 +247,73 @@ public class JSDialog extends DialogFragment {
                 super.onPageFinished(view, url);
                 stopLoading();
             }
-        });
-        removeJsInterface(dialogWv);
+        });*/
+
     }
 
-    protected void removeJsInterface(WebView webView) {
-        try {
-            Method method = webView.getClass().getMethod(
-                    "removeJavascriptInterface", String.class);
-            if (method != null) {
-                method.invoke(webView, "searchBoxJavaBridge_");
-                method.invoke(webView, "accessibility");
-            }
-        } catch (Exception ex) {
-//            Log.i(LOGTAG, ex.toString());
-        }
+    @Override
+    public void webviewLoadResource(WebViewClient webViewClient, String url) {
+        // do nothing
     }
 
-    public boolean isSuccessful(String url) {
-//        Log.i("pwsdk","jsdialog url = "+url);
-        if (successfulUrl != null) {
-            Uri successUri = Uri.parse(successfulUrl);
-            Uri uri = Uri.parse(url);
-            if(successUri == null || uri == null) return false;
-
-            return (
-                    uri.getHost().equals(successUri.getHost()) &&
-                            uri.getScheme().equals(successUri.getScheme())
-            );
+    @Override
+    public void webviewReceivedError(WebViewClient webViewClient, WebView view, int errorCode, String description, String failingUrl) {
+        if(MiscUtils.isSuccessfulUrl(failingUrl, successfulUrl)) {
+            dismiss();
+            if(successUrlListener != null) successUrlListener.onSuccessUrlLinkOpened(JSDialog.this);
         } else {
-            Uri uri = Uri.parse(url);
-            return (uri != null && "pwlocal".equals(uri.getScheme()) && "paymentsuccessful".equals(uri.getHost()));
+            webViewClient.onReceivedError(view, errorCode, description, failingUrl);
         }
+    }
+
+    @Override
+    public void webviewPageStarted(WebViewClient webViewClient) {
+        startLoading();
+    }
+
+    @Override
+    public void webviewPageFinished(WebViewClient webViewClient) {
+        stopLoading();
+    }
+
+    @Override
+    public boolean webviewShouldOverrideUrlLoading(WebViewClient webViewClient, String url) {
+        if(MiscUtils.isSuccessfulUrl(url, successfulUrl)) {
+            dismiss();
+            if(successUrlListener != null) successUrlListener.onSuccessUrlLinkOpened(JSDialog.this);
+        } else if(shouldOpenInApp(url)) {
+            dialogWv.loadUrl(url);
+            return true;
+        } else {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true;
+            } catch (ActivityNotFoundException e) {
+                dialogWv.loadUrl(url);
+                return false;
+            }
+        }
+        /*if(getGooglePlayLink(url) != null) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                if(getActivity()!=null) startActivity(intent);
+                JSDialog.this.dismiss();
+                return true;
+            } catch (ActivityNotFoundException e) {
+                // Google Play app is not installed, open the app store link
+                Uri uri = Uri.parse(url);
+                dialogWv.loadUrl("http://play.google.com/store/apps/" + uri.getHost() + "?" + uri.getQuery());
+                return false;
+            }
+        }*/
+        return false;
+    }
+
+    private boolean shouldOpenInApp(String url) {
+        return (url!=null && (url.startsWith("http") || url.startsWith("https")));
     }
 
     public interface SuccessUrlListener {

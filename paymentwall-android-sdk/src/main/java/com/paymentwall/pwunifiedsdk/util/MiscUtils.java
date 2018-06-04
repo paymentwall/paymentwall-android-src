@@ -6,13 +6,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.webkit.WebView;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.KeyFactory;
@@ -332,5 +335,43 @@ public class MiscUtils {
         // cursor.close();
         return null;
     }
+
+    public static void removeJsInterface(WebView webView) {
+        try {
+            Method method = webView.getClass().getMethod(
+                    "removeJavascriptInterface", String.class);
+            if (method != null) {
+                method.invoke(webView, "searchBoxJavaBridge_");
+                method.invoke(webView, "accessibility");
+            }
+        } catch (Exception ex) {
+//            Log.i(LOGTAG, ex.toString());
+        }
+    }
+
+    public static boolean isSuccessfulUrl(String url, String successfulUrl) {
+//        Log.i("pwsdk","url = "+url);
+        if (successfulUrl != null) {
+            Uri successUri = Uri.parse(successfulUrl);
+            Uri uri = Uri.parse(url);
+            if (successUri == null || uri == null) return false;
+
+            return (
+                    uri.getHost().equals(successUri.getHost()) &&
+                            uri.getScheme().equals(successUri.getScheme())
+            );
+        } else {
+            Uri uri = Uri.parse(url);
+            return (uri != null && "pwlocal".equals(uri.getScheme()) && "paymentsuccessful".equals(uri.getHost()));
+        }
+    }
+
+    public static boolean isFasterpayLink(String url) {
+        if (TextUtils.isEmpty(url)) return false;
+        Uri uri = Uri.parse(url);
+        return (uri != null && "fasterpay".equals(uri.getScheme()) && "pay".equals(uri.getHost()));
+    }
+
+
 
 }

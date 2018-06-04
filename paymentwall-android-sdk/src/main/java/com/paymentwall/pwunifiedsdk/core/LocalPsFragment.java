@@ -33,6 +33,7 @@ import com.paymentwall.pwunifiedsdk.util.Key;
 import com.paymentwall.pwunifiedsdk.util.MiscUtils;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
@@ -112,7 +113,7 @@ public class LocalPsFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(this.getClass().getSimpleName(), "ONCREATE");
+        SmartLog.i("LocalPsFragment onCreate");
 
         PwUtils.logFabricCustom("Visit-LocalPsScreen");
 
@@ -128,6 +129,7 @@ public class LocalPsFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
+        SmartLog.i("LocalPsFragment onDestroy");
         LocalBroadcastManager.getInstance(self).unregisterReceiver(receiver);
         super.onDestroy();
     }
@@ -135,6 +137,7 @@ public class LocalPsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        SmartLog.i("LocalPsFragment onCreateView");
         View v = inflater.inflate(PwUtils.getLayoutId(self, "frag_local_ps"), container, false);
         bindView(v);
         setFonts(v);
@@ -191,10 +194,12 @@ public class LocalPsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        SmartLog.i("LocalPsFragment onResume");
         tvPrice.setText(PwUtils.getCurrencySymbol(request.getCurrency()) + request.getAmount());
     }
 
     private void bindContainer() {
+        SmartLog.i("LocalPsFragment bindContainer");
         ArrayList<ExternalPs> list = request.getExternalPsList();
         if (list.size() == 1) {
             ExternalPs ps = list.get(0);
@@ -205,6 +210,7 @@ public class LocalPsFragment extends BaseFragment {
             clickedPs = new ExtPsLayout(self);
             ((ExtPsLayout) clickedPs).setPsId(ps.getId());
             ((ExtPsLayout) clickedPs).setParams(ps.getParams());
+            SmartLog.i("LocalPsFragment bindContainer size = 1");
             pay(ps.getId(), ps.getParams());
         } else {
             for (ExternalPs ps : list) {
@@ -278,7 +284,7 @@ public class LocalPsFragment extends BaseFragment {
     };
 
     private void payWithPwLocal() {
-
+        SmartLog.i("LocalPsFragment payWithPwLocal()");
         if (request.getPwlocalRequest() != null) {
             Intent intent = new Intent(getActivity(), PwLocalActivity.class);
 
@@ -356,7 +362,7 @@ public class LocalPsFragment extends BaseFragment {
     }
 
 
-    @Override
+    /*@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -375,7 +381,7 @@ public class LocalPsFragment extends BaseFragment {
             setFonts(v);
         }
         // Find your buttons in subview, set up onclicks, set up callbacks to your parent fragment or activity here.
-    }
+    }*/
 
     @Override
     public void onPaymentSuccessful() {

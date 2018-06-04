@@ -11,11 +11,11 @@ public class Constants {
 //    public static final String PW_PROJECT_KEY = "b08e8ed730d5514ad12a909fbe4b7f00"; // andrea staging key
 //    public static final String PW_SECRET_KEY = "50f67e249ebe4a1988306e0662331c94";
 //
-    public static final String PW_PROJECT_KEY = "19fceb073e3083cac1391a9ecfa83fcd"; // thiduc staging key
-    public static final String PW_SECRET_KEY = "1c4ce0ee12050c3c99413e023d08f262";
+//    public static final String PW_PROJECT_KEY = "19fceb073e3083cac1391a9ecfa83fcd"; // thiduc staging key
+//    public static final String PW_SECRET_KEY = "1c4ce0ee12050c3c99413e023d08f262";
 //
-//    public static final String PW_PROJECT_KEY = "dea07cfb5300badc9b002009facad651"; // Kyle's key
-//    public static final String PW_SECRET_KEY = "dec31fb340f14b63b42f458431e12d12";
+    public static final String PW_PROJECT_KEY = "dea07cfb5300badc9b002009facad651"; // Kyle's key
+    public static final String PW_SECRET_KEY = "dec31fb340f14b63b42f458431e12d12";
 
 //    public static final String PW_PROJECT_KEY = "9afb464faa93811fed34f9815677ae58"; // Dzung's staging
 //    public static final String PW_SECRET_KEY = "99438d36884f255f8853d6e04223128b";

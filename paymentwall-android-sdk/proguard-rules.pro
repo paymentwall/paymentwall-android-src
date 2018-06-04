@@ -26,7 +26,7 @@
 -verbose
 -dontusemixedcaseclassnames
 -renamesourcefileattribute SourceFile
--optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-optimizations !class/unboxing/enum,!code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
 -allowaccessmodification
 -dontpreverify
 
@@ -56,6 +56,20 @@
     private void readObject(java.io.ObjectInputStream);
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+-keep class com.paymentwall.pwunifiedsdk.R {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.paymentwall.pwunifiedsdk.R.** {
+    <fields>;
+    <methods>;
 }
 
 -keep class com.paymentwall.pwunifiedsdk.core.UnifiedRequest {

@@ -1,4 +1,4 @@
-include ':alipayadapter',
+include ':alipayadapter', ':pwsdk_test',
 ':unionpayadapter',
 ':paymentwall-android-sdk',
 ':app',

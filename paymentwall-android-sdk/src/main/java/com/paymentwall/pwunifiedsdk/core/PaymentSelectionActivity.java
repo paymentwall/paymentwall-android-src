@@ -41,6 +41,7 @@ import com.paymentwall.pwunifiedsdk.util.Key;
 import com.paymentwall.pwunifiedsdk.util.PwUtils;
 import com.paymentwall.pwunifiedsdk.util.ResponseCode;
 import com.paymentwall.pwunifiedsdk.util.SharedPreferenceManager;
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
 import com.paymentwall.sdk.pwlocal.message.CustomRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalDefaultRequest;
 import com.paymentwall.sdk.pwlocal.message.LocalFlexibleRequest;
@@ -241,6 +242,7 @@ public class PaymentSelectionActivity extends FragmentActivity {
     }
 
     private void payWithPwLocal() {
+        SmartLog.i("psa paywithpwlocal");
         if (request.getPwlocalRequest() != null) {
             Intent intent = new Intent(this, PwLocalActivity.class);
 
@@ -262,6 +264,9 @@ public class PaymentSelectionActivity extends FragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        SmartLog.i("psa onActivityResult");
+        SmartLog.i("psa onActivityResult requestCode = "+requestCode);
+        SmartLog.i("psa onActivityResult resultCode= "+resultCode);
         if (data == null) return;
         if (requestCode == PwLocalActivity.REQUEST_CODE) {
             if (resultCode == ResponseCode.ERROR) {

@@ -148,7 +148,9 @@ public class UnifiedRequest implements Parcelable {
         this.pwlocalEnabled = true;
         ExternalPs pwLocal = new ExternalPs("pwlocal", "", R.drawable.others, null);
         this.externalPsList.add(0, pwLocal);
-        this.pwlocalRequest = new CustomRequest();
+
+        if(pwlocalRequest == null) pwlocalRequest = new CustomRequest();
+
         pwlocalRequest.put(Const.P.KEY, getPwProjectKey());
         pwlocalRequest.put(Const.P.UID, getUserId());
         pwlocalRequest.put(Const.P.AG_EXTERNAL_ID, getItemId());
@@ -339,6 +341,8 @@ public class UnifiedRequest implements Parcelable {
     }
 
     public void addCustomParam(String key, String value) {
+        if(key == null || value == null) return;
+        if(key.isEmpty() || value.isEmpty()) return;
         if (customParams == null) {
             customParams = new TreeMap<>();
         }
@@ -348,6 +352,8 @@ public class UnifiedRequest implements Parcelable {
 
 
     public void addPwlocalParams(String key, String value) {
+        if(key == null || value == null) return;
+        if(key.isEmpty() || value.isEmpty()) return;
         if (this.pwlocalRequest == null) {
             this.pwlocalRequest = new CustomRequest();
         }

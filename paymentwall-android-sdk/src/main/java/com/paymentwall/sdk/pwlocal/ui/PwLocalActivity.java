@@ -137,6 +137,7 @@ public class PwLocalActivity extends FragmentActivity implements
                     errorRespond(result);
                     return;
                 }
+
                 String query = customParameters.getUrlParam();
                 url = rootUrl + query;
                 if (webView != null) {
@@ -337,7 +338,7 @@ public class PwLocalActivity extends FragmentActivity implements
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(false);
+            WebView.setWebContentsDebuggingEnabled(SmartLog.DEBUG);
         }
         MiscUtils.removeJsInterface(webView);
         CookieManager.getInstance().setAcceptCookie(true);

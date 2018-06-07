@@ -1,5 +1,7 @@
 package com.paymentwall.sdk.pwlocal.message;
 
+import android.text.TextUtils;
+
 import com.paymentwall.sdk.pwlocal.utils.Const.P;
 import com.paymentwall.sdk.pwlocal.utils.PwLocalMiscUtils;
 
@@ -44,9 +46,9 @@ abstract class PWSDKRequest implements Serializable {
     }
 
     public String getUrl(String rootUrl) {
-        if(!autoSigned) {
+        if (!autoSigned) {
             return getUrlNoSign(rootUrl);
-        } else if(sign == null) {
+        } else if (sign == null) {
             return getUrl(rootUrl, this.secretKey, this.signVersion);
         } else {
             return getUrl(rootUrl, "", 0);
@@ -76,14 +78,16 @@ abstract class PWSDKRequest implements Serializable {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append('?');
         final Set<Entry<String, String>> entrySet = params.entrySet();
-        Iterator<Entry<String,String>> iterator = entrySet.iterator();
-        while(iterator.hasNext()) {
+        Iterator<Entry<String, String>> iterator = entrySet.iterator();
+        while (iterator.hasNext()) {
             Entry<String, String> entry = iterator.next();
-            urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getKey()));
-            urlBuilder.append('=');
-            urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getValue()));
-            if(iterator.hasNext()) {
-                urlBuilder.append('&');
+            if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
+                urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getKey()));
+                urlBuilder.append('=');
+                urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getValue()));
+                if (iterator.hasNext()) {
+                    urlBuilder.append('&');
+                }
             }
         }
         return urlBuilder.toString();
@@ -93,13 +97,13 @@ abstract class PWSDKRequest implements Serializable {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append('?');
         final Set<Entry<String, String>> entrySet = params.entrySet();
-        Iterator<Entry<String,String>> iterator = entrySet.iterator();
-        while(iterator.hasNext()) {
+        Iterator<Entry<String, String>> iterator = entrySet.iterator();
+        while (iterator.hasNext()) {
             Entry<String, String> entry = iterator.next();
             urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getKey()));
             urlBuilder.append('=');
             urlBuilder.append(PwLocalMiscUtils.urlStringEncode(entry.getValue()));
-            if(iterator.hasNext()) {
+            if (iterator.hasNext()) {
                 urlBuilder.append('&');
             }
         }
@@ -194,18 +198,18 @@ abstract class PWSDKRequest implements Serializable {
     }
 
     public void addParameter(String key, String value) {
-        if(value!=null && key!=null) {
+        if (value != null && key != null) {
             if (parameters == null) parameters = new TreeMap<String, String>();
             parameters.put(key, value);
         }
     }
 
     public void removeParameter(String key) {
-        if(parameters !=null) parameters.remove(key);
+        if (parameters != null) parameters.remove(key);
     }
 
     public String findParameter(String key) {
-        if(parameters != null) return parameters.get(key);
+        if (parameters != null) return parameters.get(key);
         else return null;
     }
 

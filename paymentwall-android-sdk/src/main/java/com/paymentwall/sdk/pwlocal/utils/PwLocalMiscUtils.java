@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.paymentwall.pwunifiedsdk.util.SmartLog;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -54,6 +56,7 @@ public class PwLocalMiscUtils {
 	}*/
 
     public static String urlStringEncode(String input) {
+        SmartLog.i("urlStringEncode input="+input);
         try {
             return URLEncoder.encode(input, "UTF-8");
         } catch (UnsupportedEncodingException e) {

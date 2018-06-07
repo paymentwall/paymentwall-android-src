@@ -42,10 +42,11 @@ public class MainActivity extends AppCompatActivity {
         localUnifiedRequest.setUserId("user_1230918230129");
         localUnifiedRequest.setTimeout(30000);
         localUnifiedRequest.setSignVersion(3);
-        localUnifiedRequest.setTestMode(true);
+        localUnifiedRequest.setTestMode(false);
         localUnifiedRequest.addCustomParam("tID", "120398123");
         localUnifiedRequest.addPwLocal();
         localUnifiedRequest.addPwlocalParams("widget", "p1_1");
+        localUnifiedRequest.addPwlocalParams("custom_param", null);
 
         Intent intent = new Intent(getApplicationContext(), PaymentSelectionActivity.class);
         intent.putExtra(Key.REQUEST_MESSAGE, localUnifiedRequest);

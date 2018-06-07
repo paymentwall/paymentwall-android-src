@@ -188,3 +188,8 @@
     <fields>;
     <methods>;
 }
+
+-keep class glide.** {
+    <fields>;
+    <methods>;
+}

@@ -19,7 +19,7 @@ import com.paymentwall.pwunifiedsdk.BuildConfig;
  * @author nguyen.anh
  */
 public final class SmartLog {
-    private static boolean DEBUG = false;
+    public static final boolean DEBUG = false;
     private static String TAG = "PaymentwallSdk";
 
     private SmartLog() {

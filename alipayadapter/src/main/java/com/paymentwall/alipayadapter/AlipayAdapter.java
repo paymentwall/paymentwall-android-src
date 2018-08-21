@@ -61,6 +61,7 @@ public class AlipayAdapter {
             mthSuccess = BaseFragment.getMethod("onPaymentSuccessful");
             mthError = BaseFragment.getMethod("onPaymentError");
             mthCancel = BaseFragment.getMethod("onPaymentCancel");
+            mthShowWait = BaseFragment.getMethod("showWaitLayout");
             mthHideWait = BaseFragment.getMethod("hideWaitLayout");
 
             PwHttpClient.getSignature(context, psAlipay, new PwHttpClient.AlipayCallback() {

@@ -61,7 +61,6 @@ public class AlipayAdapter {
             mthSuccess = BaseFragment.getMethod("onPaymentSuccessful");
             mthError = BaseFragment.getMethod("onPaymentError");
             mthCancel = BaseFragment.getMethod("onPaymentCancel");
-            mthShowWait = BaseFragment.getMethod("showWaitLayout");
             mthHideWait = BaseFragment.getMethod("hideWaitLayout");
 
             PwHttpClient.getSignature(context, psAlipay, new PwHttpClient.AlipayCallback() {
@@ -77,7 +76,7 @@ public class AlipayAdapter {
                 @Override
                 public void onAlipaySuccess(int statusCode, String responseBody) {
 
-                    Log.i("RESPONSE_BODY", responseBody);
+                    //Log.i("RESPONSE_BODY", responseBody);
                     try {
                         JSONObject rootObj = new JSONObject(responseBody);
                         if (rootObj.has("data")) {
@@ -139,9 +138,7 @@ public class AlipayAdapter {
 
                     Method payMethod = Paytask.getMethod("payV2", String.class, boolean.class);
                     Map<String, String> result = (Map<String, String>) payMethod.invoke(alipay, orderInfo, true);
-                    Log.i("AliAdapter","send to alipay orderInfo = "+orderInfo);
-//                    Log.i("RESULT", result);
-//                    String result = alipay.pay(orderInfo, true);
+                    //Log.i("AliAdapter","send to alipay orderInfo = "+orderInfo);
                     Message msg = new Message();
                     msg.what = ALIPAY_ID;
                     msg.obj = result;
@@ -163,7 +160,7 @@ public class AlipayAdapter {
         for(Map.Entry<String, String> entry : psAlipay.getAlipayParams().entrySet()) {
             stringBuilder.append(entry.getKey()+"="+entry.getValue()+"&");
         }
-        Log.i("AliAdapter", "orderInfo = "+orderInfo);
+        //Log.i("AliAdapter", "orderInfo = "+orderInfo);
         return orderInfo;
     }
 
@@ -174,22 +171,20 @@ public class AlipayAdapter {
             try {
                 switch (msg.what) {
                     case ALIPAY_ID: {
-//                        PayResult payResult = new PayResult((String) msg.obj);
                         PayResult2 payResult = new PayResult2((Map<String, String>) msg.obj);
 
                         String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-                        Log.i("result_info", payResult.toString());
+                        //Log.i("result_info", payResult.toString());
 
                         String resultStatus = payResult.getResultStatus();
                         Intent intent = new Intent();
                         if (TextUtils.equals(resultStatus, "9000")) {
-//                        Toast.makeText(self, "Status code: " + resultStatus + ". Payment successful", Toast.LENGTH_SHORT).show();
                             mthSuccess.invoke(fragment);
                         } else if (TextUtils.equals(resultStatus, "6001")) {
                             mthCancel.invoke(fragment);
                         } else {
                             if (TextUtils.equals(resultStatus, "8000")) {
-//                            Toast.makeText(self, "Status code: " + resultStatus + ". Waiting for payment confirmation", Toast.LENGTH_SHORT).show();
+
                             } else {
                                 mthError.invoke(fragment);
                             }

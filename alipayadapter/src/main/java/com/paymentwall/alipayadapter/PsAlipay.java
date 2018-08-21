@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -31,28 +32,33 @@ public class PsAlipay implements Parcelable {
     }
 
     private static class Z {
-        public static final String SERVICE = "service";
-        public static final String PARTNER = "partner";
-        public static final String _INPUT_CHARSET = "_input_charset";
-        public static final String CHARSET = "charset";
-        public static final String SIGN_TYPE = "sign_type";
-        public static final String NOTIFY_URL = "notify_url";
-        public static final String OUT_TRADE_NO = "out_trade_no";
-        public static final String SUBJECT = "subject";
-        public static final String PAYMENT_TYPE = "payment_type";
-        public static final String SELLER_ID = "seller_id";
-        public static final String TOTAL_FEE = "total_fee";
-        public static final String BODY = "body";
-        public static final String CURRENCY = "currency";
-        public static final String IT_B_PAY = "it_b_pay";
-        public static final String FOREX_BIZ = "forex_biz";
-        public static final String APP_ID = "app_id";
-        public static final String METHOD = "method";
-        public static final String APPENV = "appenv";
-        public static final String SIGN = "sign";
-        public static final String TIMESTAMP = "timestamp";
-        public static final String VERSION = "version";
-        public static final String BIZ_CONTENT = "biz_content";
+        static final String SECONDARY_MERCHANT_ID = "secondary_merchant_id";
+        static final String SECONDARY_MERCHANT_NAME = "secondary_merchant_name";
+        static final String SECONDARY_MERCHANT_INDUSTRY = "secondary_merchant_industry";
+        static final String RMB_FEE = "rmb_fee";
+        static final String EXTERN_TOKEN = "extern_token";
+        static final String SERVICE = "service";
+        static final String PARTNER = "partner";
+        static final String _INPUT_CHARSET = "_input_charset";
+        static final String CHARSET = "charset";
+        static final String SIGN_TYPE = "sign_type";
+        static final String NOTIFY_URL = "notify_url";
+        static final String OUT_TRADE_NO = "out_trade_no";
+        static final String SUBJECT = "subject";
+        static final String PAYMENT_TYPE = "payment_type";
+        static final String SELLER_ID = "seller_id";
+        static final String TOTAL_FEE = "total_fee";
+        static final String BODY = "body";
+        static final String CURRENCY = "currency";
+        static final String IT_B_PAY = "it_b_pay";
+        static final String FOREX_BIZ = "forex_biz";
+        static final String APP_ID = "app_id";
+        static final String METHOD = "method";
+        static final String APPENV = "appenv";
+        static final String SIGN = "sign";
+        static final String TIMESTAMP = "timestamp";
+        static final String VERSION = "version";
+        static final String BIZ_CONTENT = "biz_content";
     }
 
     /*private String partnerId;
@@ -98,6 +104,48 @@ public class PsAlipay implements Parcelable {
 
     public String get(String key) {
         return alipayParams.get(key);
+    }
+
+    public void setSecondaryMerchantId(String secondaryMerchantId) {
+        if (secondaryMerchantId == null) alipayParams.remove(Z.SECONDARY_MERCHANT_ID);
+        else alipayParams.put(Z.SECONDARY_MERCHANT_ID, secondaryMerchantId);
+    }
+
+    public void setSecondaryMerchantName(String secondaryMerchantName) {
+        if (secondaryMerchantName == null) alipayParams.remove(Z.SECONDARY_MERCHANT_NAME);
+        else alipayParams.put(Z.SECONDARY_MERCHANT_NAME, secondaryMerchantName);
+    }
+
+    public void setSecondaryMerchantIndustry(String secondaryMerchantIndustry) {
+        if (secondaryMerchantIndustry == null) alipayParams.remove(Z.SECONDARY_MERCHANT_INDUSTRY);
+        else alipayParams.put(Z.SECONDARY_MERCHANT_INDUSTRY, secondaryMerchantIndustry);
+    }
+
+    public void setExternToken(String externToken) {
+        if (externToken == null) alipayParams.remove(Z.EXTERN_TOKEN);
+        else alipayParams.put(Z.EXTERN_TOKEN, externToken);
+    }
+
+    public void setRmbFee(BigDecimal rmbFee) {
+        if (rmbFee == null) alipayParams.remove(Z.RMB_FEE);
+        else alipayParams.put(Z.RMB_FEE, rmbFee.toPlainString());
+    }
+
+    public void setRmbFee(String rmbFee) {
+        if (rmbFee == null) alipayParams.remove(Z.RMB_FEE);
+        else alipayParams.put(Z.RMB_FEE, rmbFee);
+    }
+
+    public String getSecondaryMerchantId() {
+        return alipayParams.get(Z.SECONDARY_MERCHANT_ID);
+    }
+
+    public String getSecondaryMerchantName() {
+        return alipayParams.get(Z.SECONDARY_MERCHANT_NAME);
+    }
+
+    public String getSecondaryMerchantIndustry() {
+        return alipayParams.get(Z.SECONDARY_MERCHANT_INDUSTRY);
     }
 
     public String getPartnerId() {
@@ -348,7 +396,7 @@ public class PsAlipay implements Parcelable {
         parametersMap.put("ag_name", (String) params.get("ITEM_NAME"));
         parametersMap.put("ag_external_id", (String) params.get("ITEM_ID"));
         parametersMap.put("amount", params.get("AMOUNT") + "");
-        Log.i("CURRENCY", (String) params.get("CURRENCY"));
+        //Log.i("CURRENCY", (String) params.get("CURRENCY"));
         parametersMap.put("currencyCode", (String) params.get("CURRENCY"));
         parametersMap.put("sign_version", params.get("SIGN_VERSION") + "");
 
@@ -380,15 +428,15 @@ public class PsAlipay implements Parcelable {
 //            parametersMap.put("ps_name", "alipay");
             String orderInfo = printWallApiMap(sortMap(parametersMap));
             orderInfo += params.get("PW_PROJECT_SECRET");
-            Log.i("WallApi request", orderInfo);
+            //Log.i("WallApi request", orderInfo);
             String sign = sha256(orderInfo);
             parametersMap.put("sign", sign);
 //            parametersMap.remove("ps_name");
         } else {
             parametersMap.put("sign", getPwSign());
         }
-//        Log.i("ORDER_INFO", orderInfo);
-//        Log.i("SIGN", sign);
+//        //Log.i("ORDER_INFO", orderInfo);
+//        //Log.i("SIGN", sign);
 
         return parametersMap;
     }
@@ -428,12 +476,12 @@ public class PsAlipay implements Parcelable {
 
     public static String buildAlipayParam(Map<String, String> map) {
         boolean isDomestic = false;
-        if(map.containsKey(Z.BIZ_CONTENT)) {
+        if (map.containsKey(Z.BIZ_CONTENT)) {
             isDomestic = true;
         }
         List<String> keys = new ArrayList<>(map.keySet());
         StringBuilder sb = new StringBuilder();
-        if(isDomestic) {
+        if (isDomestic) {
             try {
                 String sign = "";
                 for (int i = 0; i < keys.size(); i++) {
@@ -463,9 +511,9 @@ public class PsAlipay implements Parcelable {
             String signType = "";
             for (int i = 0; i < keys.size(); i++) {
                 String key = keys.get(i);
-                if(key.equalsIgnoreCase(Z.SIGN)) {
+                if (key.equalsIgnoreCase(Z.SIGN)) {
                     sign = map.get(key);
-                } else if(key.equalsIgnoreCase(Z.SIGN_TYPE)) {
+                } else if (key.equalsIgnoreCase(Z.SIGN_TYPE)) {
                     signType = map.get(key);
                 } else {
                     /*String value = "\""+map.get(key)+"\"";
@@ -521,7 +569,7 @@ public class PsAlipay implements Parcelable {
         String tailValue = map.get(tailKey);
         authInfo.append(buildKeyValue(tailKey, tailValue, false));
 
-        Log.i("SIGN_STRING", authInfo.toString());
+        //Log.i("SIGN_STRING", authInfo.toString());
 
         String oriSign = PsAlipay.signRsa(authInfo.toString(), rsaKey);
         String encodedSign = "";

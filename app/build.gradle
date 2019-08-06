@@ -9,7 +9,6 @@ buildscript {
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.paymentwall.pwsdktest"
@@ -30,6 +29,10 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -47,7 +50,7 @@ dependencies {
     compile project(':paymentwall-android-sdk')
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
     compile project(':alipayadapter')
-    compile files('libs/alipaySdk-20170309.jar')
+    compile project(":alipaySdk-15.6.5-20190718211148")
     compile project(':unionpayadapter')
     compile project(':moladapter')
     compile files('libs/MOLPoints_SDK_V1.2.0.jar')

@@ -1,12 +1,11 @@
 package com.paymentwall.alipayadapter;
 
-import android.app.AlertDialog;
+import com.paymentwall.pwunifiedsdk.util.PwUtils;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
-import com.paymentwall.pwunifiedsdk.util.PwUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,9 +25,7 @@ import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -39,7 +36,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class PwHttpClient {
 //    public static final String URL_STAGING = "https://api-trunk.s.stuffio.com/api/pw-plus-plus/alipay/signature";
-    public static final String URL_STAGING = "http://feature-pwsdk-204.wallapi.bamboo.stuffio.com/api/pw-plus-plus/";
+    public static final String URL_STAGING = "http://develop.wallapi.bamboo.stuffio.com/api/pw-plus-plus/alipay/signature";
     public static final String URL_PRODUCTION = "https://api.paymentwall.com/api/pw-plus-plus/alipay/signature";
 
     public static final int TIMEOUT_READ = 10000;

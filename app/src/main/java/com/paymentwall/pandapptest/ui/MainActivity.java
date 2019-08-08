@@ -1,18 +1,5 @@
 package com.paymentwall.pandapptest.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.paymentwall.alipayadapter.PsAlipay;
 import com.paymentwall.baiduadapter.PsBaidu;
 import com.paymentwall.dokuadapter.PsDoku;
@@ -35,11 +22,20 @@ import com.paymentwall.unionpayadapter.PsUnionpay;
 import com.paymentwall.wechatadapter.PsWechat;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Currency;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -330,7 +326,7 @@ public class MainActivity extends CommonActivity implements View.OnClickListener
         request.setItemResID(good.getImage());
         request.setTimeout(60000);
         request.enableFooter();
-        request.setTestMode(false);
+        request.setTestMode(true);
 //        request.setUiStyle("game");
 //
         request.addBrick();
